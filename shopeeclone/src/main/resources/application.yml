@@ -1,0 +1,13 @@
+server:
+  error:
+    include-message: always
+    include-binding-error: always
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/shoppee_db
+    username: postgres
+    password: root
+
+jwt:
+  secret-key: harrydfsagnafapfamfpafafaskanlfnalffafasdadadadafg
