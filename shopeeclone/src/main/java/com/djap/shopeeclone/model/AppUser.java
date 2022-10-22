@@ -6,12 +6,11 @@ import com.djap.shopeeclone.enums.UserRole;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.apache.catalina.User;
+
 
 
 import javax.persistence.*;
 
-import java.beans.ConstructorProperties;
 import java.util.Date;
 import java.util.Objects;
 
@@ -33,7 +32,7 @@ public class AppUser {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "email")
+    @Column(name = "username")
     private String email;
 
     @Column(name = "password")

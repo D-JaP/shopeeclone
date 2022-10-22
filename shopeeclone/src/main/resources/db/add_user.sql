@@ -1,7 +1,7 @@
 INSERT INTO users (id,
     first_name,
     last_name,
-    email,
+    username,
     password ,
     user_role,
     phone_number,

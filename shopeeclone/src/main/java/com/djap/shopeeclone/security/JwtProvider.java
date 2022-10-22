@@ -1,54 +1,41 @@
 package com.djap.shopeeclone.security;
 
-import com.djap.shopeeclone.enums.UserRole;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.lang.Assert;
-import io.jsonwebtoken.security.Keys;
+
 import lombok.RequiredArgsConstructor;
-import org.aspectj.lang.annotation.Before;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
-import java.security.AlgorithmConstraints;
-import java.security.spec.AlgorithmParameterSpec;
-import java.util.Base64;
-import java.util.Date;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+
+import java.util.stream.Collectors;
 
 
 @Component
 @RequiredArgsConstructor
 public class JwtProvider {
 
-    @Value("${jwt.secret-key}")
-    private String secretKey;
-    private SecretKey key ;
+    private final JwtEncoder jwtEncoder;
 
 
-//    public void JwtProvider(
-//            @Value("${jwt.secret-key}") final String key
-//    ){
-//        this.secretKey = key;
-//    }
+    public String GenerateToken(Authentication authentication) {
+        Instant now = Instant.now();
+        String scope = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining());
 
-    @PostConstruct
-    public void init() {
-        key = new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
-    }
-    public String GenerateToken(String email, String role) {
-        Assert.notNull(key, "Key has yet been assign.");
-        Date now = new Date();
-        return Jwts.builder()
-                .setSubject(email)
-                .setIssuedAt(now)
-                .signWith(key, SignatureAlgorithm.HS256)
-                .setExpiration(new Date(now.getTime() + 10 * 60 * 1000))
-                .compact();
+        JwtClaimsSet claims = JwtClaimsSet.builder()
+                .issuer("self")
+                .issuedAt(now)
+                .expiresAt(now.plus(1, ChronoUnit.HALF_DAYS))
+                .subject(authentication.getName())
+                .claim("scope",scope)
+                .build();
+        return this.jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 }
