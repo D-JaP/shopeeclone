@@ -13,8 +13,6 @@ import java.util.Optional;
 @Service
 public class UserService  implements UserDetailsService{
 
-
-
     private final UserRepository userRepository;
     public UserService (UserRepository userRepository){
         this.userRepository = userRepository;
@@ -29,4 +27,5 @@ public class UserService  implements UserDetailsService{
         AppUser user = userRepository.findByEmail(username).orElseThrow(()-> new UsernameNotFoundException("User not found"));
         return UserPrincipal.create(user);
     }
+
 }

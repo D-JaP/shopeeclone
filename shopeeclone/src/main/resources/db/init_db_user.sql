@@ -16,6 +16,8 @@ CREATE TABLE users (
     postcode INT,
     address VARCHAR(255),
     city VARCHAR(255),
+    is_active VARCHAR(5),
+    provider VARCHAR(255)
 
     PRIMARY KEY (id)
 );

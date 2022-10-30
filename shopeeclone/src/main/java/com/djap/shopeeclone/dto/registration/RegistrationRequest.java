@@ -15,17 +15,13 @@ public class RegistrationRequest {
     private final String email;
 
     @NotNull
-    private final String firstname;
+    private final String firstName;
 
     @NotNull
-    private final String lastname;
+    private final String lastName;
 
     @NotNull
     @Size(min =6 , max = 20 , message = "Password length should be in range of 6 to 20 letters")
     private final String password;
-
-    @NotNull
-    @Size(min =6 , max = 20 , message = "Re-Password length should be in range of 6 to 20 letters")
-    private final String rePassword;
 
 }

@@ -22,7 +22,7 @@ import java.util.Objects;
 public class AppUser {
     @Id
     @SequenceGenerator(name = "user_id_seq", sequenceName = "user_id_seq", initialValue = 4, allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_seq")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "user_id_seq")
     @Column(name = "id")
     private Long id;
 
@@ -60,6 +60,12 @@ public class AppUser {
 
     @Column(name ="city")
     private String city;
+
+    @Column(name = "is_active")
+    private Boolean isActive;
+
+    @Column(name = "provider")
+    private String provider;
 
     @Override
     public int hashCode() {

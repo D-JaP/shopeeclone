@@ -40,7 +40,8 @@ public class SecurityConfiguration {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/v1/auth/**",
-                        "/api/v1/auth/login").permitAll()
+                        "/api/v1/auth/login",
+                        "/api/v1/registration").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)

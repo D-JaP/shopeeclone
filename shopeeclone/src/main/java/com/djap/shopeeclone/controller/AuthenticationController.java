@@ -3,9 +3,11 @@ package com.djap.shopeeclone.controller;
 import com.djap.shopeeclone.dto.auth.AuthenticationRequest;
 import com.djap.shopeeclone.dto.auth.AuthenticationResponse;
 import com.djap.shopeeclone.mapper.auth.AuthenticationMapper;
+import com.djap.shopeeclone.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
