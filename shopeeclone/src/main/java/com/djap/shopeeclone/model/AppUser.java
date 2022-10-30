@@ -61,6 +61,9 @@ public class AppUser {
     @Column(name ="city")
     private String city;
 
+    @Column(name = "activation_token")
+    private String activationToken;
+
     @Column(name = "is_active")
     private Boolean isActive;
 
