@@ -1,0 +1,52 @@
+.--shopee-logo {
+  height: 66px;
+  width: 160px;
+  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(288deg)
+    brightness(102%) contrast(102%);
+}
+
+.--navbar-with-search-container {
+  display: flex;
+  height: 85px;
+  background-image: linear-gradient(#ee4d2d, #ff7337);
+  justify-content: center;
+  align-items: center;
+}
+
+.--search-bar {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  width: auto;
+  height: 40px;
+  border-radius: 3px;
+}
+
+.--search-bar-input {
+  width: 574px;
+  height: 34px;
+  border: 0px;
+  border-radius: 3px;
+  padding-left: 15px;
+}
+
+.--search-button {
+  display: flex;
+  height: 34px;
+  width: 60px;
+  background-color: #fb5533;
+  margin-right: 3px;
+  border-radius: 3px;
+  justify-content: center;
+  align-items: center;
+}
+
+.--search-button-icon {
+  color: #fff;
+}
+
+.--shopping-cart-icon {
+  color: #fff;
+  /* margin-left: 1rem; */
+  padding: 2rem;
+}

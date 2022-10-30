@@ -1,0 +1,36 @@
+/* product main card */
+.--product-card {
+  background-color: white;
+  border-radius: 5px;
+  padding-top: 30px;
+  background-clip: content-box;
+  display: flex;
+  flex-direction: row;
+}
+/* left side product images */
+.--product-image-card {
+  width: 40%;
+  padding: 15px;
+}
+
+.--product-main-image {
+  width: 450px;
+  height: 450px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position-x: center;
+}
+.--product-nav-images {
+  display: flex;
+  margin: 5px 0 5px 0;
+}
+
+/* right side product info */
+.--product-purchase-info {
+  width: 60%;
+  padding: 1.25rem 2.1875rem 0 1.25rem;
+}
+.--product-info-name {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
