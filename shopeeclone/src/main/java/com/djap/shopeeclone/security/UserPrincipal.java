@@ -18,7 +18,7 @@ public class UserPrincipal implements UserDetails {
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public static UserPrincipal create(AppUser user){
+    public static UserPrincipal create(AppUser user) {
         String role = user.getUserRole().toString();
         List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(role));
         return new UserPrincipal(user.getId(), user.getEmail(), user.getPassword(), authorities);

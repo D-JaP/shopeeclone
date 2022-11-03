@@ -6,5 +6,5 @@ import java.util.Map;
 
 @Service
 public interface AuthenticationService {
-    Map<String, String> login (String email, String password);
+    Map<String, String> login(String email, String password);
 }

@@ -2,6 +2,7 @@ server:
   error:
     include-message: always
     include-binding-error: always
+hostname: localhost:8080
 
 spring:
   datasource:
@@ -9,6 +10,23 @@ spring:
     username: postgres
     password: root
 
+  mail:
+    host: smtp.gmail.com
+    username: shopeeclone.ecommerce.service@gmail.com
+    password: stnlxsbkdvbrhwig
+    properties:
+      protocol: smtp
+      smtp:
+        port: 587
+        auth: true
+        starttls:
+          enable: true
+    debug: false
+    template:
+      registration: classpath:templates/mail_template/registration_template.html
+
 rsa:
   private-key: classpath:certs/private.pem
   public-key: classpath:certs/public.pem
+
+registration: classpath:templates/mail_template/registration_template.html

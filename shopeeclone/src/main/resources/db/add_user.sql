@@ -9,17 +9,24 @@ INSERT INTO users (id,
     date_of_birth,
     postcode,
     address,
-    city)
+    city,
+    is_active,
+    provider,
+    activation_token
+    )
 
     VALUES (1,
     'Harry',
     'Le',
     'test123@test.com',
-    '123456',
+    '{noop}123456',
     'ADMIN',
     '0434444333',
     'Male',
     '1991/05/06',
     3000,
     '12 Bourke Street',
-    'Melbourne');
+    'Melbourne',
+    'true',
+    '',
+    '');

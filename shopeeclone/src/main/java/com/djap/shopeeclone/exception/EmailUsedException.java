@@ -5,6 +5,6 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public class EmailUsedException extends RuntimeException{
+public class EmailUsedException extends RuntimeException {
     private final String emailUsedException;
 }

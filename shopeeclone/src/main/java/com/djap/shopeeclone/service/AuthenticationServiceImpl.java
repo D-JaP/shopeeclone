@@ -15,13 +15,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
+
     @Override
     public Map<String, String> login(String email, String password) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));

@@ -8,7 +8,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 
-
 import javax.persistence.*;
 
 import java.util.Date;
@@ -38,7 +37,7 @@ public class AppUser {
     @Column(name = "password")
     private String password;
 
-    @Column(name =  "user_role")
+    @Column(name = "user_role")
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
@@ -58,7 +57,7 @@ public class AppUser {
     @Column(name = "address")
     private String address;
 
-    @Column(name ="city")
+    @Column(name = "city")
     private String city;
 
     @Column(name = "activation_token")
@@ -76,7 +75,7 @@ public class AppUser {
     }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null) return false;
         if (this.getClass() != o.getClass()) return false;

@@ -21,7 +21,7 @@ public class RegistrationRequest {
     private final String lastName;
 
     @NotNull
-    @Size(min =6 , max = 20 , message = "Password length should be in range of 6 to 20 letters")
+    @Size(min = 6, max = 20, message = "Password length should be in range of 6 to 20 letters")
     private final String password;
 
 }

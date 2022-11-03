@@ -36,12 +36,12 @@ public class SecurityConfiguration {
 
 
     @Bean
-    public  SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/v1/auth/**",
                         "/api/v1/auth/login",
-                        "/api/v1/registration").permitAll()
+                        "/api/v1/registration/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
@@ -51,23 +51,24 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(UserService userService){
+    public AuthenticationManager authenticationManager(UserService userService) {
         var authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userService);
         return new ProviderManager(authProvider);
     }
 
     @Bean
-    JwtDecoder jwtDecoder(){
+    JwtDecoder jwtDecoder() {
         return NimbusJwtDecoder.withPublicKey(rsaKeys.publicKey()).build();
     }
 
     @Bean
-    JwtEncoder jwtEncoder(){
+    JwtEncoder jwtEncoder() {
         JWK jwk = new RSAKey.Builder(rsaKeys.publicKey()).privateKey(rsaKeys.privateKey()).build();
         JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
         return new NimbusJwtEncoder(jwks);
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
 //        return new BCryptPasswordEncoder();

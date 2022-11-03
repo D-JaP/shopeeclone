@@ -7,25 +7,34 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class UserService  implements UserDetailsService{
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
-    public UserService (UserRepository userRepository){
+
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-    public List<AppUser> getUsers(){
+
+    public List<AppUser> getUsers() {
         return userRepository.findAll();
     }
 
-
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AppUser user = userRepository.findByEmail(username).orElseThrow(()-> new UsernameNotFoundException("User not found"));
+    public UserDetails loadUserByUsername(String username){
+        AppUser user = userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return UserPrincipal.create(user);
+    }
+
+    public Boolean activateUser(String activationToken){
+        AppUser user = userRepository.findByActivationToken(activationToken).orElseThrow(()-> new UsernameNotFoundException("User not found"));
+        if (activationToken.equals(user.getActivationToken())){
+            return true;
+        }
+        return false;
     }
 
 }

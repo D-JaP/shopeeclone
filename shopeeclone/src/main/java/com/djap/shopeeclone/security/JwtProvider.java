@@ -34,7 +34,7 @@ public class JwtProvider {
                 .issuedAt(now)
                 .expiresAt(now.plus(1, ChronoUnit.HALF_DAYS))
                 .subject(authentication.getName())
-                .claim("scope",scope)
+                .claim("scope", scope)
                 .build();
         return this.jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
