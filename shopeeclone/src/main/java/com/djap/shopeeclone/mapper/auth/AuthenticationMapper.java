@@ -14,6 +14,7 @@ public class AuthenticationMapper {
     private final AuthenticationService authenticationService;
 
     public AuthenticationResponse login(AuthenticationRequest request) {
+
         Map<String, String> credentials = authenticationService.login(request.getEmail(), request.getPassword());
         AuthenticationResponse response = new AuthenticationResponse();
         response.setEmail(credentials.get("email"));

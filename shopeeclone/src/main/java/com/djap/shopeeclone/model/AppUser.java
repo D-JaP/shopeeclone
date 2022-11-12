@@ -60,8 +60,8 @@ public class AppUser {
     @Column(name = "city")
     private String city;
 
-    @Column(name = "activation_token")
-    private String activationToken;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private ActivationToken activationToken;
 
     @Column(name = "is_active")
     private Boolean isActive;
@@ -82,5 +82,4 @@ public class AppUser {
         AppUser User = (AppUser) o;
         return Objects.equals(id, User.id);
     }
-
 }

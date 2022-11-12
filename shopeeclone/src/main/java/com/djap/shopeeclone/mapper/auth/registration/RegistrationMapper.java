@@ -8,9 +8,7 @@ import com.djap.shopeeclone.service.RegistrationService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Component;
-
 import javax.mail.MessagingException;
-
 
 @Component
 @RequiredArgsConstructor

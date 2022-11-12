@@ -28,13 +28,4 @@ public class UserService implements UserDetailsService {
         AppUser user = userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return UserPrincipal.create(user);
     }
-
-    public Boolean activateUser(String activationToken){
-        AppUser user = userRepository.findByActivationToken(activationToken).orElseThrow(()-> new UsernameNotFoundException("User not found"));
-        if (activationToken.equals(user.getActivationToken())){
-            return true;
-        }
-        return false;
-    }
-
 }

@@ -3,6 +3,7 @@ package com.djap.shopeeclone.service;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -24,6 +25,7 @@ public class MailSenderService {
     @Value("${spring.mail.username}")
     private  String username;
 
+    @Async
     public void sendMessageHtml(String to, String subject, String template,
                                 Map<String, Object> attributes ) throws MessagingException {
 //        Prepare context

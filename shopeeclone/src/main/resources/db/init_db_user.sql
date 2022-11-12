@@ -1,8 +1,6 @@
 DROP SEQUENCE IF EXISTS user_id_seq;
 DROP TABLE IF EXISTS users;
-
 CREATE SEQUENCE user_id_seq  START 2 INCREMENT 1;
-
 CREATE TABLE users (
     id int8 NOT NULL,
     first_name VARCHAR(255),
@@ -18,7 +16,8 @@ CREATE TABLE users (
     city VARCHAR(255),
     is_active VARCHAR(5),
     provider VARCHAR(255),
-    activation_token VARCHAR(255),
+
+
 
     PRIMARY KEY (id)
-);
+    );

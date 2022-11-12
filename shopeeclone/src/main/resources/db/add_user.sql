@@ -11,8 +11,7 @@ INSERT INTO users (id,
     address,
     city,
     is_active,
-    provider,
-    activation_token
+    provider
     )
 
     VALUES (1,
@@ -28,5 +27,4 @@ INSERT INTO users (id,
     '12 Bourke Street',
     'Melbourne',
     'true',
-    '',
     '');
