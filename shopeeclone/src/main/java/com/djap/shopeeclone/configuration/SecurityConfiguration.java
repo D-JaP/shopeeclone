@@ -34,7 +34,6 @@ public class SecurityConfiguration {
 
     private final RsaKeyProperties rsaKeys;
 
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
@@ -54,6 +53,7 @@ public class SecurityConfiguration {
     public AuthenticationManager authenticationManager(UserService userService) {
         var authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userService);
+        authProvider.setPasswordEncoder(passwordEncoder());
         return new ProviderManager(authProvider);
     }
 
@@ -71,7 +71,7 @@ public class SecurityConfiguration {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
+//        return NoOpPasswordEncoder.getInstance();
     }
 }

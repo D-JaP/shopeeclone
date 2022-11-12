@@ -33,7 +33,5 @@ public class RegistrationController {
             return ResponseEntity.ok("User successfully activated.");
         }
         return ResponseEntity.ok("Activation code not found.");
-
-
     }
 }

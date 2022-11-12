@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Value;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -24,7 +25,7 @@ public class RegistrationService {
 
     private final UserRepository userRepository;
     private final MailSenderService mailSenderService;
-
+    private final PasswordEncoder passwordEncoder;
     @Value("${hostname}")
     private String hostname;
 
@@ -38,8 +39,8 @@ public class RegistrationService {
         user.setIsActive(false);
         user.setUserRole(UserRole.USER);
         user.setActivationToken(UUID.randomUUID().toString());
-//        password is auto bind
-
+//        encode password
+        user.setPassword( passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
 
 //        send activation mail
