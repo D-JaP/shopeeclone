@@ -34,7 +34,7 @@ public class RegistrationService {
     public String registerUser(AppUser user) throws MessagingException {
 //        Check email is exist
         userRepository.findByEmail(user.getEmail()).ifPresent(s -> {
-            throw new EmailUsedException("Email is existed.");
+            throw new EmailUsedException(user.getEmail());
         });
 //        Persiting data and finish registration
         user.setIsActive(false);

@@ -1,10 +1,10 @@
 package com.djap.shopeeclone.exception;
 
-public class EmailPasswordNotMatchException extends RuntimeException {
-    private final String emailPasswordError;
+import org.springframework.security.core.AuthenticationException;
 
-    public EmailPasswordNotMatchException(String emailPasswordError) {
-        this.emailPasswordError = emailPasswordError;
+public class EmailPasswordNotMatchException extends AuthenticationException {
+    public EmailPasswordNotMatchException(String email) {
+        super("Email/Password not match for input: "+ email);
     }
 
 }

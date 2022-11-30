@@ -3,8 +3,8 @@ package com.djap.shopeeclone.exception;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
-@Getter
 public class EmailUsedException extends RuntimeException {
-    private final String emailUsedException;
+    public EmailUsedException(String email){
+        super("Could not find email: " + email);
+    }
 }
