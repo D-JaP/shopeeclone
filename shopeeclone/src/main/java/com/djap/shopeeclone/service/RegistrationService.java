@@ -3,7 +3,7 @@ package com.djap.shopeeclone.service;
 
 import com.djap.shopeeclone.dto.registration.MailTemplate;
 import com.djap.shopeeclone.enums.UserRole;
-import com.djap.shopeeclone.exception.EmailUsedException;
+import com.djap.shopeeclone.exception.email.EmailUsedException;
 import com.djap.shopeeclone.model.ActivationToken;
 import com.djap.shopeeclone.model.AppUser;
 import com.djap.shopeeclone.repository.ActivationTokenRepository;
@@ -59,7 +59,6 @@ public class RegistrationService {
         ActivationToken activationToken = new ActivationToken();
         activationToken.setUser(user);
         activationToken.setToken(UUID.randomUUID().toString());
-
         activationToken.setExpiryDate();
 
         return activationTokenRepository.save(activationToken);

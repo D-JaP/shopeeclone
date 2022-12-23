@@ -25,7 +25,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public Map<String, String> login(String email, String password) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-        System.out.println(authentication.isAuthenticated());
         AppUser user = userRepository.findByEmail(email).orElseThrow(
                 () -> new EmailPasswordNotMatchException(email));
 //        if (!Objects.equals(user.getPassword(), password)) {

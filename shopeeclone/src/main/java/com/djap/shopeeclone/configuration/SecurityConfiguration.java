@@ -40,7 +40,9 @@ public class SecurityConfiguration {
                 .authorizeRequests()
                 .antMatchers("/api/v1/auth/**",
                         "/api/v1/auth/login",
-                        "/api/v1/registration/**").permitAll()
+                        "/api/v1/registration/**",
+                        "/api/v1/password_reset/**")
+                .permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)

@@ -1,4 +1,4 @@
-package com.djap.shopeeclone.exception;
+package com.djap.shopeeclone.exception.email;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class EmailUsedExceptionAdvice {
+public class EmailNotExistAdvice {
     @ResponseBody
-    @ExceptionHandler(EmailUsedException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    String EmailUsedExceptionHandler(EmailUsedException ex){
+    @ExceptionHandler(EmailNotExistException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    String EmailNotExistExceptionHandler(EmailUsedException ex){
         return ex.getMessage();
     }
 }

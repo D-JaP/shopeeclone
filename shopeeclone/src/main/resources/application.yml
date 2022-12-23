@@ -6,7 +6,7 @@ hostname: localhost:8080
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/shoppee_db
+    url: jdbc:postgresql://localhost:5432/shopee_db
     username: postgres
     password: root
 
@@ -24,9 +24,9 @@ spring:
     debug: false
     template:
       registration: classpath:templates/mail_template/registration_template.html
+      passwordReset: classpath:templates/mail_template/password_reset_template.html
 
 rsa:
   private-key: classpath:certs/private.pem
   public-key: classpath:certs/public.pem
 
-registration: classpath:templates/mail_template/registration_template.html

@@ -1,4 +1,4 @@
-package com.djap.shopeeclone.exception;
+package com.djap.shopeeclone.exception.email;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
