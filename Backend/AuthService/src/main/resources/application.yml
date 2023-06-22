@@ -1,0 +1,51 @@
+server:
+  error:
+    include-message: always
+    include-binding-error: always
+
+hostname: localhost:8080
+
+jwt:
+  jwt_token:
+    expire_time_in_minutes: 10
+  refresh_token:
+    expire_time_in_days: 7
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/shopee_db
+    username: postgres
+    password: root
+
+  mail:
+    host: smtp.gmail.com
+    username: shopeecloneservice@gmail.com
+    password: hcgdepjbyncxrspj
+    pw2: asdfasdfatg121
+
+    properties:
+      protocol: smtp
+      smtp:
+        port: 587
+        auth: true
+        starttls:
+          enable: true
+    debug: false
+    template:
+      registration: classpath:templates/mail_template/registration_template.html
+      passwordReset: classpath:templates/mail_template/password_reset_template.html
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            clientId: b7fecc797673dac0b099
+            clientSecret: 4a86cdfd63ee1fdeb924ed4261fb8b1cdad2c834
+          google:
+            client-id: 118970159582-m6ep1v2f60e8t6e2gjvh08jh023qv235.apps.googleusercontent.com
+            client-secret: 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
+
+rsa:
+  private-key: classpath:certs/private.pem
+  public-key: classpath:certs/public.pem
+

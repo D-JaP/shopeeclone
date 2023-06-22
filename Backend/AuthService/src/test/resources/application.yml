@@ -1,0 +1,39 @@
+server:
+  error:
+    include-message: always
+    include-binding-error: always
+
+hostname: localhost:8080
+
+jwt:
+  jwt_token:
+    expire_time_in_minutes: 10
+  refresh_token:
+    expire_time_in_days: 7
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/shopee_db
+    username: postgres
+    password: root
+
+  mail:
+    host: smtp.gmail.com
+    username: shopeeclone.ecommerce.service@gmail.com
+    password: stnlxsbkdvbrhwig
+    properties:
+      protocol: smtp
+      smtp:
+        port: 587
+        auth: true
+        starttls:
+          enable: true
+    debug: false
+    template:
+      registration: classpath:templates/mail_template/registration_template.html
+      passwordReset: classpath:templates/mail_template/password_reset_template.html
+
+rsa:
+  private-key: classpath:certs/private.pem
+  public-key: classpath:certs/public.pem
+
