@@ -63,6 +63,7 @@ public class SecurityConfiguration {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.oauth2Login()
+                .loginPage("/login")
                 .authorizationEndpoint()
                     .baseUri("/api/v1/login/oauth2/authorization").and()
                 .userInfoEndpoint()
@@ -71,18 +72,19 @@ public class SecurityConfiguration {
                 .successHandler((request, response, authentication) -> {
 //                        update user details into db
                     CustomizeOauth2Users oauth2Users = (CustomizeOauth2Users) authentication.getPrincipal();
-                    oauth2Users.getAttributes().entrySet().stream().forEach(e-> System.out.println(e.getKey() + ":" + e.getValue()));
                     userService.handlePostOauthLogin(oauth2Users);
                 })
-                .and()
-                .logout()
-                .logoutUrl("/logout")
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
-                .logoutSuccessUrl("/")
+                .defaultSuccessUrl("/")
                 .and()
                 .exceptionHandling().accessDeniedPage("/403");
 
+        http.logout()
+                .logoutUrl("/logout")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .deleteCookies("jwt-token")
+                .deleteCookies("refresh-token")
+                .logoutSuccessUrl("/");
         return http.build();
     }
 

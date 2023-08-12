@@ -44,7 +44,9 @@ spring:
           google:
             client-id: 118970159582-m6ep1v2f60e8t6e2gjvh08jh023qv235.apps.googleusercontent.com
             client-secret: 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
-
+            scope:
+              - email
+              - profile
 rsa:
   private-key: classpath:certs/private.pem
   public-key: classpath:certs/public.pem

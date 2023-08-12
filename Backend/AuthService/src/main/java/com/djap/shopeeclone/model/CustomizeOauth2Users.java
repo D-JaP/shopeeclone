@@ -46,9 +46,6 @@ public class CustomizeOauth2Users implements OAuth2User {
         return oAuth2User.<String>getAttribute("email");
     }
 
-    public String getProvider(){
-        return oAuth2User.<String>getAttribute("company");
-    }
 
 
 }

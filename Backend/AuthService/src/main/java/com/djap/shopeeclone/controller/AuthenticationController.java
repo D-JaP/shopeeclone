@@ -45,8 +45,8 @@ public class AuthenticationController {
         Cookie jwt_cookie = computeJwtCookie(response.get("jwt_token"));
         Cookie refresh_token = computeRefreshCookie(response.get("refresh_token"));
 //        Add cookie to header
-        headers.add("setJwtCookie", jwt_cookie.toString());
-        headers.add("setRefreshCookie", refresh_token.toString());
+        headers.add(HttpHeaders.SET_COOKIE, jwt_cookie.toString());
+        headers.add(HttpHeaders.SET_COOKIE, refresh_token.toString());
 
         return new ResponseEntity<>(body, headers, HttpStatus.OK);
     }
@@ -74,8 +74,8 @@ public class AuthenticationController {
         HttpHeaders header =  new HttpHeaders();
         Cookie jwt_token = computeJwtCookie(response.get("jwt-token"));
         Cookie refresh_token = computeRefreshCookie(response.get("refresh-token"));
-        header.add("setJwtCookie", jwt_token.toString());
-        header.add("setRefreshCookie", refresh_token.toString());
+        header.add(HttpHeaders.SET_COOKIE, jwt_token.toString());
+        header.add(HttpHeaders.SET_COOKIE, refresh_token.toString());
         AuthenticationResponse body = new AuthenticationResponse();
         body.setMessage(response.get("message"));
         return new ResponseEntity<>(body, header, HttpStatus.OK);
