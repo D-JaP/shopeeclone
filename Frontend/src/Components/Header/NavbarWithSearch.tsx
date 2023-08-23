@@ -4,8 +4,13 @@ import { UilShoppingCart } from '@iconscout/react-unicons';
 import { UilSearch } from '@iconscout/react-unicons';
 import { Link } from 'react-router-dom';
 function NavbarWithSearch() {
+  const form_style = {
+    width: '100%'
+  }
+
   return (
-    <div className="--navbar-with-search-container">
+    <div className="--navbar-with-search-container ">
+      
       {/* logo */}
       <div>
         <Link to={'/'}>
@@ -21,11 +26,12 @@ function NavbarWithSearch() {
 
       {/* Search bar */}
       <div className="--search-bar">
-        <form>
+        <form style={form_style}>
           <input
             placeholder="Register now & get $10 off voucher!"
             className="--search-bar-input"
             maxLength={128}
+            
           />
         </form>
         <div className="--search-button">

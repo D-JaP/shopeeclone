@@ -1,0 +1,20 @@
+.footer-container{
+    display: flex;
+    justify-content: center;
+    background-color: #f5f5f5;
+    
+    .footer {
+        display: grid;
+        grid-template-columns: repeat(5, 20%);
+        gap:20px;
+        width: 1200px;
+        margin-top: 20px;
+        padding-bottom: 50px;
+        li {
+            list-style: none;
+            color: black;
+            opacity: 0.7;
+        }
+        
+    }
+}

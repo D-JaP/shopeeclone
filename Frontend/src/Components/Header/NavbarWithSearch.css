@@ -17,13 +17,13 @@
   display: flex;
   align-items: center;
   background-color: #fff;
-  width: auto;
+  width: 654px;
   height: 40px;
   border-radius: 3px;
 }
 
 .--search-bar-input {
-  width: 574px;
+  width: calc(100% - 20px);
   height: 34px;
   border: 0px;
   border-radius: 3px;

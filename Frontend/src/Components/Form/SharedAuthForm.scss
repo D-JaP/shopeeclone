@@ -1,0 +1,112 @@
+$button-color: #ee4d2d;
+$bg-color: #fff;
+$text-color-faded: #000;
+$text-color-faded-opacity: 0.3;
+
+.bg-login{
+    
+    .login-form {        
+        background-color: $bg-color;
+        display: flex;
+        flex-direction: column;
+        width: 350px;
+        padding: 25px;
+        border-radius: 5px;
+        &> * {
+            padding-bottom: 25px;
+        }
+
+        .login-text {
+            font-size: 18px;
+            font-weight: 500
+        };
+
+        .input{
+            width: 100%;
+            
+            input{
+                width: 100%;
+                box-sizing: border-box;
+                padding: 10px;
+                &::placeholder{
+                    opacity: 0.7;
+                }
+                border: 1px solid rgba(0,0,0,.3);
+                border-radius: 3px;
+                &:focus {
+                    border: 1px solid rgba(0,0,0,.8);
+                    outline: none;
+                }
+            }
+
+            .re-pw-fault {
+                border: 1px solid rgba(145, 0, 0, 0.8);
+                outline: none;
+
+                &:focus{
+                    border: 1px solid rgba(145, 0, 0, 0.8);
+                }
+            }
+        };
+
+        .login-btn{
+            height: 40px;
+            width: 100%;
+            display: flex;
+            flex-wrap:inherit;
+            justify-content: center;
+            align-items: center;
+            background-color: $button-color;
+            border-radius: 5px;
+            color: #fff;
+            border: 0px;
+            box-shadow: 0 1px 1px rgba(0,0,0,.09);
+            
+            &:disabled {
+                opacity: 0.7;
+            }
+        };
+        
+        .or-section {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            
+            &> * {
+                color: #000;
+                opacity: 0.3;   
+                font-size: 12px;
+            }
+
+            .spacer-bar {
+                height: 1px;
+                background-color: #000;
+                opacity: 0.3;
+                width: 40%;
+            }
+            
+
+        }
+        .sign-up {
+            display:flex;
+            align-items: center;
+            justify-content: center;
+            
+            font-size: 13px;
+            
+            p {
+                color: $text-color-faded;
+                opacity: $text-color-faded-opacity;
+                padding-right: 10px;
+            }
+
+            a{
+                text-decoration: none;
+                color: var(--clr-primary);
+            }
+        }
+        
+
+    }
+}

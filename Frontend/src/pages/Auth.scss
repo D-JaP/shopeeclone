@@ -1,0 +1,16 @@
+$bg-color: rgb(175, 49, 49);
+
+.bg-login-pr{
+    background-color: $bg-color;
+    display: flex;
+    justify-content: center;
+    
+    >:first-child {
+        width: 640px;
+    }
+
+    .form_style {
+        padding: 50px 30px;
+    }
+    
+}

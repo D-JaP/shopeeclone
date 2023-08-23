@@ -5,7 +5,7 @@ import UilInstagram from '@iconscout/react-unicons/icons/uil-instagram';
 export default function Navbar() {
   return (
     <div className="--navbar-wrapper ">
-      <div className="--navbar-content --container-wrapper">
+      <div className="--navbar-content  --container-wrapper">
         {/* left nav */}
 
         <div className="--left-navbar">
@@ -14,7 +14,7 @@ export default function Navbar() {
               Seller center
             </a>
           </div>
-          <div className="--navbar-seperator"></div>
+          <div className="--navbar-seperator"></div> 
           <div>
             <a href="/Users/dzung/project/shopeeclone/Frontend/src/pages" className="--navbar-text">
               Sell on Shopee
@@ -69,7 +69,7 @@ export default function Navbar() {
           </li>
           <div className="--navbar-seperator"></div>
           <li>
-            <a href="/Users/dzung/project/shopeeclone/Frontend/src/pages" className="--navbar-text --sign-log">
+            <a href="/login" className="--navbar-text --sign-log">
               Log in
             </a>
           </li>
