@@ -25,6 +25,6 @@ public class EmailPasswordNotMatchAdvice {
         ObjectNode jsonNodes1 = objectMapper.createObjectNode();
         jsonNodes1.put ("error", jsonNodes.toString());
 
-        return objectMapper.writeValueAsString(jsonNodes1);
+        return objectMapper.writeValueAsString(jsonNodes);
     }
 }

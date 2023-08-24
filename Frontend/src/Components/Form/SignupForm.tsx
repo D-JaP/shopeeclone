@@ -6,38 +6,34 @@ function SignUpForm(props) {
         type:string;
         url:string;
         formInput: {
-            username: string;
+            email: string;
             password: string;
             retypePassword: string;
             firstname: string;
             lastname: string;
-        }
+        };
+        redirectTo: string
     } = {
         type: 'signup',
-        url: '/api/v1/signup',
+        url: '/api/v1/registration',
         formInput: {
-            username: '',
+            email: '',
             password: '',
             retypePassword: '',
             firstname: '',
             lastname: '',
-        }
+        },
+        redirectTo: '/login'
     }
 
     const signupInputs = [
-        {type:'email', name:'username', placeholder : 'Email', maxLength:128},
+        {type:'email', name:'email', placeholder : 'Email', maxLength:128},
         {type:'password', name:'password', placeholder : 'Password', maxLength:30},
         {type:'password', name:'retypePassword', placeholder : 'Retype password ', maxLength:30},
         {type:'text', name:'firstname', placeholder : 'First Name', maxLength:30},
         {type:'text', name:'lastname', placeholder : 'Last Name', maxLength:30},
     ]
     
-    const withPasswordCheck = (SharedAuthForm) => {
-        return (props) => {
-
-        }
-    }
-
 
   return (
     <SharedAuthForm className={props.className} inputs={signupInputs} metadata={meta_data}></SharedAuthForm>

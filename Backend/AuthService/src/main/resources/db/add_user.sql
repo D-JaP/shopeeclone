@@ -3,7 +3,9 @@ INSERT INTO users (id,
     password ,
     user_role,
     is_active,
-    provider
+    provider,
+    firstname,
+    lastname
     )
 
     VALUES (1,
@@ -11,4 +13,6 @@ INSERT INTO users (id,
     '{noop}123456',
     'ADMIN',
     'true',
-    '');
+    '',
+    'harry',
+    'le');

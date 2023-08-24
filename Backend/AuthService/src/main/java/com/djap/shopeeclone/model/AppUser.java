@@ -30,6 +30,12 @@ public class AppUser {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "firstname")
+    private String firstname;
+
+    @Column(name = "lastname")
+    private String lastname;
+
     @Column(name = "user_role")
     @Enumerated(EnumType.STRING)
     private UserRole userRole;

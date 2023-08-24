@@ -2,6 +2,6 @@ package com.djap.shopeeclone.exception.email;
 
 public class EmailUsedException extends RuntimeException {
     public EmailUsedException(String email){
-        super("Could not find email: " + email);
+        super("Email used.");
     }
 }

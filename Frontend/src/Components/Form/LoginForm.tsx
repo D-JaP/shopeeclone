@@ -6,20 +6,22 @@ function LoginForm(props) {
         type:string;
         url:string;
         formInput: {
-            username: string;
+            email: string;
             password: string;
-        }
+        };
+        redirectTo: string
     } = {
         type: 'login',
-        url: '/api/v1/login',
+        url: '/api/v1/auth/login',
         formInput: {
-            username:'',
+            email:'',
             password:''
-        }
+        },
+        redirectTo: '/'
     }
 
     const loginInputs = [
-        {type:'text', name:'username', placeholder : 'Username', maxLength:128},
+        {type:'email', name:'email', placeholder : 'Username', maxLength:128},
         {type:'password', name:'password', placeholder : 'Password', maxLength:30}
     ]
     

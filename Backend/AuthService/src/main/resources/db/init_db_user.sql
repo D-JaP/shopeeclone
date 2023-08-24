@@ -8,6 +8,7 @@ CREATE TABLE users (
     user_role VARCHAR(10),
     is_active VARCHAR(5),
     provider VARCHAR(255),
-
+    firstname varchar(30),
+    lastname varchar(30),
     PRIMARY KEY (id)
     );

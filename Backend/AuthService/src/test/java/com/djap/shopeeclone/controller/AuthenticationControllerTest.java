@@ -33,17 +33,14 @@ class AuthenticationControllerTest {
     private final RegistrationRequest registrationRequest = new RegistrationRequest();
     private final RefreshTokenRequest refreshTokenRequest = new RefreshTokenRequest();
 
-
     @Autowired
     private ObjectMapper mapper;
-
 
     @PostConstruct
     void setUpLogin() {
         authenticationRequest.setEmail(USERNAME);
         authenticationRequest.setPassword(PASSWORD);
     }
-
     @Test
     void login() throws Exception {
         mockMvc.perform(    MockMvcRequestBuilders
@@ -53,8 +50,6 @@ class AuthenticationControllerTest {
                 .andExpect(status().isOk());
 
     }
-
-
     @PostConstruct
     void setUpRegistration(){
         registrationRequest.setEmail("test" + new Random().nextInt(10000000) + "@test.com");

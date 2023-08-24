@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './SharedAuthForm.scss'
-import { Link } from 'react-router-dom';
+import { Link, redirect  } from 'react-router-dom';
 function SharedAuthForm(props) {
     const bg = {
         "background-img" : "/img/login/bg-img.png"
@@ -11,9 +11,10 @@ function SharedAuthForm(props) {
     const [formData, setFormData] = useState<formDataType|null>(props.metadata.formInput)
     const [formDisabled, setFormDisable] = useState(false)
     const [isPasswordMisMatch,setIsPasswordMisMatch] = useState(false)
-
-    
-    
+    const [errorMsgBox, setErrMsgBox] = useState('')
+    const [isLoginErr, setIsLoginErr] = useState(false)
+    const [okMsgBox, setOkMsgBox] = useState('')
+    const [isOk, setIsOk] = useState(false)
 
     useEffect(() => {
         if (formData.hasOwnProperty('password') && formData.hasOwnProperty('retypePassword')){            
@@ -40,35 +41,55 @@ function SharedAuthForm(props) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try{
-            const response = await fetch(props.metadata.url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type' : 'application/json',
-                },
-                body: JSON.stringify(FormData)
-            })   
-            if (response.ok){
-                // redirect save cookie
-            }
-            else{
+        
+        const response = await fetch(props.metadata.url, {
+            method: 'POST',
+            headers: {
+                'Content-Type' : 'application/json',
+                "Access-Control-Allow-Origin": "*",
+            },
+            body: JSON.stringify(formData)
+        }) 
+        .then((response) => {
+            if(response.ok){
+                setIsLoginErr(false)
+                const newUrl = props.metadata.redirectTo
+                setOkMsgBox(props.metadata.type + ' succeed')
+                setIsOk(true)
+                setTimeout(()=> {
+                    window.location.href = newUrl
+                }, 3000)
                 
             }
-        }
-        catch (ex) {
-            // handle err
-        }
+            else{
+                return response.json()
+            }
+        })
+        .then((data) => {
+            if (data !=null){
+                setErrMsgBox(data.message)
+                setIsLoginErr(true)
+            }
+        })
+    
+        .catch((err) => {
+            console.log(err.message);
+        
+        })
     }
     
     return (
         <div className={props.className + ' ' +'bg-login'}>
             <form className="login-form" onSubmit={handleSubmit}>
                 <div className="login-text">{props.metadata.type ==='signup'?'Sign up' : 'Login'}</div>
+                {isLoginErr?<div className='msg-box'>{errorMsgBox}</div>: null}
+                {isOk?<div className='msg-box green'>{okMsgBox}</div>: null}
+
                 {props.inputs.map((e,index) => 
                     <div className="input" key={index}>
                         <input className={isPasswordMisMatch?(e.name=='retypePassword'?'re-pw-fault':null):null} type={e.type} name={e.name} placeholder={e.placeholder} maxLength={e.maxLength} onChange={(event) => handleFormChange(event, e.name)} required></input>
                     </div>
-                )}
+                )} 
                 <div>
                     <button type="submit" className="login-btn" disabled={formDisabled} >{props.metadata.type ==='signup'?'SIGN UP' : 'LOGIN'}</button>
                 </div>
@@ -80,13 +101,13 @@ function SharedAuthForm(props) {
                 
                 {props.metadata.type === 'login'?
                     (<div className="sign-up">
-                    <p>New to Shopee Clone?</p><Link to="/signup">Sign Up</Link>
+                    <p>New to Shopee Clone?</p><a href="/signup">Sign Up</a>
                     </div>): null
                 }
                 
                 {props.metadata.type === 'signup'?
                     (<div className="sign-up">
-                    <p>Already have account?</p><Link to="/login">Login</Link>
+                    <p>Already have account?</p><a href="/login">Login</a>
                     </div>): null
                 }
                 

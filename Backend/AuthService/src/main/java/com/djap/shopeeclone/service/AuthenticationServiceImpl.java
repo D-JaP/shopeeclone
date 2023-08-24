@@ -35,9 +35,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public HashMap<String, String> login(String email, String password) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+        try {
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+        }
+        catch (Exception ex) {
+            throw new EmailPasswordNotMatchException();
+        }
+
         AppUser user = userRepository.findByEmail(email).orElseThrow(
-                () -> new EmailPasswordNotMatchException(email));
+                () -> new EmailPasswordNotMatchException());
 //        if (!Objects.equals(user.getPassword(), password)) {
 //            throw new EmailPasswordNotMatchException("Wrong username or password" );
 //        }
@@ -47,7 +53,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         response.put("email", user.getEmail());
         response.put("jwt_token", jwt_token);
         response.put("refresh_token", refresh_token);
-        System.out.println(jwt_token.length());
 
         RefreshToken refreshToken = refreshTokenRepository.findById(user.getId()).orElse(new RefreshToken());
 //        TBD: save refresh_token to database

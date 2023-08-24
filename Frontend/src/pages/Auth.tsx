@@ -13,7 +13,6 @@ function Auth(props) {
     backgroundPosition: "center"
   }
 
-
   return (
     <div>
         <LoginNav option={props.option}></LoginNav>

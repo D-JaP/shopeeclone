@@ -1,7 +1,6 @@
 import React from 'react'
 import './LoginNav.scss'
 function LoginNav(props) {
-  
   return (
     <div>
         <div className='--container-wrapper nav-container'>

@@ -19,8 +19,10 @@ spring:
 
   mail:
     host: smtp.gmail.com
-    username: shopeeclone.ecommerce.service@gmail.com
-    password: stnlxsbkdvbrhwig
+    username: shopeecloneservice@gmail.com
+    password: hcgdepjbyncxrspj
+    pw2: asdfasdfatg121
+
     properties:
       protocol: smtp
       smtp:
@@ -32,7 +34,19 @@ spring:
     template:
       registration: classpath:templates/mail_template/registration_template.html
       passwordReset: classpath:templates/mail_template/password_reset_template.html
-
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            clientId: b7fecc797673dac0b099
+            clientSecret: 4a86cdfd63ee1fdeb924ed4261fb8b1cdad2c834
+          google:
+            client-id: 118970159582-m6ep1v2f60e8t6e2gjvh08jh023qv235.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - email
+              - profile
 rsa:
   private-key: classpath:certs/private.pem
   public-key: classpath:certs/public.pem

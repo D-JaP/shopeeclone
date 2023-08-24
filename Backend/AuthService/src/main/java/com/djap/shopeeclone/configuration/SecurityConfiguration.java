@@ -54,7 +54,7 @@ public class SecurityConfiguration {
                         "/api/v1/auth/login",
                         "/api/v1/registration/**",
                         "/api/v1/password_reset/**",
-                        "/login"
+                        "/**"
                 )
                 .permitAll()
                 .anyRequest().authenticated()
@@ -62,21 +62,20 @@ public class SecurityConfiguration {
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        http.oauth2Login()
-                .loginPage("/login")
-                .authorizationEndpoint()
-                    .baseUri("/api/v1/login/oauth2/authorization").and()
-                .userInfoEndpoint()
-                    .userService(customizeOauth2UserService)
-                .and()
-                .successHandler((request, response, authentication) -> {
-//                        update user details into db
-                    CustomizeOauth2Users oauth2Users = (CustomizeOauth2Users) authentication.getPrincipal();
-                    userService.handlePostOauthLogin(oauth2Users);
-                })
-                .defaultSuccessUrl("/")
-                .and()
-                .exceptionHandling().accessDeniedPage("/403");
+//        http.oauth2Login()
+//                .authorizationEndpoint()
+//                    .baseUri("/api/v1/login/oauth2/authorization").and()
+//                .userInfoEndpoint()
+//                    .userService(customizeOauth2UserService)
+//                .and()
+//                .successHandler((request, response, authentication) -> {
+////                        update user details into db
+//                    CustomizeOauth2Users oauth2Users = (CustomizeOauth2Users) authentication.getPrincipal();
+//                    userService.handlePostOauthLogin(oauth2Users);
+//                })
+//                .defaultSuccessUrl("/")
+//                .and()
+//                .exceptionHandling().accessDeniedPage("/403");
 
         http.logout()
                 .logoutUrl("/logout")

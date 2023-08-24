@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 
 @RestController
@@ -25,8 +26,8 @@ import java.util.HashMap;
 @RequestMapping("/api/v1/auth")
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
-    @Value("${hostname}")
-    private String hostname;
+//    @Value("${hostname}")
+    private String hostname = "localhost";
 
     @Value("${jwt.jwt_token.expire_time_in_minutes}")
     private int expire_time_in_minutes ;
@@ -35,23 +36,23 @@ public class AuthenticationController {
     private int expire_time_in_days ;
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest request) {
-        HashMap<String, String> response = authenticationService.login(request.getEmail(), request.getPassword());
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest request, HttpServletResponse response) {
+        HashMap<String, String> authResponse = authenticationService.login(request.getEmail(), request.getPassword());
         AuthenticationResponse body =  new AuthenticationResponse();
-        body.setEmail(response.get("email"));
-        body.setMessage(response.get("message"));
-        HttpHeaders headers = new HttpHeaders();
+        body.setEmail(authResponse.get("email"));
+        body.setMessage(authResponse.get("message"));
 //        Set cookie
-        Cookie jwt_cookie = computeJwtCookie(response.get("jwt_token"));
-        Cookie refresh_token = computeRefreshCookie(response.get("refresh_token"));
-//        Add cookie to header
-        headers.add(HttpHeaders.SET_COOKIE, jwt_cookie.toString());
-        headers.add(HttpHeaders.SET_COOKIE, refresh_token.toString());
+        Cookie jwt_cookie = computeJwtCookie(authResponse.get("jwt_token"));
+        Cookie refresh_token = computeRefreshCookie(authResponse.get("refresh_token"));
 
-        return new ResponseEntity<>(body, headers, HttpStatus.OK);
+        response.addCookie(jwt_cookie);
+        response.addCookie(refresh_token);
+
+        return new ResponseEntity<>(body, HttpStatus.OK);
     }
     private Cookie computeJwtCookie(String token){
-        Cookie jwt_cookie = new Cookie("jwt-token", token);
+        Cookie jwt_cookie = new Cookie("jwtToken", token);
+
         jwt_cookie.setDomain(hostname);
         jwt_cookie.setPath("/");
         jwt_cookie.setHttpOnly(true);
@@ -59,7 +60,7 @@ public class AuthenticationController {
         return jwt_cookie;
     }
     private Cookie computeRefreshCookie(String token){
-        Cookie refresh_cookie = new Cookie("refresh-token", token);
+        Cookie refresh_cookie = new Cookie("refreshToken", token);
         refresh_cookie.setDomain(hostname);
         refresh_cookie.setPath("/");
         refresh_cookie.setHttpOnly(true);
@@ -67,17 +68,18 @@ public class AuthenticationController {
         return refresh_cookie;
     }
 
-
     @PostMapping("/refresh")
-    public ResponseEntity<AuthenticationResponse> refresh(@RequestBody RefreshTokenRequest request){
-        HashMap<String, String> response = authenticationService.refresh(request.getToken());
-        HttpHeaders header =  new HttpHeaders();
-        Cookie jwt_token = computeJwtCookie(response.get("jwt-token"));
-        Cookie refresh_token = computeRefreshCookie(response.get("refresh-token"));
-        header.add(HttpHeaders.SET_COOKIE, jwt_token.toString());
-        header.add(HttpHeaders.SET_COOKIE, refresh_token.toString());
+    public ResponseEntity<AuthenticationResponse> refresh(@RequestBody RefreshTokenRequest request, HttpServletResponse response){
+        HashMap<String, String> authResponse = authenticationService.refresh(request.getToken());
+
+        Cookie jwt_token = computeJwtCookie(authResponse.get("jwt-token"));
+        Cookie refresh_token = computeRefreshCookie(authResponse.get("refresh-token"));
+
+        response.addCookie(jwt_token);
+        response.addCookie(refresh_token);
+
         AuthenticationResponse body = new AuthenticationResponse();
-        body.setMessage(response.get("message"));
-        return new ResponseEntity<>(body, header, HttpStatus.OK);
+        body.setMessage(authResponse.get("message"));
+        return new ResponseEntity<>(body, HttpStatus.OK);
     }
 }
