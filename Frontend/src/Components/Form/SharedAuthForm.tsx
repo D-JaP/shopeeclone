@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useReducer, useState } from 'react'
 import './SharedAuthForm.scss'
 import { Link, redirect  } from 'react-router-dom';
 function SharedAuthForm(props) {
@@ -13,7 +13,20 @@ function SharedAuthForm(props) {
     const [isPasswordMisMatch,setIsPasswordMisMatch] = useState(false)
     const [errorMsgBox, setErrMsgBox] = useState('')
     const [isLoginErr, setIsLoginErr] = useState(false)
-    const [okMsgBox, setOkMsgBox] = useState('')
+    // Reducer for message box
+    const MsgBoxReducer = (state, action ) => {
+        switch (action.type){
+            case 'login':
+                return props.metadata.type + ' succeed'
+            case 'signup':
+                return props.metadata.type + ' succeed. An activation Email has been send.'
+            default: 
+                return ''
+        }
+    }
+
+    const [okMsgBox, setOkMsgBox] = useReducer(MsgBoxReducer, '')
+
     const [isOk, setIsOk] = useState(false)
 
     useEffect(() => {
@@ -54,12 +67,11 @@ function SharedAuthForm(props) {
             if(response.ok){
                 setIsLoginErr(false)
                 const newUrl = props.metadata.redirectTo
-                setOkMsgBox(props.metadata.type + ' succeed')
+                setOkMsgBox({type : props.metadata.type})
                 setIsOk(true)
                 setTimeout(()=> {
                     window.location.href = newUrl
                 }, 3000)
-                
             }
             else{
                 return response.json()
