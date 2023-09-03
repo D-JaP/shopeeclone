@@ -37,7 +37,7 @@ test('should login success',  async () => {
         expect(response).toBeInTheDocument();
     });
     
- })
+})
 
 test('should login failed', async () => { 
     const view = render(<Auth option="login"/>);
@@ -55,6 +55,73 @@ test('should login failed', async () => {
     
     await waitFor(() => {
         const response = screen.getByText('Not authenticated');
+        expect(response).toBeInTheDocument();
+    });
+})
+
+
+test('should registration succeed', async ()=> {
+    const view = render(<Auth option="signup"/>);
+    
+    const emailInput = screen.getByPlaceholderText('Email')
+    const passwordInput = screen.getByPlaceholderText('Password')
+    const rePasswordInput = screen.getByPlaceholderText('Retype password')
+    const firstName = screen.getByPlaceholderText('First Name')
+    const lastName = screen.getByPlaceholderText('Last Name')
+
+    const submitBtn = screen.getByRole('button', {name: 'SIGN UP'})
+    expect(emailInput).toBeInTheDocument();
+    expect(passwordInput).toBeInTheDocument();
+    expect(rePasswordInput).toBeInTheDocument();
+    expect(firstName).toBeInTheDocument();
+    expect(lastName).toBeInTheDocument();
+
+
+    fireEvent.change(emailInput, {target: {value: 'test1@gmail.com'}})
+    fireEvent.change(passwordInput, {target: {value: 'dasdfasdf'}})
+    fireEvent.change(rePasswordInput, {target: {value: 'dasdfasdf'}})
+    fireEvent.change(firstName, {target: {value: 'vbb'}})
+    fireEvent.change(lastName, {target: {value: 'asdf'}})
+
+    window.sessionStorage.setItem('username', 'test1@gmail.com')
+
+    fireEvent.click(submitBtn)
+    
+    await waitFor(() => {
+        const response = screen.getByText('signup succeed. An activation Email has been send.');
+        expect(response).toBeInTheDocument();
+    });
+})
+
+test('should registration failed', async ()=> {
+    const view = render(<Auth option="signup"/>);
+    
+    const emailInput = screen.getByPlaceholderText('Email')
+    const passwordInput = screen.getByPlaceholderText('Password')
+    const rePasswordInput = screen.getByPlaceholderText('Retype password')
+    const firstName = screen.getByPlaceholderText('First Name')
+    const lastName = screen.getByPlaceholderText('Last Name')
+
+    const submitBtn = screen.getByRole('button', {name: 'SIGN UP'})
+    expect(emailInput).toBeInTheDocument();
+    expect(passwordInput).toBeInTheDocument();
+    expect(rePasswordInput).toBeInTheDocument();
+    expect(firstName).toBeInTheDocument();
+    expect(lastName).toBeInTheDocument();
+
+
+    fireEvent.change(emailInput, {target: {value: 'test1@gmail.com'}})
+    fireEvent.change(passwordInput, {target: {value: 'dasdfasdf'}})
+    fireEvent.change(rePasswordInput, {target: {value: 'dasdfasdf'}})
+    fireEvent.change(firstName, {target: {value: 'vbb'}})
+    fireEvent.change(lastName, {target: {value: 'asdf'}})
+
+    window.sessionStorage.removeItem('username')
+
+    fireEvent.click(submitBtn)
+    
+    await waitFor(() => {
+        const response = screen.getByText('Network error');
         expect(response).toBeInTheDocument();
     });
 })
