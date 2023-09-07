@@ -11,6 +11,7 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +22,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
@@ -46,6 +48,10 @@ public class SecurityConfiguration {
     private final RsaKeyProperties rsaKeys;
     private final CustomizeOauth2UserService customizeOauth2UserService;
     private final JwtAuthFilter jwtAuthFilter;
+    private final UserService userService;
+
+    @Value("${redirect-hostname}")
+    private String rehostname;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -61,20 +67,20 @@ public class SecurityConfiguration {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-//        http.oauth2Login()
-//                .authorizationEndpoint()
-//                    .baseUri("/api/v1/login/oauth2/authorization").and()
-//                .userInfoEndpoint()
-//                    .userService(customizeOauth2UserService)
-//                .and()
-//                .successHandler((request, response, authentication) -> {
-////                        update user details into db
-//                    CustomizeOauth2Users oauth2Users = (CustomizeOauth2Users) authentication.getPrincipal();
-//                    userService.handlePostOauthLogin(oauth2Users);
-//                })
-//                .defaultSuccessUrl("/")
-//                .and()
-//                .exceptionHandling().accessDeniedPage("/403");
+        http.oauth2Login()
+                .authorizationEndpoint()
+                    .baseUri("/api/v1/login/oauth2/authorization").and()
+                .userInfoEndpoint()
+                    .userService(customizeOauth2UserService)
+                .and()
+                .successHandler((request, response, authentication) -> {
+//                        update user details into db
+                    CustomizeOauth2Users oauth2Users = (CustomizeOauth2Users) authentication.getPrincipal();
+                    userService.handlePostOauthLogin(oauth2Users);
+                })
+                .defaultSuccessUrl(rehostname)
+                .and()
+                .exceptionHandling().accessDeniedPage("/403");
 
         http.logout()
                 .logoutUrl("/logout")

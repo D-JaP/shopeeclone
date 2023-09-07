@@ -4,6 +4,7 @@ server:
     include-binding-error: always
 
 hostname: localhost:8080
+redirect-hostname : http://localhost:3000
 
 jwt:
   jwt_token:

@@ -16,12 +16,5 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping(path = "api/v1/user")
 public class UserController {
-    private final UserService userService;
 
-    @PostMapping
-    public ResponseEntity<String> getNameFromToken(@CookieValue("jwtToken") String jwtToken) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String value =  objectMapper.writeValueAsString(userService.getNameFromToken(jwtToken));
-        return ResponseEntity.ok(value);
-    }
 }

@@ -54,13 +54,11 @@ public class JwtProvider {
         if(token == null) {
             throw new RuntimeException("Token cannot be null");
         }
-
         try {
             Jwt jwt = jwtDecoder.decode(token);
             Assert.isTrue(new Date().before(Date.from(jwt.getExpiresAt())), "Token expired");
         }
         catch (Exception ex) {
-            System.out.println("decode JWT exeption caused ");
             return false;
         }
         return true;

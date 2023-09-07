@@ -1,6 +1,7 @@
 import React, { useEffect, useReducer, useState } from 'react'
 import './SharedAuthForm.scss'
 import { Link, redirect  } from 'react-router-dom';
+import SocialLoginButton from './SocialLoginButton';
 function SharedAuthForm(props) {
     const bg = {
         "background-img" : "/img/login/bg-img.png"
@@ -112,9 +113,17 @@ function SharedAuthForm(props) {
                 </div>
                 
                 {props.metadata.type === 'login'?
-                    (<div className="sign-up">
-                    <p>New to Shopee Clone?</p><a href="/signup">Sign Up</a>
-                    </div>): null
+                    (<>
+                        <div>
+                            <SocialLoginButton type={'github'}></SocialLoginButton>
+                            <SocialLoginButton type={'google'}></SocialLoginButton>
+                        </div>
+                        <div className="sign-up">
+                        <p>New to Shopee Clone?</p><a href="/signup">Sign Up</a>
+                        </div>
+                        
+                    </>
+                    ): null
                 }
                 
                 {props.metadata.type === 'signup'?

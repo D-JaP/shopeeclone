@@ -24,7 +24,6 @@ import java.util.Optional;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
-    private final JwtProvider jwtProvider;
 
     public List<AppUser> getUsers() {
         return userRepository.findAll();
@@ -55,11 +54,4 @@ public class UserService implements UserDetailsService {
         userRepository.save(user_data);
     }
 
-    //    get name from jwt token.
-    public Map<String, String> getNameFromToken(String token){
-        String claim = jwtProvider.extractName(token);
-        Map<String, String> output = new HashMap<>();
-        output.put("firstName", claim);
-        return output;
-    }
 }
