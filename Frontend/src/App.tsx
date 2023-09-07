@@ -5,18 +5,19 @@ import NavbarWithSearch from './Components/Header/NavbarWithSearch';
 import HomeScreen from './pages/HomeScreen';
 import ProductPage from './pages/ProductPage';
 import Auth from './pages/Auth';
+import AuthContextProvider from './context/UserContext';
 
-function App() {
+function App()  {
   return (
     <BrowserRouter>
-      <div>
+      <AuthContextProvider>
         <Routes>
           <Route path="/" element={<HomeScreen />} />
           <Route path="/product/:slug" element={<ProductPage />} />
           <Route path="/login" element={<Auth option="login"/>}></Route>
           <Route path="/signup" element={<Auth option="signup"/>}></Route>
         </Routes>
-      </div>
+      </AuthContextProvider>
     </BrowserRouter>
   );
 }

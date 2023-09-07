@@ -41,10 +41,10 @@ function SharedAuthForm(props) {
     }, [formData])
     
     useEffect(() => {
-        const allValid = Object.values(formData).every((value)=> value != '') && !isPasswordMisMatch
+        const allValid = Object.values(formData).every((value)=> value !== '') && !isPasswordMisMatch
         
         allValid ? setFormDisable(false) : setFormDisable(true)
-
+        
     }, [formData,isPasswordMisMatch])
 
     // show form 
@@ -52,10 +52,11 @@ function SharedAuthForm(props) {
         setFormData({...formData, [inputName]: event.target.value})
     }
 
+    // handle submit 
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        const response = await fetch(props.metadata.url, {
+        await fetch(props.metadata.url, {
             method: 'POST',
             headers: {
                 'Content-Type' : 'application/json',
@@ -85,8 +86,7 @@ function SharedAuthForm(props) {
         })
     
         .catch((err) => {
-            console.log(err.message);
-        
+            console.log("Network err");
         })
     }
     
@@ -99,7 +99,7 @@ function SharedAuthForm(props) {
 
                 {props.inputs.map((e,index) => 
                     <div className="input" key={index}>
-                        <input className={isPasswordMisMatch?(e.name=='retypePassword'?'re-pw-fault':null):null} type={e.type} name={e.name} placeholder={e.placeholder} maxLength={e.maxLength} onChange={(event) => handleFormChange(event, e.name)} required></input>
+                        <input className={isPasswordMisMatch?(e.name==='retypePassword'?'re-pw-fault':null):null} type={e.type} name={e.name} placeholder={e.placeholder} maxLength={e.maxLength} onChange={(event) => handleFormChange(event, e.name)} required></input>
                     </div>
                 )} 
                 <div>

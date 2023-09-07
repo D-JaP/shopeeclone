@@ -12,10 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -69,8 +66,10 @@ public class AuthenticationController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<AuthenticationResponse> refresh(@RequestBody RefreshTokenRequest request, HttpServletResponse response){
-        HashMap<String, String> authResponse = authenticationService.refresh(request.getToken());
+    public ResponseEntity<AuthenticationResponse> refresh(@CookieValue("refreshToken") RefreshTokenRequest refreshTokenRequest,
+                                                          @CookieValue("jwtToken") RefreshTokenRequest jwtTokenRequest,
+                                                          HttpServletResponse response){
+        HashMap<String, String> authResponse = authenticationService.refresh(refreshTokenRequest.getToken());
 
         Cookie jwt_token = computeJwtCookie(authResponse.get("jwt-token"));
         Cookie refresh_token = computeRefreshCookie(authResponse.get("refresh-token"));
