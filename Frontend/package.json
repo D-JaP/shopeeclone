@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:8080",
+  "main": "index.js",
   "dependencies": {
     "@iconscout/react-unicons": "^1.1.6",
     "@testing-library/dom": "^9.3.1",
@@ -11,6 +12,7 @@
     "@testing-library/user-event": "^14.4.3",
     "axios": "^0.27.2",
     "bootstrap": "^5.2.0",
+    "express": "^4.18.2",
     "font-awesome": "^4.7.0",
     "http-proxy-middleware": "^2.0.6",
     "msw": "^1.2.5",
@@ -27,6 +29,14 @@
   },
   "overrides": {
     "typescript": "^5.1.6"
+  },
+  "nodemonConfig": {
+    "ext": "js",
+    "ignore": [
+      "*.test.ts",
+      "db/*"
+    ],
+    "delay": "2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -56,6 +66,7 @@
     "@types/jest": "^29.5.3",
     "@types/node": "^20.5.0",
     "@types/react": "^18.2.20",
-    "@types/react-dom": "^18.2.7"
+    "@types/react-dom": "^18.2.7",
+    "nodemon": "^3.0.1"
   }
 }

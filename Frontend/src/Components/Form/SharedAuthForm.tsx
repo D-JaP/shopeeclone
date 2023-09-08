@@ -112,19 +112,15 @@ function SharedAuthForm(props) {
                     <div className="spacer-bar"></div>
                 </div>
                 
-                {props.metadata.type === 'login'?
-                    (<>
-                        <div>
-                            <SocialLoginButton type={'github'}></SocialLoginButton>
-                            <SocialLoginButton type={'google'}></SocialLoginButton>
-                        </div>
-                        <div className="sign-up">
-                        <p>New to Shopee Clone?</p><a href="/signup">Sign Up</a>
-                        </div>
-                        
-                    </>
-                    ): null
-                }
+                
+                <div>
+                    {/* <SocialLoginButton type={'github'}></SocialLoginButton> */}
+                    <SocialLoginButton type={'google'}></SocialLoginButton>
+                </div>
+                <div className="sign-up">
+                <p>New to Shopee Clone?</p><a href="/signup">Sign Up</a>
+                </div>
+                
                 
                 {props.metadata.type === 'signup'?
                     (<div className="sign-up">
