@@ -11,7 +11,7 @@ public class EmailNotExistAdvice {
     @ResponseBody
     @ExceptionHandler(EmailNotExistException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String EmailNotExistExceptionHandler(EmailUsedException ex){
+    String EmailNotExistExceptionHandler(EmailUsedException ex) {
         return ex.getMessage();
     }
 }

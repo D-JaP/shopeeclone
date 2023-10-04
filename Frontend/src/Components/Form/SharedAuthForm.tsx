@@ -14,6 +14,8 @@ function SharedAuthForm(props) {
     const [isPasswordMisMatch,setIsPasswordMisMatch] = useState(false)
     const [errorMsgBox, setErrMsgBox] = useState('')
     const [isLoginErr, setIsLoginErr] = useState(false)
+
+    
     // Reducer for message box
     const MsgBoxReducer = (state, action ) => {
         switch (action.type){
@@ -117,10 +119,12 @@ function SharedAuthForm(props) {
                     {/* <SocialLoginButton type={'github'}></SocialLoginButton> */}
                     <SocialLoginButton type={'google'}></SocialLoginButton>
                 </div>
-                <div className="sign-up">
-                <p>New to Shopee Clone?</p><a href="/signup">Sign Up</a>
-                </div>
-                
+
+                {
+                    props.metadata.type === 'login'?(<div className="sign-up">
+                    <p>New to Shopee Clone?</p><a href="/signup">Sign Up</a>
+                    </div>): null
+                }
                 
                 {props.metadata.type === 'signup'?
                     (<div className="sign-up">

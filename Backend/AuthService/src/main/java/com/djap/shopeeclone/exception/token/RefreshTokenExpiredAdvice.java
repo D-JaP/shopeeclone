@@ -11,7 +11,7 @@ public class RefreshTokenExpiredAdvice {
     @ResponseBody
     @ExceptionHandler(RefreshTokenExpiredException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String RefreshTokenExpiredAdviceHandler(RefreshTokenExpiredException ex){
+    public String RefreshTokenExpiredAdviceHandler(RefreshTokenExpiredException ex) {
         return ex.getMessage();
     }
 }

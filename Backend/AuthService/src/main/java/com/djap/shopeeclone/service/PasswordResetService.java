@@ -53,7 +53,7 @@ public class PasswordResetService {
     }
 
 
-    private PasswordResetToken createNewPasswordResetToken(){
+    private PasswordResetToken createNewPasswordResetToken() {
         PasswordResetToken passwordResetToken = new PasswordResetToken();
         passwordResetToken.setToken(UUID.randomUUID().toString());
         passwordResetToken.setExpiryDate();
@@ -61,11 +61,11 @@ public class PasswordResetService {
     }
 
     //    Password reset request handler
-    public String passwordResetHandler(PasswordResetHandler request){
+    public String passwordResetHandler(PasswordResetHandler request) {
 //        get and check unexpired token
         PasswordResetToken token = passwordResetTokenRepository.findByToken(request.getToken()).orElseThrow(
                 PasswordResetTokenNotFoundException::new);
-        if (!isTokenNonExpired(token)){
+        if (!isTokenNonExpired(token)) {
             throw new TokenExpiredException();
         }
 //        check password (TBD)
@@ -81,7 +81,7 @@ public class PasswordResetService {
         return "password successfully reset";
     }
 
-    private Boolean isTokenNonExpired(PasswordResetToken token){
+    private Boolean isTokenNonExpired(PasswordResetToken token) {
         return token.getExpiryDate().isAfter(LocalDateTime.now());
     }
 }

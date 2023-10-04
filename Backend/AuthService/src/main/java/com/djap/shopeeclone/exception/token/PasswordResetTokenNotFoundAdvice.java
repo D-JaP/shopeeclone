@@ -11,7 +11,7 @@ public class PasswordResetTokenNotFoundAdvice {
     @ResponseBody
     @ExceptionHandler(PasswordResetTokenNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String PasswordResetTokenNotFoundHandler(PasswordResetTokenNotFoundException ex){
+    String PasswordResetTokenNotFoundHandler(PasswordResetTokenNotFoundException ex) {
         return ex.getMessage();
     }
 }

@@ -6,17 +6,12 @@ import com.djap.shopeeclone.model.AppUser;
 import com.djap.shopeeclone.model.CustomUserDetails;
 import com.djap.shopeeclone.model.CustomizeOauth2Users;
 import com.djap.shopeeclone.repository.UserRepository;
-import com.djap.shopeeclone.security.JwtProvider;
-import com.djap.shopeeclone.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -30,13 +25,13 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    public CustomUserDetails loadUserByUsername(String username){
+    public CustomUserDetails loadUserByUsername(String username) {
         AppUser user = userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return new CustomUserDetails(user);
     }
 
     /* Handle post Oauth login, add user to database */
-    public void handlePostOauthLogin(CustomizeOauth2Users oauth2Users){
+    public void handlePostOauthLogin(CustomizeOauth2Users oauth2Users) {
         Optional<AppUser> user = userRepository.findByEmail(oauth2Users.getEmail());
         Provider provider = Provider.valueOf(oauth2Users.getOauth2ClientName().toUpperCase());
         AppUser user_data;
@@ -46,8 +41,7 @@ public class UserService implements UserDetailsService {
             user_data.setEmail(oauth2Users.getEmail());
             user_data.setIsActive(true);
             user_data.setUserRole(UserRole.USER);
-        }
-        else {
+        } else {
             user_data = user.get();
         }
         user_data.setProvider(provider);

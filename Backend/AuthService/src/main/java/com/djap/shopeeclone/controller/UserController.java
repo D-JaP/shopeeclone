@@ -1,20 +1,40 @@
 package com.djap.shopeeclone.controller;
 
-import com.djap.shopeeclone.model.AppUser;
-import com.djap.shopeeclone.service.AuthenticationService;
+import com.djap.shopeeclone.dto.userdata.UserDataResponse;
+import com.djap.shopeeclone.model.CustomUserDetails;
+import com.djap.shopeeclone.security.JwtProvider;
 import com.djap.shopeeclone.service.UserService;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "api/v1/user")
 public class UserController {
+    private final JwtProvider jwtProvider;
+    private final UserService userService;
 
+    @GetMapping
+    public ResponseEntity<UserDataResponse> getUserData(HttpServletRequest request) throws UsernameNotFoundException {
+        String authHeader = request.getHeader("Authorization");
+        String email, token;
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+            email = jwtProvider.extractEmail(token);
+            CustomUserDetails user = userService.loadUserByUsername(email);
+            UserDataResponse response  = new UserDataResponse(user.getAppUser());
+            return ResponseEntity.ok(response);
+        }
+        else {
+            throw new RuntimeException("Header does not have valid JWT token");
+        }
+    }
 }

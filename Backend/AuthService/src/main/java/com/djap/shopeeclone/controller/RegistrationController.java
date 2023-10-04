@@ -4,7 +4,6 @@ import com.djap.shopeeclone.dto.registration.RegistrationRequest;
 import com.djap.shopeeclone.dto.registration.RegistrationResponse;
 import com.djap.shopeeclone.mapper.auth.registration.RegistrationMapper;
 import com.djap.shopeeclone.service.RegistrationService;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -20,6 +19,7 @@ public class RegistrationController {
 
     private final RegistrationMapper registrationMapper;
     private final RegistrationService registrationService;
+
     @PostMapping
     public ResponseEntity<RegistrationResponse> register(@Valid @RequestBody RegistrationRequest request, BindingResult bindingResult) throws MessagingException {
         if (bindingResult.hasErrors()) {
@@ -29,7 +29,7 @@ public class RegistrationController {
     }
 
     @GetMapping("/activation/{activation_token}")
-    public ResponseEntity<String> activateAccountCode(@PathVariable String activation_token){
+    public ResponseEntity<String> activateAccountCode(@PathVariable String activation_token) {
         return ResponseEntity.ok(registrationService.activateUser(activation_token));
     }
 

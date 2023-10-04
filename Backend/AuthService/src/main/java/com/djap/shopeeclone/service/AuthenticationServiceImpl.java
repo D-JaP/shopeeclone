@@ -13,8 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -39,8 +37,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public HashMap<String, String> login(String email, String password) {
         try {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw new EmailPasswordNotMatchException();
         }
 
@@ -58,7 +55,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         RefreshToken refreshToken = refreshTokenRepository.findById(user.getId()).orElse(new RefreshToken());
 //        TBD: save refresh_token to database
-        if (refreshToken.getUser()== null) {
+        if (refreshToken.getUser() == null) {
             refreshToken.setUser(user);
         }
         refreshToken.setToken(refresh_token);
@@ -70,14 +67,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
     @Override
-    public HashMap<String, String> refresh(String token){
+    public HashMap<String, String> refresh(String token) {
 
         RefreshToken refreshToken = refreshTokenRepository.findByToken(token).orElseThrow(
                 RefreshTokenNotFoundException::new
         );
+
         HashMap<String, String> response = new HashMap<>();
 //        Check if refresh token has not expired
-        if(!isRefreshTokenExpired(refreshToken)){
+        if (!isRefreshTokenExpired(refreshToken)) {
             AppUser user = refreshToken.getUser();
 
             /* remake the jwt token and refresh token */
@@ -85,7 +83,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             String jwt_token = jwtProvider.GenerateToken(user, jwtTokenExpiredMinutes, ChronoUnit.MINUTES);
 
             RefreshToken newRefreshToken = refreshTokenRepository.findById(user.getId()).orElse(new RefreshToken());
-            if (newRefreshToken.getUser() == null)  {
+            if (newRefreshToken.getUser() == null) {
                 newRefreshToken.setId(user.getId());
             }
             newRefreshToken.setToken(refresh_token);
@@ -94,18 +92,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             response.put("jwt-token", jwt_token);
             response.put("refresh-token", refresh_token);
             response.put("message", "Refresh token request success.");
-        }
-        else throw new RefreshTokenExpiredException();
+        } else throw new RefreshTokenExpiredException();
 
         return response;
     }
 
 
-
-    private boolean isRefreshTokenExpired(RefreshToken refreshToken){
+    private boolean isRefreshTokenExpired(RefreshToken refreshToken) {
         return !refreshToken.getExpirationDate().isAfter(LocalDateTime.now());
     }
-
 
 
 }

@@ -1,13 +1,11 @@
 package com.djap.shopeeclone.model;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 @Setter
@@ -42,10 +40,9 @@ public class CustomizeOauth2Users implements OAuth2User {
         return oAuth2User.getAttribute("name");
     }
 
-    public String getEmail(){
+    public String getEmail() {
         return oAuth2User.<String>getAttribute("email");
     }
-
 
 
 }

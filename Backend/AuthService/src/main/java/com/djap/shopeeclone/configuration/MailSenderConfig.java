@@ -8,9 +8,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
-
 import org.thymeleaf.templateresolver.ITemplateResolver;
-
 
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
@@ -58,6 +56,7 @@ public class MailSenderConfig {
 
         return mailSender;
     }
+
     @Bean
     public TemplateEngine emailTemplateEngine() {
         final SpringTemplateEngine templateEngine = new SpringTemplateEngine();

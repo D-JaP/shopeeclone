@@ -11,7 +11,7 @@ public class TokenExpiredAdvice {
     @ResponseBody
     @ExceptionHandler(TokenExpiredException.class)
     @ResponseStatus(HttpStatus.OK)
-    public String tokenExpiredExceptionHandler(TokenExpiredException ex){
+    public String tokenExpiredExceptionHandler(TokenExpiredException ex) {
         return ex.getMessage();
     }
 }

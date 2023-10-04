@@ -21,19 +21,20 @@ public class MailSenderService {
         this.mailSender = mailSender;
         this.templateEngine = templateEngine;
     }
+
     @Value("${spring.mail.username}")
-    private  String username;
+    private String username;
 
     @Async
     public void sendMessageHtml(String to, String subject, String template,
-                                Map<String, Object> attributes ) throws MessagingException {
+                                Map<String, Object> attributes) throws MessagingException {
 //        Prepare context
         final Context ctx = new Context();
         ctx.setVariables(attributes);
 //        Create HTML body using thymeleaf
         final String htmlBody = templateEngine.process(template, ctx);
 //        Prepare message using helper
-        MimeMessage messages  = mailSender.createMimeMessage();
+        MimeMessage messages = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(messages, true);
         helper.setFrom(username);
         helper.setTo(to);

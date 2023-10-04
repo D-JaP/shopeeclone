@@ -6,8 +6,8 @@ import com.djap.shopeeclone.mapper.auth.CommonMapper;
 import com.djap.shopeeclone.model.AppUser;
 import com.djap.shopeeclone.service.RegistrationService;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Component;
+
 import javax.mail.MessagingException;
 
 @Component

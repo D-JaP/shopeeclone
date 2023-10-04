@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "activation_token")
 public class ActivationToken {
-    private static final int EXPIRATION = 60*24;
+    private static final int EXPIRATION = 60 * 24;
 
     @Id
     @Column(name = "user_id")
@@ -28,7 +28,7 @@ public class ActivationToken {
     @JoinColumn(name = "user_id")
     private AppUser user;
 
-    public LocalDateTime setExpiryDate(){
+    public LocalDateTime setExpiryDate() {
         LocalDateTime dateTime = LocalDateTime.now();
         this.expiryDate = dateTime.plusMinutes(EXPIRATION);
         return dateTime;

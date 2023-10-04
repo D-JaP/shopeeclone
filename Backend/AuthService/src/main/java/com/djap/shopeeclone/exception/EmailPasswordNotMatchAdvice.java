@@ -16,14 +16,14 @@ public class EmailPasswordNotMatchAdvice {
     @ExceptionHandler(EmailPasswordNotMatchException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public String emailPasswordNotMatchHandler(EmailPasswordNotMatchException ex) throws JsonProcessingException {
-        ObjectMapper objectMapper= new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper();
 
         ObjectNode jsonNodes = objectMapper.createObjectNode();
         jsonNodes.put("message", ex.getMessage());
         jsonNodes.put("type", "authentication exception");
 
         ObjectNode jsonNodes1 = objectMapper.createObjectNode();
-        jsonNodes1.put ("error", jsonNodes.toString());
+        jsonNodes1.put("error", jsonNodes.toString());
 
         return objectMapper.writeValueAsString(jsonNodes);
     }

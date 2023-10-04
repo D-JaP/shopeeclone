@@ -9,15 +9,16 @@ import com.djap.shopeeclone.model.AppUser;
 import com.djap.shopeeclone.repository.ActivationTokenRepository;
 import com.djap.shopeeclone.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Value;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 
 @Service
@@ -41,7 +42,7 @@ public class RegistrationService {
         user.setUserRole(UserRole.USER);
 
 //        encode password
-        user.setPassword( passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         AppUser tmp_user = userRepository.save(user);
 
 //        set new activation token
@@ -55,7 +56,7 @@ public class RegistrationService {
         return "User successfully registered.";
     }
 
-    private ActivationToken setNewActivationToken(AppUser user){
+    private ActivationToken setNewActivationToken(AppUser user) {
         ActivationToken activationToken = new ActivationToken();
         activationToken.setUser(user);
         activationToken.setToken(UUID.randomUUID().toString());
@@ -64,18 +65,16 @@ public class RegistrationService {
         return activationTokenRepository.save(activationToken);
     }
 
-    public String activateUser(String activation_token){
+    public String activateUser(String activation_token) {
         ActivationToken token = getActivationTokenIfExist(activation_token);
-        if (token !=null){
-            if (isActivationTokenNonExpired(token)){
+        if (token != null) {
+            if (isActivationTokenNonExpired(token)) {
                 AppUser user = token.getUser();
                 user.setIsActive(true);
                 userRepository.save(user);
                 return "Successfully activate user.";
-            }
-            else return "Activation code expired.";
-        }
-        else return "Activation code not found.";
+            } else return "Activation code expired.";
+        } else return "Activation code not found.";
     }
 
     public String resendActivationToken(String exist_activation_token) throws MessagingException {
@@ -90,15 +89,14 @@ public class RegistrationService {
             attributes.put("registrationUrl", "http://" + hostname + "/api/v1/registration/activation/" + activationToken.getToken());
             mailSenderService.sendMessageHtml(user.getEmail(), MailTemplate.Subject.registration, MailTemplate.registration, attributes);
             return "Activation token resend successfully";
-        }
-        else return "Existing Activation token not found";
+        } else return "Existing Activation token not found";
     }
 
-    private Boolean isActivationTokenNonExpired(ActivationToken activationToken){
+    private Boolean isActivationTokenNonExpired(ActivationToken activationToken) {
         return activationToken.getExpiryDate().isAfter(LocalDateTime.now());
     }
 
-    private ActivationToken getActivationTokenIfExist(String activationToken){
+    private ActivationToken getActivationTokenIfExist(String activationToken) {
         Optional<ActivationToken> token = activationTokenRepository.findByToken(activationToken);
         return token.orElse(null);
     }

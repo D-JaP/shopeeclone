@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 public class CommonMapper {
 
     private final ModelMapper mapper;
+
     public <T, S> S convertToEntity(T data, Class<S> type) {
         return mapper.map(data, type);
     }

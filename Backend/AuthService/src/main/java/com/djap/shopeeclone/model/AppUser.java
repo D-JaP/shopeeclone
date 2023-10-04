@@ -2,14 +2,11 @@ package com.djap.shopeeclone.model;
 
 import com.djap.shopeeclone.enums.Provider;
 import com.djap.shopeeclone.enums.UserRole;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-
 import javax.persistence.*;
-
 import java.util.Objects;
 
 @Getter

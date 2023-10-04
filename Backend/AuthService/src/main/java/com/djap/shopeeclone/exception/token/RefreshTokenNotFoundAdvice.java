@@ -11,7 +11,7 @@ public class RefreshTokenNotFoundAdvice {
     @ResponseBody
     @ExceptionHandler(RefreshTokenNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String RefreshTokenNotFoundHandler(RefreshTokenNotFoundException ex){
+    String RefreshTokenNotFoundHandler(RefreshTokenNotFoundException ex) {
         return ex.getMessage();
     }
 }
