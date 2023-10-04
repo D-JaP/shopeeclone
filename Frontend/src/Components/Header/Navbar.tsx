@@ -3,11 +3,13 @@ import "./Navbar.css";
 import UilFacebook from "@iconscout/react-unicons/icons/uil-facebook";
 import UilInstagram from "@iconscout/react-unicons/icons/uil-instagram";
 import { useAuthContext } from "../../context/UserContext";
+import Cookies from 'js-cookie'
 
 export default function Navbar() {
   const  {userdata, setUserData}= useAuthContext();
   const  {email, firstName, lastName}  = userdata;
 
+  const token = Cookies.get('jwtToken')
   
   
 
@@ -15,7 +17,6 @@ export default function Navbar() {
     <div className="--navbar-wrapper ">
       <div className="--navbar-content  --container-wrapper">
         {/* left nav */}
-
         <div className="--left-navbar">
           <div>
             <a
