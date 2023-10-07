@@ -13,4 +13,7 @@ public interface AuthenticationService {
     /* Refresh token handle */
     HashMap<String, String> refresh(String refresh_token);
 
+    /* Authenticate token*/
+    String authenticate(String access_token);
+
 }

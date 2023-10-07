@@ -2,20 +2,24 @@ package com.djap.shopeeclone.controller;
 
 import com.djap.shopeeclone.dto.auth.AuthenticationRequest;
 import com.djap.shopeeclone.dto.auth.AuthenticationResponse;
+import com.djap.shopeeclone.exception.token.RefreshTokenNotFoundException;
 import com.djap.shopeeclone.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -61,7 +65,7 @@ public class AuthenticationController {
         Cookie refresh_cookie = new Cookie("refreshToken", token);
         refresh_cookie.setDomain(hostname);
         refresh_cookie.setPath("/");
-        refresh_cookie.setHttpOnly(false);
+        refresh_cookie.setHttpOnly(true);
         refresh_cookie.setMaxAge(expire_time_in_days * 24 * 60 * 60);
         return refresh_cookie;
     }
@@ -69,12 +73,11 @@ public class AuthenticationController {
     @PostMapping("/refresh")
     public ResponseEntity<AuthenticationResponse> refresh(HttpServletRequest request,
                                                           HttpServletResponse response) {
-        String authHeader = request.getHeader("Authorization");
-        String token = null;
+        if (request.getCookies() == null) throw new RefreshTokenNotFoundException();
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            token = authHeader.substring(7);
-        }
+        String token = Arrays.stream(request.getCookies()).filter(cookie -> (cookie.getName().equals("refreshToken"))).findFirst().get().getValue();
+
+        if(token == null ) throw new RefreshTokenNotFoundException();
 
         HashMap<String, String> authResponse = authenticationService.refresh(token);
 

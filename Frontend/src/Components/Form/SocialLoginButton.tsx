@@ -3,6 +3,8 @@ import "./SocialLoginButton.scss"
 
 function SocialLoginButton(props) {
     const type : string =props.type
+    // Oauth2 Flow TBC when use express  
+
     // const [externalPopup, setExternalPopup] = useState<Window>(null)
     // const handleClick = (e) => {
     //     const width : number = 500;

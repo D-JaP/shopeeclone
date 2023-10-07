@@ -97,10 +97,25 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return response;
     }
 
+    @Override
+    public String authenticate(String access_token) {
+        if (access_token == null) {
+            throw new RuntimeException("Token is not valid");
+        }
+        if(jwtProvider.validate(access_token)){
+            return "Token is validated.";
+        }
+        else {
+            throw new RuntimeException("Token is not valid");
+        }
+    }
+
 
     private boolean isRefreshTokenExpired(RefreshToken refreshToken) {
         return !refreshToken.getExpirationDate().isAfter(LocalDateTime.now());
     }
+
+
 
 
 }

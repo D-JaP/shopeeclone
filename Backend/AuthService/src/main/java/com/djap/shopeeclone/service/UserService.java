@@ -35,10 +35,10 @@ public class UserService implements UserDetailsService {
         Optional<AppUser> user = userRepository.findByEmail(oauth2Users.getEmail());
         Provider provider = Provider.valueOf(oauth2Users.getOauth2ClientName().toUpperCase());
         AppUser user_data;
-
         if (!user.isPresent()) {
             user_data = new AppUser();
             user_data.setEmail(oauth2Users.getEmail());
+
             user_data.setIsActive(true);
             user_data.setUserRole(UserRole.USER);
         } else {

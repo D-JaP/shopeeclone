@@ -44,5 +44,11 @@ public class CustomizeOauth2Users implements OAuth2User {
         return oAuth2User.<String>getAttribute("email");
     }
 
-
+    @Override
+    public String toString() {
+        return "CustomizeOauth2Users{" +
+                "oAuth2User=" + oAuth2User +
+                ", oauth2ClientName='" + oauth2ClientName + '\'' +
+                '}';
+    }
 }

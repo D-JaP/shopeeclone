@@ -39,15 +39,16 @@ spring:
     oauth2:
       client:
         registration:
-          github:
-            clientId: b7fecc797673dac0b099
-            clientSecret: 4a86cdfd63ee1fdeb924ed4261fb8b1cdad2c834
+#          github:
+#            clientId: b7fecc797673dac0b099
+#            clientSecret: 4a86cdfd63ee1fdeb924ed4261fb8b1cdad2c834
           google:
             client-id: 118970159582-m6ep1v2f60e8t6e2gjvh08jh023qv235.apps.googleusercontent.com
             client-secret: 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
             scope:
               - email
               - profile
+            authorization-grant-type: authorization_code
   servlet:
     cors:
       allowed-origins: http://localhost:3000

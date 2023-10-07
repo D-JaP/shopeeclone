@@ -4,6 +4,7 @@ import UilFacebook from "@iconscout/react-unicons/icons/uil-facebook";
 import UilInstagram from "@iconscout/react-unicons/icons/uil-instagram";
 import { useAuthContext } from "../../context/UserContext";
 import Cookies from 'js-cookie'
+import UserDetailPopUp from "./UserDetailPopUp";
 
 export default function Navbar() {
   const  {userdata, setUserData}= useAuthContext();
@@ -94,9 +95,13 @@ export default function Navbar() {
           </li>
 
           {email ? (
-            <a href="/" className="--navbar-text --sign-log">
-              Hi, {firstName} {lastName}
-            </a>
+            <div>
+              <a href="/" className="--navbar-text --sign-log" id='greeting-tab'>
+                Hi, {firstName} {lastName}
+              </a>
+              <UserDetailPopUp></UserDetailPopUp>
+            </div>
+            
           ) : (
             <>
               <li>

@@ -22,35 +22,26 @@ export default  function AuthContextProvider({ children }) {
   
   const [userdata, setUserData] = useState<userdata> ({email:'', firstName : '', lastName : ''})
   const jwtToken:string = Cookies.get('jwtToken');
-  const refreshToken:string = Cookies.get('refreshToken');
+  // const refreshToken:string = Cookies.get('refreshToken');
   
   useEffect(() =>  {
-    getUserDetailFromToken(jwtToken, refreshToken)
+    if (jwtToken!= null){
+      if (!isTokenExpired(jwtToken)){
+        getUserDetail(jwtToken)
+      }
+    }
+    else{
+      try {
+        refreshJwtToken()
+      } catch (error) { 
+        return
+      }
+    }
 
     return () => {
     }
   }, [])
   
-  const getUserDetailFromToken = async (jwtToken:string , refreshToken:string) => {
-    if(isTokenExpired(jwtToken)){
-      if(isTokenExpired(refreshToken)){
-        setUserData({email:'', firstName : '', lastName : ''});
-      }
-      else{
-        await refreshJwtToken(refreshToken)
-        let newJwtToken :string
-        await waitForCookie('jwtToken', 10, 1000).then((result) => {
-          newJwtToken = result
-        }).catch(()=> {
-          newJwtToken =  null
-        })
-        
-        await getUserDetail(newJwtToken)
-      }
-    }else{
-      getUserDetail(jwtToken)
-    }
-  }
 
   const waitForCookie = async (cookieName:string, maxAttempts:number, intervalMs:number) :Promise<string> => {
     let attempts = 0;
@@ -70,23 +61,31 @@ export default  function AuthContextProvider({ children }) {
 
   }
 
-  const refreshJwtToken = async (refreshToken:string) => {
+  const refreshJwtToken = async () => {
     await fetch(refreshTokenUrl, {
       method: 'POST',
       headers: {
         'Content-Type' : 'application/json',
         "Access-Control-Allow-Origin": "*",
-        'Authorization' :  `Bearer ${refreshToken}`
       },
+      credentials : 'include'
     })
     .then((response) => {
       if(response.ok){
         // return response.headers.getSetCookie() // not work some how, TBC
+        
       }
-    }).then((data)=> {
-      // some data manipulation
+    }).then(async (data)=> {
+      console.log(data);
+      let newJwtToken :string        
+      await waitForCookie('jwtToken', 10, 1000).then((result) => {
+        newJwtToken = result
+        if (!newJwtToken) return       
+        getUserDetail(newJwtToken)
+      })
     })
     .catch((err) => {
+      setUserData({email:'', firstName : '', lastName : ''})
       console.log('Refresh jwt failed with messages:' + err.message);
     })
   }
@@ -95,7 +94,6 @@ export default  function AuthContextProvider({ children }) {
     if (jwtToken == null) {
       throw new Error('token is empty cannot get user details')
     }
-
 
     await fetch(userDetailUrl, {
       method: 'GET',
@@ -123,7 +121,6 @@ export default  function AuthContextProvider({ children }) {
       
       return currentTime > expirationTime;
     } catch (error) {
-      
       return true; 
     }
   }

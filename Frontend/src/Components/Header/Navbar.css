@@ -53,3 +53,7 @@
   height: 0.8125rem;
   border-left: 1px solid rgb(166, 165, 165);
 }
+
+#greeting-tab:hover + .popup-nav-greeting{ 
+  display: block;
+}
