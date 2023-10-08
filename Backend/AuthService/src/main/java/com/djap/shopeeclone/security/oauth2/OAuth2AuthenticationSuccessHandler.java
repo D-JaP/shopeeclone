@@ -1,7 +1,7 @@
 package com.djap.shopeeclone.security.oauth2;
 
 
-import com.djap.shopeeclone.model.CustomizeOauth2Users;
+import com.djap.shopeeclone.model.AppUser;
 import com.djap.shopeeclone.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,8 +11,6 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.AbstractOAuth2Token;
-import org.springframework.security.oauth2.core.OAuth2AccessToken;
-import org.springframework.security.oauth2.core.OAuth2RefreshToken;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -34,14 +32,16 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         AuthenticationSuccessHandler.super.onAuthenticationSuccess(request, response, chain, authentication);
-        CustomizeOauth2Users oauth2Users = (CustomizeOauth2Users) authentication.getPrincipal();
+        AppUser oauth2Users = (AppUser) authentication.getPrincipal();
         userService.handlePostOauthLogin(oauth2Users);
         response.sendRedirect(redirectHostName);
     }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        CustomizeOauth2Users oauth2Users = (CustomizeOauth2Users) authentication.getPrincipal();
+        AppUser oauth2Users = (AppUser) authentication.getPrincipal();
+        userService.handlePostOauthLogin(oauth2Users);
+//        Token handler
         OAuth2AuthenticationToken oauth2Token = (OAuth2AuthenticationToken) authentication;
         OAuth2AuthorizedClient  client = oAuth2AuthorizedClientService.loadAuthorizedClient(oauth2Token.getAuthorizedClientRegistrationId(), oauth2Token.getName());
         if (client.getAccessToken()!= null){
@@ -53,7 +53,6 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
             Cookie refreshCookie = computeCookieFromToken("refreshToken", client.getRefreshToken(), true);
             response.addCookie(refreshCookie);
         }
-        userService.handlePostOauthLogin(oauth2Users);
         response.sendRedirect(redirectHostName);
     }
 

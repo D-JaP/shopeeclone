@@ -1,7 +1,8 @@
 package com.djap.shopeeclone.controller;
 
 import com.djap.shopeeclone.dto.userdata.UserDataResponse;
-import com.djap.shopeeclone.model.CustomUserDetails;
+import com.djap.shopeeclone.model.AppUser;
+
 import com.djap.shopeeclone.security.JwtProvider;
 import com.djap.shopeeclone.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +30,8 @@ public class UserController {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
             email = jwtProvider.extractEmail(token);
-            CustomUserDetails user = userService.loadUserByUsername(email);
-            UserDataResponse response  = new UserDataResponse(user.getAppUser());
+            AppUser user = userService.loadUserByUsername(email);
+            UserDataResponse response  = new UserDataResponse(user);
             return ResponseEntity.ok(response);
         }
         else {

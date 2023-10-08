@@ -1,41 +1,57 @@
 package com.djap.shopeeclone.configuration;
 
+import com.djap.shopeeclone.enums.Provider;
+import com.djap.shopeeclone.enums.UserRole;
+import com.djap.shopeeclone.model.AppUser;
+
 import com.djap.shopeeclone.security.oauth2.OAuth2AuthenticationSuccessHandler;
-import com.djap.shopeeclone.service.CustomizeOauth2UserService;
 import com.djap.shopeeclone.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.UUID;
+
 
 @Configuration
 @EnableWebSecurity
+@Log4j2
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
     private final ClientRegistrationRepository clientRegistrationRepository;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
-    private final CustomizeOauth2UserService customizeOauth2UserService;
     private final JwtAuthFilter jwtAuthFilter;
     private final UserService userService;
 
@@ -54,7 +70,7 @@ public class SecurityConfiguration {
                 ).permitAll()
                 .antMatchers("/api/v1/user").authenticated()
                 .and()
-                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
+//                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -63,7 +79,8 @@ public class SecurityConfiguration {
                 .baseUri("/api/v1/login/oauth2/authorization")
                 .and()
                 .userInfoEndpoint()
-                .userService(customizeOauth2UserService)
+                .userService(oauth2LoginHandler())
+                .oidcUserService(oidcLoginHandler())
                 .and()
                 .successHandler(oAuth2AuthenticationSuccessHandler)
                 .and()
@@ -80,6 +97,51 @@ public class SecurityConfiguration {
         return http.build();
     }
 
+    private OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2LoginHandler() {
+        return userRequest -> {
+            Provider oauth2ClientName = Provider.valueOf(userRequest.getClientRegistration().getClientName().toUpperCase());
+
+            OAuth2User user = new DefaultOAuth2UserService().loadUser(userRequest);
+            AppUser appUser = new AppUser();
+
+            appUser.setEmail(user.getAttribute("email"));
+            appUser.setFirstname(user.getAttribute("given_name"));
+            appUser.setLastname(user.getAttribute("family_name"));
+            appUser.setPassword(passwordEncoder().encode(UUID.randomUUID().toString()));
+            appUser.setIsActive(user.getAttribute("email_verified"));
+            appUser.setOidcId(user.getName());
+            appUser.setAuthorities(user.getAuthorities());
+            appUser.setProvider(oauth2ClientName);
+            appUser.setUserRole(UserRole.USER);
+            appUser.setImgUrl(user.getAttribute("picture"));
+            return appUser;
+        };
+    }
+
+    private OAuth2UserService<OidcUserRequest, OidcUser> oidcLoginHandler() {
+        return userRequest -> {
+            Provider provider = Provider.valueOf(userRequest.getClientRegistration().getClientName().toUpperCase());
+            OidcUserService delegate = new OidcUserService();
+            OidcUser oidcUser = delegate.loadUser(userRequest);
+//
+            AppUser appUser = new AppUser();
+            appUser.setEmail(oidcUser.getEmail());
+            appUser.setFirstname(oidcUser.getGivenName());
+            appUser.setLastname(oidcUser.getFamilyName());
+            appUser.setPassword(passwordEncoder().encode(UUID.randomUUID().toString()));
+            appUser.setIsActive(oidcUser.getEmailVerified());
+            appUser.setOidcId(oidcUser.getName());
+            appUser.setAuthorities(oidcUser.getAuthorities());
+            appUser.setProvider(provider);
+            appUser.setUserRole(UserRole.USER);
+            appUser.setImgUrl(oidcUser.getPicture());
+
+            return appUser;
+        };
+    }
+
+
+
     @Bean
     public AuthenticationManager authenticationManager(UserService userService) {
         var authProvider = new DaoAuthenticationProvider();
@@ -93,34 +155,5 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
-    public class CustomAuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver{
-        private final OAuth2AuthorizationRequestResolver defaultAuthorizationRequestResolver;
-
-        public CustomAuthorizationRequestResolver(ClientRegistrationRepository clientRegistrationRepository) {
-            this.defaultAuthorizationRequestResolver = new DefaultOAuth2AuthorizationRequestResolver(clientRegistrationRepository, OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI);
-        }
-
-        @Override
-        public OAuth2AuthorizationRequest resolve(HttpServletRequest request) {
-            final OAuth2AuthorizationRequest authorizationRequest = this.defaultAuthorizationRequestResolver.resolve(request);
-            return authorizationRequest != null ? customAuthorizationRequest(authorizationRequest) : null;
-
-        }
-
-        @Override
-        public OAuth2AuthorizationRequest resolve(HttpServletRequest request, String clientRegistrationId) {
-            final OAuth2AuthorizationRequest authorizationRequest = this.defaultAuthorizationRequestResolver.resolve(request);
-            return authorizationRequest != null ? customAuthorizationRequest(authorizationRequest) : null;
-        }
-
-        private OAuth2AuthorizationRequest customAuthorizationRequest(OAuth2AuthorizationRequest authorizationRequest) {
-            Map<String, Object> additionalParameters = new LinkedHashMap<>(authorizationRequest.getAdditionalParameters());
-            additionalParameters.put("access_type", "offline");
-            return OAuth2AuthorizationRequest.from(authorizationRequest)
-                    .additionalParameters(additionalParameters)
-                    .build();
-        }
-
-    }
 
 }

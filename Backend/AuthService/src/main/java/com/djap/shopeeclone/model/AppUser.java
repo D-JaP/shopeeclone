@@ -2,11 +2,16 @@ package com.djap.shopeeclone.model;
 
 import com.djap.shopeeclone.enums.Provider;
 import com.djap.shopeeclone.enums.UserRole;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.oidc.OidcIdToken;
+import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.Map;
 import java.util.Objects;
 
 @Getter
@@ -14,7 +19,7 @@ import java.util.Objects;
 @ToString
 @Entity
 @Table(name = "users")
-public class AppUser {
+public class AppUser implements UserDetails, OidcUser {
     @Id
     @SequenceGenerator(name = "user_id_seq", sequenceName = "user_id_seq", initialValue = 4, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "user_id_seq")
@@ -41,7 +46,7 @@ public class AppUser {
     private ActivationToken activationToken;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private RefreshToken refreshToken;
+    RefreshToken refreshToken;
 
     @Column(name = "is_active")
     private Boolean isActive;
@@ -49,6 +54,19 @@ public class AppUser {
     @Column(name = "provider")
     @Enumerated(EnumType.STRING)
     private Provider provider;
+
+//    Oidc parameter
+    @Transient
+    private String oidcId;
+    @Transient
+    private String imgUrl;
+
+    @Transient
+    Collection<? extends GrantedAuthority> authorities;
+
+    @Transient
+    Map<String, Object> attributes;
+
 
     @Override
     public int hashCode() {
@@ -65,4 +83,58 @@ public class AppUser {
     }
 
 
+    @Override
+    public String getName() {
+        return Objects.nonNull(oidcId)? oidcId: (firstname + lastname) ;
+    }
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return this.attributes;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.isActive;
+    }
+
+    @Override
+    public Map<String, Object> getClaims() {
+        return null;
+    }
+
+    @Override
+    public OidcUserInfo getUserInfo() {
+        return null;
+    }
+
+    @Override
+    public OidcIdToken getIdToken() {
+        return null;
+    }
 }

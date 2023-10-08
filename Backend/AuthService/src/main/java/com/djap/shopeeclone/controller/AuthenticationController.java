@@ -75,7 +75,7 @@ public class AuthenticationController {
                                                           HttpServletResponse response) {
         if (request.getCookies() == null) throw new RefreshTokenNotFoundException();
 
-        String token = Arrays.stream(request.getCookies()).filter(cookie -> (cookie.getName().equals("refreshToken"))).findFirst().get().getValue();
+        String token = Arrays.stream(request.getCookies()).filter(cookie -> (cookie.getName().equals("refreshToken"))).findFirst().orElse(null).getValue();
 
         if(token == null ) throw new RefreshTokenNotFoundException();
 
