@@ -1,6 +1,5 @@
 package com.djap.shopeeclone.configuration;
 
-import com.djap.shopeeclone.model.CustomizeOauth2Users;
 import com.djap.shopeeclone.security.oauth2.OAuth2AuthenticationSuccessHandler;
 import com.djap.shopeeclone.service.CustomizeOauth2UserService;
 import com.djap.shopeeclone.service.UserService;
@@ -11,26 +10,30 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
-import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
-import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
-import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizationRequestRepository;
-import org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenResponse;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
+import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
+    private final ClientRegistrationRepository clientRegistrationRepository;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final CustomizeOauth2UserService customizeOauth2UserService;
     private final JwtAuthFilter jwtAuthFilter;
@@ -58,7 +61,6 @@ public class SecurityConfiguration {
         http.oauth2Login().loginPage("/login")
                 .authorizationEndpoint()
                 .baseUri("/api/v1/login/oauth2/authorization")
-                .authorizationRequestRepository(new HttpSessionOAuth2AuthorizationRequestRepository())
                 .and()
                 .userInfoEndpoint()
                 .userService(customizeOauth2UserService)
@@ -91,11 +93,34 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    public OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
-//        DefaultAuthorizationCodeTokenResponseClient accessTokenResponseClient = new DefaultAuthorizationCodeTokenResponseClient();
-//        return accessTokenResponseClient;
-//    }
+    public class CustomAuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver{
+        private final OAuth2AuthorizationRequestResolver defaultAuthorizationRequestResolver;
 
+        public CustomAuthorizationRequestResolver(ClientRegistrationRepository clientRegistrationRepository) {
+            this.defaultAuthorizationRequestResolver = new DefaultOAuth2AuthorizationRequestResolver(clientRegistrationRepository, OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI);
+        }
+
+        @Override
+        public OAuth2AuthorizationRequest resolve(HttpServletRequest request) {
+            final OAuth2AuthorizationRequest authorizationRequest = this.defaultAuthorizationRequestResolver.resolve(request);
+            return authorizationRequest != null ? customAuthorizationRequest(authorizationRequest) : null;
+
+        }
+
+        @Override
+        public OAuth2AuthorizationRequest resolve(HttpServletRequest request, String clientRegistrationId) {
+            final OAuth2AuthorizationRequest authorizationRequest = this.defaultAuthorizationRequestResolver.resolve(request);
+            return authorizationRequest != null ? customAuthorizationRequest(authorizationRequest) : null;
+        }
+
+        private OAuth2AuthorizationRequest customAuthorizationRequest(OAuth2AuthorizationRequest authorizationRequest) {
+            Map<String, Object> additionalParameters = new LinkedHashMap<>(authorizationRequest.getAdditionalParameters());
+            additionalParameters.put("access_type", "offline");
+            return OAuth2AuthorizationRequest.from(authorizationRequest)
+                    .additionalParameters(additionalParameters)
+                    .build();
+        }
+
+    }
 
 }

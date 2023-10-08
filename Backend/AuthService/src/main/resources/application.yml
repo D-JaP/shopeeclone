@@ -48,7 +48,14 @@ spring:
             scope:
               - email
               - profile
-            authorization-grant-type: authorization_code
+            authorization-grant-type:
+              - "authorization_code"
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent #note access_tyoe = offline to get refresh token
+        token:
+          access-token-time-to-live: 3600s
+          refresh-token-time-to-live: 7200s
   servlet:
     cors:
       allowed-origins: http://localhost:3000
