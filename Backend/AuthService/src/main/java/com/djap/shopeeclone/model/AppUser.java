@@ -4,15 +4,14 @@ import com.djap.shopeeclone.enums.Provider;
 import com.djap.shopeeclone.enums.UserRole;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Getter
 @Setter
@@ -55,14 +54,15 @@ public class AppUser implements UserDetails, OidcUser {
     @Enumerated(EnumType.STRING)
     private Provider provider;
 
+    @Transient
+    private Collection<? extends GrantedAuthority> authorities;
 //    Oidc parameter
     @Transient
     private String oidcId;
     @Transient
     private String imgUrl;
 
-    @Transient
-    Collection<? extends GrantedAuthority> authorities;
+
 
     @Transient
     Map<String, Object> attributes;
@@ -95,7 +95,14 @@ public class AppUser implements UserDetails, OidcUser {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        if (userRole != null){
+            authorities.add(new SimpleGrantedAuthority(this.userRole.toString()));
+            return authorities;
+        }
+        else {
+            return this.authorities;
+        }
     }
 
     @Override

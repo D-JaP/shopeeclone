@@ -1,12 +1,18 @@
 package com.djap.shopeeclone.configuration;
 
 
+import com.djap.shopeeclone.dto.auth.ErrorResponse;
+import com.djap.shopeeclone.exception.token.AuthenticationFailException;
 import com.djap.shopeeclone.security.JwtProvider;
 import com.djap.shopeeclone.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.jwt.JwtException;
+import org.springframework.security.oauth2.jwt.JwtValidationException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -23,11 +29,21 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private final UserService userService;
 
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
         String authHeader = request.getHeader("Authorization");
         String token = null, email = null;
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
-            email = jwtProvider.extractEmail(token);
+            try {
+                email = jwtProvider.extractEmail(token);
+            }
+            catch (JwtException ex){
+                ErrorResponse errorResponse = new ErrorResponse(ex);
+                response.setStatus(403);
+                ObjectMapper objectMapper = new ObjectMapper();
+                response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
+                return;
+            }
         }
 
         if (token != null && SecurityContextHolder.getContext().getAuthentication() == null) {

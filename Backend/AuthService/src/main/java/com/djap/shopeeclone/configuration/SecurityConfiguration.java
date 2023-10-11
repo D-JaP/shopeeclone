@@ -16,6 +16,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
@@ -46,6 +47,7 @@ import java.util.UUID;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 @Log4j2
 @RequiredArgsConstructor
 public class SecurityConfiguration {
@@ -65,7 +67,6 @@ public class SecurityConfiguration {
                 .antMatchers("/api/v1/auth/**",
                         "/api/v1/registration/**",
                         "/api/v1/password_reset/**",
-                        "/api/v1/**",
                         "/"
                 ).permitAll()
                 .antMatchers("/api/v1/user").authenticated()

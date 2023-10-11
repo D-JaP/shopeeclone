@@ -7,6 +7,7 @@ import com.djap.shopeeclone.security.JwtProvider;
 import com.djap.shopeeclone.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +24,7 @@ public class UserController {
     private final JwtProvider jwtProvider;
     private final UserService userService;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
     public ResponseEntity<UserDataResponse> getUserData(HttpServletRequest request) throws UsernameNotFoundException {
         String authHeader = request.getHeader("Authorization");
