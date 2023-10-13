@@ -13,6 +13,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.endpoint.DefaultRefreshTokenTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.OAuth2RefreshTokenGrantRequest;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -47,11 +51,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 //            throw new EmailPasswordNotMatchException("Wrong username or password" );
 //        }
         HashMap<String, String> response = new HashMap<>();
-        String jwt_token = jwtProvider.GenerateToken(user, jwtTokenExpiredMinutes, ChronoUnit.MINUTES);
-        String refresh_token = jwtProvider.GenerateToken(user, refreshTokenExpiredDays, ChronoUnit.DAYS);
+        String jwt_token = jwtProvider.GenerateToken(user, jwtTokenExpiredMinutes, ChronoUnit.MINUTES, "access");
+        String refresh_token = jwtProvider.GenerateToken(user, refreshTokenExpiredDays, ChronoUnit.DAYS , "refresh");
         response.put("email", user.getEmail());
         response.put("jwt_token", jwt_token);
         response.put("refresh_token", refresh_token);
+        response.put("login_provider", "local");
 
         RefreshToken refreshToken = refreshTokenRepository.findById(user.getId()).orElse(new RefreshToken());
 //        TBD: save refresh_token to database
@@ -68,19 +73,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public HashMap<String, String> refresh(String token) {
-
-        RefreshToken refreshToken = refreshTokenRepository.findByToken(token).orElseThrow(
-                RefreshTokenNotFoundException::new
-        );
+//        RefreshToken refreshToken = refreshTokenRepository.findByToken(token).orElseThrow(
+//                RefreshTokenNotFoundException::new
+//        );
 
         HashMap<String, String> response = new HashMap<>();
 //        Check if refresh token has not expired
-        if (!isRefreshTokenExpired(refreshToken)) {
-            AppUser user = refreshToken.getUser();
-
+        if (jwtProvider.validateRefreshToken(token)) {
+            Jwt jwt = jwtProvider.getJwtDecoder().decode(token);
+            AppUser user = userRepository.findByEmail(jwt.getSubject()).orElseThrow(RefreshTokenNotFoundException::new);
             /* remake the jwt token and refresh token */
-            String refresh_token = jwtProvider.GenerateToken(user, refreshTokenExpiredDays, ChronoUnit.DAYS);
-            String jwt_token = jwtProvider.GenerateToken(user, jwtTokenExpiredMinutes, ChronoUnit.MINUTES);
+            String refresh_token = jwtProvider.GenerateToken(user, refreshTokenExpiredDays, ChronoUnit.DAYS, "refresh");
+            String jwt_token = jwtProvider.GenerateToken(user, jwtTokenExpiredMinutes, ChronoUnit.MINUTES, "access");
 
             RefreshToken newRefreshToken = refreshTokenRepository.findById(user.getId()).orElse(new RefreshToken());
             if (newRefreshToken.getUser() == null) {
@@ -91,8 +95,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             refreshTokenRepository.save(newRefreshToken);
             response.put("jwt-token", jwt_token);
             response.put("refresh-token", refresh_token);
+            response.put("login_provider", "local");
             response.put("message", "Refresh token request success.");
-        } else throw new RefreshTokenExpiredException();
+        }
+        else { // try oauth2 refresh token
+//            DefaultRefreshTokenTokenResponseClient
+//            OAuth2RefreshTokenGrantRequest
+        }
+
+
 
         return response;
     }
@@ -102,7 +113,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (access_token == null) {
             throw new RuntimeException("Token is not valid");
         }
-        if(jwtProvider.validate(access_token)){
+        if(jwtProvider.validateAccessToken(access_token)){
             return "Token is validated.";
         }
         else {

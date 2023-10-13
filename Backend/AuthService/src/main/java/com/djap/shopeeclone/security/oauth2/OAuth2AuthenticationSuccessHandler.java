@@ -11,6 +11,7 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.AbstractOAuth2Token;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -44,8 +45,9 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
 //        Token handler
         OAuth2AuthenticationToken oauth2Token = (OAuth2AuthenticationToken) authentication;
         OAuth2AuthorizedClient  client = oAuth2AuthorizedClientService.loadAuthorizedClient(oauth2Token.getAuthorizedClientRegistrationId(), oauth2Token.getName());
+
         if (client.getAccessToken()!= null){
-            Cookie accessCookie = computeCookieFromToken("accessToken", client.getAccessToken(), false);
+            Cookie accessCookie = computeCookieFromToken("jwtToken", client.getAccessToken(), false);
             response.addCookie(accessCookie);
         }
 //        Access type need to be set to offline to get refresh token

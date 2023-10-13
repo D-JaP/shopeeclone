@@ -71,7 +71,6 @@ public class SecurityConfiguration {
                 ).permitAll()
                 .antMatchers("/api/v1/user").authenticated()
                 .and()
-//                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -85,7 +84,8 @@ public class SecurityConfiguration {
                 .and()
                 .successHandler(oAuth2AuthenticationSuccessHandler)
                 .and()
-                .exceptionHandling().accessDeniedPage("/403");
+                .exceptionHandling().accessDeniedPage("/403")
+                ;
 
         http.logout()
                 .logoutUrl("/api/v1/logout")
@@ -93,6 +93,7 @@ public class SecurityConfiguration {
                 .deleteCookies("JSESSIONID")
                 .deleteCookies("jwtToken")
                 .deleteCookies("refreshToken")
+                .deleteCookies("accessToken")
                 .logoutSuccessUrl("/");
 
         return http.build();
@@ -104,7 +105,6 @@ public class SecurityConfiguration {
 
             OAuth2User user = new DefaultOAuth2UserService().loadUser(userRequest);
             AppUser appUser = new AppUser();
-
             appUser.setEmail(user.getAttribute("email"));
             appUser.setFirstname(user.getAttribute("given_name"));
             appUser.setLastname(user.getAttribute("family_name"));
@@ -125,6 +125,7 @@ public class SecurityConfiguration {
             OidcUserService delegate = new OidcUserService();
             OidcUser oidcUser = delegate.loadUser(userRequest);
 //
+
             AppUser appUser = new AppUser();
             appUser.setEmail(oidcUser.getEmail());
             appUser.setFirstname(oidcUser.getGivenName());

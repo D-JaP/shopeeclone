@@ -2,6 +2,7 @@ package com.djap.shopeeclone.service;
 
 
 import com.djap.shopeeclone.dto.registration.MailTemplate;
+import com.djap.shopeeclone.enums.Provider;
 import com.djap.shopeeclone.enums.UserRole;
 import com.djap.shopeeclone.exception.email.EmailUsedException;
 import com.djap.shopeeclone.model.ActivationToken;
@@ -40,6 +41,7 @@ public class RegistrationService {
 //        Persiting data and finish registration
         user.setIsActive(false);
         user.setUserRole(UserRole.USER);
+        user.setProvider(Provider.LOCAL);
 
 //        encode password
         user.setPassword(passwordEncoder.encode(user.getPassword()));

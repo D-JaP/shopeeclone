@@ -2,6 +2,7 @@ package com.djap.shopeeclone.dto.userdata;
 
 import com.djap.shopeeclone.model.AppUser;
 import lombok.Data;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 @Data
 public class UserDataResponse {
@@ -15,4 +16,10 @@ public class UserDataResponse {
         this.firstname = appUser.getFirstname();
         this.lastname = appUser.getLastname();
     };
+
+    public UserDataResponse(OAuth2User oAuth2User){
+        this.email = oAuth2User.getAttribute("email");
+        this.firstname = oAuth2User.getAttribute("given_name");
+        this.lastname  = oAuth2User.getAttribute("family_name");
+    }
 }

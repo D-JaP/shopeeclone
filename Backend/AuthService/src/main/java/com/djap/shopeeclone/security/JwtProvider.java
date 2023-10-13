@@ -2,6 +2,7 @@ package com.djap.shopeeclone.security;
 
 
 import com.djap.shopeeclone.model.AppUser;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Component;
@@ -11,7 +12,7 @@ import java.time.Instant;
 import java.time.temporal.TemporalUnit;
 import java.util.Date;
 
-
+@Getter
 @Component
 @RequiredArgsConstructor
 public class JwtProvider {
@@ -19,7 +20,7 @@ public class JwtProvider {
     private final JwtEncoder jwtEncoder;
     private final JwtDecoder jwtDecoder;
 
-    public String GenerateToken(AppUser user, int time, TemporalUnit unit) {
+    public String GenerateToken(AppUser user, int time, TemporalUnit unit, String target) {
         Instant now = Instant.now();
 
         /*Scope (TBD)*/
@@ -34,6 +35,7 @@ public class JwtProvider {
                 .subject(user.getEmail())
                 .claim("firstName", user.getFirstname())
                 .claim("lastName", user.getLastname())
+                .claim("target", target)
                 .build();
 
         return this.jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
@@ -56,6 +58,36 @@ public class JwtProvider {
         try {
             Jwt jwt = jwtDecoder.decode(token);
             Assert.isTrue(new Date().before(Date.from(jwt.getExpiresAt())), "Token expired");
+        } catch (Exception ex) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean validateAccessToken(String token) {
+        if (token == null) {
+            throw new RuntimeException("Token cannot be null");
+        }
+        try {
+            Jwt jwt = jwtDecoder.decode(token);
+            Assert.isTrue(new Date().before(Date.from(jwt.getExpiresAt())), "Token expired");
+            Assert.isTrue(jwt.getClaim("target"), "access");
+
+        } catch (Exception ex) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean validateRefreshToken(String token) {
+        if (token == null) {
+            throw new RuntimeException("Token cannot be null");
+        }
+        try {
+            Jwt jwt = jwtDecoder.decode(token);
+            Assert.isTrue(new Date().before(Date.from(jwt.getExpiresAt())), "Token expired");
+            Assert.isTrue(jwt.getClaim("target"), "refresh");
+
         } catch (Exception ex) {
             return false;
         }

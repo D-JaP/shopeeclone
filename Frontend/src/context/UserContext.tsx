@@ -22,13 +22,10 @@ export default  function AuthContextProvider({ children }) {
   
   const [userdata, setUserData] = useState<userdata> ({email:'', firstName : '', lastName : ''})
   const jwtToken:string = Cookies.get('jwtToken');
-  // const refreshToken:string = Cookies.get('refreshToken');
   
   useEffect(() =>  {
     if (jwtToken!= null){
-      if (!isTokenExpired(jwtToken)){
         getUserDetail(jwtToken)
-      }
     }
     else{
       try {

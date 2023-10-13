@@ -44,9 +44,11 @@ public class AuthenticationController {
 //        Set cookie
         Cookie jwt_cookie = computeJwtCookie(authResponse.get("jwt_token"));
         Cookie refresh_token = computeRefreshCookie(authResponse.get("refresh_token"));
+        Cookie provider = computeCookie("login_provider", authResponse.get("login_provider"));
 
         response.addCookie(jwt_cookie);
         response.addCookie(refresh_token);
+        response.addCookie(provider);
 
         return new ResponseEntity<>(body, HttpStatus.OK);
     }
@@ -70,26 +72,46 @@ public class AuthenticationController {
         return refresh_cookie;
     }
 
+    private Cookie computeCookie(String name, String value) {
+        Cookie cookie = new Cookie(name, value);
+        cookie.setDomain(hostname);
+        cookie.setPath("/");
+        cookie.setHttpOnly(false);
+        cookie.setMaxAge(expire_time_in_days * 24 * 60 * 60);
+        return cookie;
+    }
+
     @PostMapping("/refresh")
     public ResponseEntity<AuthenticationResponse> refresh(HttpServletRequest request,
                                                           HttpServletResponse response) {
         if (request.getCookies() == null) throw new RefreshTokenNotFoundException();
 
-        String token = Arrays.stream(request.getCookies()).filter(cookie -> (cookie.getName().equals("refreshToken"))).findFirst().orElse(null).getValue();
+        Cookie cookie = Arrays.stream(request.getCookies()).filter(c -> (c.getName().equals("refreshToken"))).findFirst().orElse(null);
+        Cookie loginProvider = Arrays.stream(request.getCookies()).filter(c -> (c.getName().equals("login_provider"))).findFirst().orElse(null);
 
-        if(token == null ) throw new RefreshTokenNotFoundException();
+        if(cookie == null || loginProvider == null) throw new RefreshTokenNotFoundException();
 
-        HashMap<String, String> authResponse = authenticationService.refresh(token);
+        if(loginProvider.getValue() == "local"){
+            String token = cookie.getValue();
 
-        Cookie jwt_token = computeJwtCookie(authResponse.get("jwt-token"));
-        Cookie refresh_token = computeRefreshCookie(authResponse.get("refresh-token"));
+            HashMap<String, String> authResponse = authenticationService.refresh(token);
 
-        response.addCookie(jwt_token);
-        response.addCookie(refresh_token);
+            Cookie jwt_token = computeJwtCookie(authResponse.get("jwt-token"));
+            Cookie refresh_token = computeRefreshCookie(authResponse.get("refresh-token"));
+            Cookie provider = computeCookie("login_provider", authResponse.get("login_provider"));
 
-        AuthenticationResponse body = new AuthenticationResponse();
-        body.setMessage(authResponse.get("message"));
-        return new ResponseEntity<>(body, HttpStatus.OK);
+            response.addCookie(jwt_token);
+            response.addCookie(refresh_token);
+            response.addCookie(provider);
+
+            AuthenticationResponse body = new AuthenticationResponse();
+            body.setMessage(authResponse.get("message"));
+            return new ResponseEntity<>(body, HttpStatus.OK);
+        }
+        else if(loginProvider.getValue() == "google") {
+
+        }
+        return null;
     }
 
 }

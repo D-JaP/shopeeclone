@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import javax.persistence.*;
 import java.util.*;
@@ -18,7 +19,7 @@ import java.util.*;
 @ToString
 @Entity
 @Table(name = "users")
-public class AppUser implements UserDetails, OidcUser {
+public class AppUser implements UserDetails, OidcUser, OAuth2User {
     @Id
     @SequenceGenerator(name = "user_id_seq", sequenceName = "user_id_seq", initialValue = 4, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "user_id_seq")

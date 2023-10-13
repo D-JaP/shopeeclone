@@ -30,22 +30,13 @@ public class UserService implements UserDetailsService {
 
     /* Handle post Oauth login, add user to database */
     public void handlePostOauthLogin(AppUser user) {
-//        Optional<AppUser> matched_user = userRepository.findByEmail(user.getEmail());
-//        System.out.println("matched user :" + matched_user.toString());
-//        System.out.println("request user :" + user.toString());
-//        Provider provider = Provider.valueOf(oauth2Users.getOauth2ClientName().toUpperCase());
-//        AppUser user_data;
-//        if (!user.isPresent()) {
-//            user_data = new AppUser();
-//            user_data.setEmail(oauth2Users.getEmail());
-//
-//            user_data.setIsActive(true);
-//            user_data.setUserRole(UserRole.USER);
-//        } else {
-//            user_data = user.get();
-//        }
-//        user_data.setProvider(provider);
-//        userRepository.save(user_data);
+        AppUser matched_user = userRepository.findByEmail(user.getEmail()).orElse(null);
+        if (matched_user != null) {
+            matched_user.setProvider(user.getProvider());
+        }
+        else{
+            userRepository.save(user);
+        }
     }
 
 }
