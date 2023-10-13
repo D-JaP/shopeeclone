@@ -8,6 +8,7 @@ import com.djap.shopeeclone.repository.RefreshTokenRepository;
 import com.djap.shopeeclone.repository.UserRepository;
 import com.djap.shopeeclone.security.JwtProvider;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +23,7 @@ import java.util.HashMap;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
@@ -72,10 +74,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 //        RefreshToken refreshToken = refreshTokenRepository.findByToken(token).orElseThrow(
 //                RefreshTokenNotFoundException::new
 //        );
-
         HashMap<String, String> response = new HashMap<>();
 //        Check if refresh token has not expired
         if (jwtProvider.validateRefreshToken(token)) {
+            log.info("validate succeeed");
             Jwt jwt = jwtProvider.getJwtDecoder().decode(token);
             AppUser user = userRepository.findByEmail(jwt.getSubject()).orElseThrow(RefreshTokenNotFoundException::new);
             /* remake the jwt token and refresh token */

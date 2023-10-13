@@ -57,10 +57,11 @@ public class SecurityConfiguration {
                         "/api/v1/password_reset/**",
                         "/"
                 ).permitAll()
-//                .antMatchers("/api/v1/user")
+                .antMatchers("/api/v1/user").authenticated()
                 .and()
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                ;
 
         http.oauth2Login().loginPage("/login")
                 .authorizationEndpoint()

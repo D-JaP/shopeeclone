@@ -89,7 +89,6 @@ public class JwtProvider {
             Jwt jwt = jwtDecoder.decode(token);
             Assert.isTrue(new Date().before(Date.from(jwt.getExpiresAt())), "Token expired");
             Assert.isTrue(jwt.getClaim("target").equals("refresh"), "Jwt token provide is not refresh token");
-
         } catch (Exception ex) {
             log.error(ex.getMessage());
             return false;

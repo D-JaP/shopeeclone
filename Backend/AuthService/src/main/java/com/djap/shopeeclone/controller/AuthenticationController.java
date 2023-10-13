@@ -89,7 +89,7 @@ public class AuthenticationController {
 
         if(cookie == null || loginProvider == null) throw new RefreshTokenNotFoundException();
 
-        if(loginProvider.getValue() == "local"){
+        if(loginProvider.getValue().equals("local")){
             String token = cookie.getValue();
 
             HashMap<String, String> authResponse = authenticationService.refresh(token);
@@ -106,7 +106,7 @@ public class AuthenticationController {
             body.setMessage(authResponse.get("message"));
             return new ResponseEntity<>(body, HttpStatus.OK);
         }
-        else if(loginProvider.getValue() == "google") {
+        else if(loginProvider.getValue().equals("google")) {
 
         }
         return null;
