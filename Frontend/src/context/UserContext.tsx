@@ -96,7 +96,7 @@ export default  function AuthContextProvider({ children }) {
       method: 'GET',
       headers: {
         'Content-Type' : 'application/json',
-        "Access-Control-Allow-Origin": "*",
+        'Access-Control-Allow-Origin': "*",
         'Authorization' : `Bearer ${jwtToken}`
       },
     }).then((response) => {
@@ -110,17 +110,6 @@ export default  function AuthContextProvider({ children }) {
     })
   }
 
-  function isTokenExpired(token:string) : boolean {
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1])); 
-      const expirationTime = payload.exp * 1000; 
-      const currentTime = Date.now();
-      
-      return currentTime > expirationTime;
-    } catch (error) {
-      return true; 
-    }
-  }
 
   return (
     <AuthContext.Provider

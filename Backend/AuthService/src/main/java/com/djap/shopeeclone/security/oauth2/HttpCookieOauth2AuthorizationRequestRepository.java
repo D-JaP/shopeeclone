@@ -2,7 +2,6 @@ package com.djap.shopeeclone.security.oauth2;
 
 import com.djap.shopeeclone.utils.CookiesUtils;
 import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
-import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizationRequestRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.stereotype.Component;
 

@@ -4,6 +4,7 @@ package com.djap.shopeeclone.security;
 import com.djap.shopeeclone.model.AppUser;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -15,6 +16,7 @@ import java.util.Date;
 @Getter
 @Component
 @RequiredArgsConstructor
+@Log4j2
 public class JwtProvider {
 
     private final JwtEncoder jwtEncoder;
@@ -71,9 +73,9 @@ public class JwtProvider {
         try {
             Jwt jwt = jwtDecoder.decode(token);
             Assert.isTrue(new Date().before(Date.from(jwt.getExpiresAt())), "Token expired");
-            Assert.isTrue(jwt.getClaim("target"), "access");
-
+            Assert.isTrue(jwt.getClaim("target").equals("access"), "jwt token is not an access token");
         } catch (Exception ex) {
+            log.error(ex.getMessage());
             return false;
         }
         return true;
@@ -86,9 +88,10 @@ public class JwtProvider {
         try {
             Jwt jwt = jwtDecoder.decode(token);
             Assert.isTrue(new Date().before(Date.from(jwt.getExpiresAt())), "Token expired");
-            Assert.isTrue(jwt.getClaim("target"), "refresh");
+            Assert.isTrue(jwt.getClaim("target").equals("refresh"), "Jwt token provide is not refresh token");
 
         } catch (Exception ex) {
+            log.error(ex.getMessage());
             return false;
         }
         return true;

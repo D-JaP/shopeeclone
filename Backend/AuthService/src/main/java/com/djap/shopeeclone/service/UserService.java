@@ -1,7 +1,5 @@
 package com.djap.shopeeclone.service;
 
-import com.djap.shopeeclone.enums.Provider;
-import com.djap.shopeeclone.enums.UserRole;
 import com.djap.shopeeclone.model.AppUser;
 import com.djap.shopeeclone.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +8,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

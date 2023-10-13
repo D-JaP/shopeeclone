@@ -1,7 +1,6 @@
 package com.djap.shopeeclone.service;
 
 import com.djap.shopeeclone.exception.EmailPasswordNotMatchException;
-import com.djap.shopeeclone.exception.token.RefreshTokenExpiredException;
 import com.djap.shopeeclone.exception.token.RefreshTokenNotFoundException;
 import com.djap.shopeeclone.model.AppUser;
 import com.djap.shopeeclone.model.RefreshToken;
@@ -13,9 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.endpoint.DefaultRefreshTokenTokenResponseClient;
-import org.springframework.security.oauth2.client.endpoint.OAuth2RefreshTokenGrantRequest;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 

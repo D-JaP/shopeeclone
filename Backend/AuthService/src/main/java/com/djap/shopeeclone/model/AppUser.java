@@ -2,7 +2,9 @@ package com.djap.shopeeclone.model;
 
 import com.djap.shopeeclone.enums.Provider;
 import com.djap.shopeeclone.enums.UserRole;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
