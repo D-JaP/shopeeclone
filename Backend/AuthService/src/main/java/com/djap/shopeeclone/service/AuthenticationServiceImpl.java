@@ -77,7 +77,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         HashMap<String, String> response = new HashMap<>();
 //        Check if refresh token has not expired
         if (jwtProvider.validateRefreshToken(token)) {
-            log.info("validate succeeed");
+            log.info("validate refresh token succeed");
             Jwt jwt = jwtProvider.getJwtDecoder().decode(token);
             AppUser user = userRepository.findByEmail(jwt.getSubject()).orElseThrow(RefreshTokenNotFoundException::new);
             /* remake the jwt token and refresh token */

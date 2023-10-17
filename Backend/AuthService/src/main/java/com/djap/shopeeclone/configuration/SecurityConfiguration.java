@@ -1,5 +1,6 @@
 package com.djap.shopeeclone.configuration;
 
+import com.djap.shopeeclone.configuration.helper.RefererRedirectionAuthenticationSuccessHandler;
 import com.djap.shopeeclone.enums.Provider;
 import com.djap.shopeeclone.enums.UserRole;
 import com.djap.shopeeclone.model.AppUser;
@@ -28,6 +29,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.UUID;
@@ -51,6 +53,9 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
+                .formLogin().loginPage("/login")
+                .successHandler(new RefererRedirectionAuthenticationSuccessHandler())
+                .and()
                 .authorizeRequests()
                 .antMatchers("/api/v1/auth/**",
                         "/api/v1/registration/**",
@@ -59,8 +64,9 @@ public class SecurityConfiguration {
                 ).permitAll()
                 .antMatchers("/api/v1/user").authenticated()
                 .and()
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint(rehostname + "/login"))
                 ;
 
         http.oauth2Login().loginPage("/login")

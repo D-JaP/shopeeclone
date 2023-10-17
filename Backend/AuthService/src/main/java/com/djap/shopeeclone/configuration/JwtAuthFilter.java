@@ -7,6 +7,7 @@ import com.djap.shopeeclone.service.Oauth2UserService;
 import com.djap.shopeeclone.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Log4j2
 @Component
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -61,6 +63,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             UserDetails userDetails = userService.loadUserByUsername(email);
 
             if (jwtProvider.validateAccessToken(token)) {
+                log.info("Access token validated.");
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
