@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Backend/AuthService/AuthService.iml" filepath="$PROJECT_DIR$/Backend/AuthService/AuthService.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Backend/ProductService/ProductService.iml" filepath="$PROJECT_DIR$/Backend/ProductService/ProductService.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/ShopeeCloneServices.iml" filepath="$PROJECT_DIR$/.idea/ShopeeCloneServices.iml" />
       <module fileurl="file://$PROJECT_DIR$/Backend/UserService/UserService.iml" filepath="$PROJECT_DIR$/Backend/UserService/UserService.iml" />
     </modules>
