@@ -64,7 +64,7 @@ public class ProductService {
     @Transactional
     public String modifyProduct(long productId, ProductFormUpload form) {
         Product existingProduct = productRepository.findById(productId).orElseThrow(()-> new ProductNotFoundException());
-//        try {
+        try {
 //            join two list
             List<MultipartFile> files = form.getImageFile();
             int count = 5;
@@ -87,16 +87,16 @@ public class ProductService {
             }
 
 //            Copy every field except image.
-//            form.setImageFile(null);
-//            BeanUtils.copyProperties(form, existingProduct , dataUtils.getNullPropertyNames(form));
+            form.setImageFile(null);
+            BeanUtils.copyProperties(form, existingProduct , dataUtils.getNullPropertyNames(form));
             productRepository.save(existingProduct);
 
-//        }
-//        catch (Exception ex){
-//            log.error(ex.getMessage());
-//            log.error(ex.getStackTrace().toString());
-//            throw new PersistEntityFailedException();
-//        }
+        }
+        catch (Exception ex){
+            log.error(ex.getMessage());
+            log.error(ex.getStackTrace().toString());
+            throw new PersistEntityFailedException();
+        }
         return "Successfully modify product";
     }
 
