@@ -42,6 +42,7 @@ public class Product {
     @JoinColumn(name = "attribute_set_id")
     private AttributeSet attributeSet;
 
-    @OneToMany(mappedBy = "product")
+    @ToString.Exclude
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<ProductImage> imageUrls;
 }

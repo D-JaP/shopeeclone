@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-@Log4j2
+@Log4j2(topic = "S3Service")
 public class S3Service {
 
     private S3Client s3Client = S3Client.builder().defaultsMode(DefaultsMode.AUTO).build();
@@ -49,6 +49,7 @@ public class S3Service {
             S3Utilities utilities = s3Client.utilities();
             GetUrlRequest request = GetUrlRequest.builder().bucket(bucketName).key(newObjectKeyName).build();
             String url = utilities.getUrl(request).toString();
+            log.info("finish upload object with url : " + url);
             return url;
         }
         catch (Exception ex){

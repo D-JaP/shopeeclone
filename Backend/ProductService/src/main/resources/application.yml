@@ -8,3 +8,5 @@ spring:
         rest:
             base-path: /api/v1
 
+    jpa:
+        show-sql: true
