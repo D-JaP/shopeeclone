@@ -14,7 +14,7 @@ import javax.mail.MessagingException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/password_reset")
+@RequestMapping("/api/v1/auth/password_reset")
 public class PasswordController {
     private final PasswordResetService passwordResetService;
 

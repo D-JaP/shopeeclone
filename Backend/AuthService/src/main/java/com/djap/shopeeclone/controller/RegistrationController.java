@@ -14,7 +14,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/registration")
+@RequestMapping("/api/v1/auth/registration")
 public class RegistrationController {
 
     private final RegistrationMapper registrationMapper;

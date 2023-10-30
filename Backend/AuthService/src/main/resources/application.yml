@@ -2,6 +2,7 @@ server:
   error:
     include-message: always
     include-binding-error: always
+  port: 8000
 
 hostname: localhost:8080
 redirect-hostname : http://localhost:3000

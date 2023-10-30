@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "api/v1/user")
+@RequestMapping(path = "api/v1/auth/user")
 public class UserController {
     private final JwtProvider jwtProvider;
     private final UserService userService;

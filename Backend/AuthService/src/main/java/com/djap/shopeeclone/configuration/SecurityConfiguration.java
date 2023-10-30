@@ -58,8 +58,6 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/v1/auth/**",
-                        "/api/v1/registration/**",
-                        "/api/v1/password_reset/**",
                         "/"
                 ).permitAll()
                 .antMatchers("/api/v1/user").authenticated()
