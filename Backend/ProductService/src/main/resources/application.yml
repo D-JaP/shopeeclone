@@ -10,3 +10,8 @@ spring:
 
     jpa:
         show-sql: true
+rsa:
+    public-key: classpath:certs/public.pem
+
+server:
+    port: 8081

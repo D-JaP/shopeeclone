@@ -47,7 +47,7 @@ public class ProductService {
                 ProductImage image = new ProductImage();
                 image.setImageUrl(url);
                 image.setProduct(product);
-//                image.setOrder(count);
+                image.setOrder(count);
                 productImages.add(image);
                 count++;
             }
@@ -105,6 +105,7 @@ public class ProductService {
         productImageRepository.delete(image);
         return "Image deleted";
     }
+
 
     public String deleteProductImage(List<Long> idList){
         productImageRepository.deleteAllById(idList);

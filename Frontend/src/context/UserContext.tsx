@@ -14,7 +14,7 @@ type AuthContext = {
 }
 
 const refreshTokenUrl = '/api/v1/auth/refresh'
-const userDetailUrl = '/api/v1/user'
+const userDetailUrl = '/api/v1/auth/user'
 
 export const AuthContext = createContext<AuthContext | null>(null)
 

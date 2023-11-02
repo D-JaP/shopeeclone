@@ -10,9 +10,11 @@ import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +25,9 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping(path = "product")
-    public ResponseEntity<String> addProduct(@RequestParam(name = "name") String name,
+    @PreAuthorize("@authorizationService.isProductOwner(#request, #id) && @authorizationService.hasAnyRole(#request, 'USER', 'ROLE_USER') ")
+    public ResponseEntity<String> addProduct(HttpServletRequest request,
+                                             @RequestParam(name = "name") String name,
                                              @RequestParam(name = "price") float price,
                                              @RequestParam(name = "category_id") Long category_id,
                                              @RequestParam(name = "description") String description,
@@ -49,7 +53,9 @@ public class ProductController {
     }
 
     @PatchMapping(path = "product/{id}")
-    public ResponseEntity<String> addProduct(@PathVariable() long id, @RequestParam(name = "name", required = false) String name,
+    @PreAuthorize("@authorizationService.isProductOwner(#request, #id) && @authorizationService.hasAnyRole(#request, 'USER', 'ROLE_USER') ")
+    public ResponseEntity<String> addProduct(HttpServletRequest request,
+                                             @PathVariable() long id, @RequestParam(name = "name", required = false) String name,
                                              @RequestParam(name = "price" , required = false) float price,
                                              @RequestParam(name = "category_id" , required = false) Long category_id,
                                              @RequestParam(name = "description" , required = false) String description,
@@ -75,14 +81,16 @@ public class ProductController {
     }
 
     @DeleteMapping(path = "product/image/{id}")
-    public ResponseEntity<String> deleteProductImage(@PathVariable Long id){
+    @PreAuthorize("@authorizationService.isProductOwner(#request, #id) && @authorizationService.hasAnyRole(#request, 'USER', 'ROLE_USER') ")
+    public ResponseEntity<String> deleteProductImage(HttpServletRequest request, @PathVariable Long id){
         String response = productService.deleteProductImage(id);
 
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("@authorizationService.isProductOwner(#request, #id) && @authorizationService.hasAnyRole(#request, 'USER', 'ROLE_USER') ")
     @DeleteMapping(path = "product/image/")
-    public ResponseEntity<String> deleteProductImageList(@RequestBody List<Long> idList){
+    public ResponseEntity<String> deleteProductImageList(HttpServletRequest request, @RequestBody List<Long> idList){
         String response = productService.deleteProductImage(idList);
 
         return ResponseEntity.ok(response);

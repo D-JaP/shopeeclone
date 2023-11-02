@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:8080",
+  "proxy": "http://localhost:8085",
   "main": "index.js",
   "dependencies": {
     "@iconscout/react-unicons": "^1.1.6",
