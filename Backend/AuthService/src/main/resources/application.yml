@@ -2,7 +2,7 @@ server:
   error:
     include-message: always
     include-binding-error: always
-  port: 8000
+  port: 8080
 
 hostname: localhost:8080
 redirect-hostname : http://localhost:3000
@@ -60,7 +60,7 @@ spring:
           refresh-token-time-to-live: 7200s
   servlet:
     cors:
-      allowed-origins: http://localhost:3000
+      allowed-origins: http://localhost:8085
       allowed-methods: GET, POST, PUT, DELETE, PATCH, OPTIONS
       allow-credentials: true
 rsa:

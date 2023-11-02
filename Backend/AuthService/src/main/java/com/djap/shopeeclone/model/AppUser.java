@@ -2,6 +2,7 @@ package com.djap.shopeeclone.model;
 
 import com.djap.shopeeclone.enums.Provider;
 import com.djap.shopeeclone.enums.UserRole;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -58,6 +59,7 @@ public class AppUser implements UserDetails, OidcUser, OAuth2User {
     private Provider provider;
 
     @Transient
+    @Getter(AccessLevel.NONE)
     private Collection<? extends GrantedAuthority> authorities;
 //    Oidc parameter
     @Transient
@@ -65,11 +67,8 @@ public class AppUser implements UserDetails, OidcUser, OAuth2User {
     @Transient
     private String imgUrl;
 
-
-
     @Transient
     Map<String, Object> attributes;
-
 
     @Override
     public int hashCode() {
@@ -99,7 +98,7 @@ public class AppUser implements UserDetails, OidcUser, OAuth2User {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        if (userRole != null){
+        if (this.userRole != null){
             authorities.add(new SimpleGrantedAuthority(this.userRole.toString()));
             return authorities;
         }
