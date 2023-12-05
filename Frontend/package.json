@@ -25,10 +25,14 @@
     "react-scripts": "^5.0.1",
     "sass": "^1.65.1",
     "styled-components": "^5.3.5",
-    "typescript": "^5.2.2",
+    "typescript": "^5.0.2",
     "web-vitals": "^2.1.4"
   },
-  "overrides": {},
+  "overrides": {
+    "react-scripts": {
+      "typescript": "^5"
+    }
+  },
   "nodemonConfig": {
     "ext": "js",
     "ignore": [
