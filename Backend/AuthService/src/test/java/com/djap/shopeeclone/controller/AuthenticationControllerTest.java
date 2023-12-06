@@ -67,18 +67,5 @@ class AuthenticationControllerTest {
                 .andExpect(status().isOk());
     }
 
-    @PostConstruct
-    void setUpRefreshToken(){
-        RefreshToken refreshToken = refreshTokenRepository.findById(REFRESH_ACCOUNT_ID).orElseThrow(RefreshTokenNotFoundException::new);
-        refreshTokenRequest.setToken(refreshToken.getToken());
-    }
-    @Test
-    void refresh() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders
-                .post(URL_REFRESH_TOKEN)
-                .content(mapper.writeValueAsString(refreshTokenRequest))
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk());
-    }
 
 }

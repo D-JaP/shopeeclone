@@ -5,7 +5,7 @@ server:
   port: 8080
 
 hostname: localhost:8080
-redirect-hostname : http://localhost:3000
+redirect : http://localhost:3000
 
 jwt:
   jwt_token:
@@ -14,10 +14,12 @@ jwt:
     expire_time_in_days: 7
 
 spring:
+
   datasource:
     url: jdbc:postgresql://localhost:5432/shopee_db
     username: postgres
     password: root
+    driver-class-name: org.postgresql.Driver
 
   mail:
     host: smtp.gmail.com

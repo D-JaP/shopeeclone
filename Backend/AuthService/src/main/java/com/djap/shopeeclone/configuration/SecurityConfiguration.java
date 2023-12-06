@@ -28,10 +28,12 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
 
 
@@ -47,8 +49,6 @@ public class SecurityConfiguration {
     private final JwtAuthFilter jwtAuthFilter;
     private final UserService userService;
 
-    @Value("${redirect-hostname}")
-    private String rehostname;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -64,7 +64,7 @@ public class SecurityConfiguration {
                 .and()
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint(rehostname + "/login"))
+                .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
                 ;
 
         http.oauth2Login().loginPage("/login")
@@ -150,5 +150,19 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
+    private AuthenticationEntryPoint authenticationEntryPoint() {
+        return (request, response, authException) -> {
+            String baseUrl = determineBaseUrl(request);
+            response.sendRedirect(baseUrl + "/login");
+        };
+    }
+
+    private String determineBaseUrl(HttpServletRequest request) {
+        // Get the base URL dynamically
+        String requestURL = request.getRequestURL().toString();
+        String requestURI = request.getRequestURI();
+        String baseUrl = requestURL.substring(0, requestURL.length() - requestURI.length()) + request.getContextPath();
+        return baseUrl;
+    }
 
 }

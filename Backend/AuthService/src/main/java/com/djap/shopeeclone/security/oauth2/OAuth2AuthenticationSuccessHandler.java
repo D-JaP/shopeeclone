@@ -25,15 +25,15 @@ import java.io.IOException;
 public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     private final UserService userService;
     private final OAuth2AuthorizedClientService oAuth2AuthorizedClientService;
-    @Value("${redirect-hostname}")
-    private String redirectHostName;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         AuthenticationSuccessHandler.super.onAuthenticationSuccess(request, response, chain, authentication);
         AppUser oauth2Users = (AppUser) authentication.getPrincipal();
         userService.handlePostOauthLogin(oauth2Users);
-        response.sendRedirect(redirectHostName);
+        String baseURL = request.getRequestURL().toString().replace(request.getRequestURI(), "");
+        System.out.println(baseURL);
+        response.sendRedirect(baseURL);
     }
 
     @Override
@@ -53,7 +53,9 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
             Cookie refreshCookie = computeCookieFromToken("refreshToken", client.getRefreshToken(), true);
             response.addCookie(refreshCookie);
         }
-        response.sendRedirect(redirectHostName);
+        String baseURL = request.getRequestURL().toString().replace(request.getRequestURI(), "");
+        System.out.println(baseURL);
+        response.sendRedirect(baseURL);
     }
 
     private Cookie computeCookieFromToken(String cookie_name, AbstractOAuth2Token token, Boolean httponly){

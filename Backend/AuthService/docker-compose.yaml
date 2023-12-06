@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: shopee_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+    volumes:
+      - C:/Users/dzung/project/shopeeclone/Backend/AuthService/src/main/resources/db/init_db_activation_token.sql:/docker-entrypoint-initdb.d/init_db_activation_token.sql
+      - C:/Users/dzung/project/shopeeclone/Backend/AuthService/src/main/resources/db/init_db_user.sql:/docker-entrypoint-initdb.d/init_db_user.sql
+      - C:/Users/dzung/project/shopeeclone/Backend/AuthService/src/main/resources/db/init_refresh_token.sql:/docker-entrypoint-initdb.d/init_refresh_token.sql
+    ports:
+      - "5432:5432"
+  auth-services:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/shopee_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root
+  web:
+    image
+
+
+
