@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import MainProductCard from '../Components/MainProduct/MainProductCard';
 import { useReducer, useEffect } from 'react';
 import axios from 'axios';
-import './ProductPage.css';
+import './ProductPage.scss';
 const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_REQUEST':
@@ -30,7 +30,7 @@ function ProductPage() {
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
       try {
-        const result = await axios.get(`/api/product/${slug}`);
+        const result = await axios.get(`/api/v1/product/${slug}`);
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });

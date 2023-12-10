@@ -9,7 +9,7 @@ redirect : http://localhost:3000
 
 jwt:
   jwt_token:
-    expire_time_in_minutes: 10
+    expire_time_in_minutes: 100
   refresh_token:
     expire_time_in_days: 7
 

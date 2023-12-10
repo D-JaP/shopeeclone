@@ -21,7 +21,7 @@ export default function Navbar() {
         <div className="--left-navbar">
           <div>
             <a
-              href="/Users/dzung/project/shopeeclone/Frontend/src/pages"
+              href="/seller"
               className="--navbar-text"
             >
               Seller center
@@ -30,7 +30,7 @@ export default function Navbar() {
           <div className="--navbar-seperator"></div>
           <div>
             <a
-              href="/Users/dzung/project/shopeeclone/Frontend/src/pages"
+              href="/"
               className="--navbar-text"
             >
               Sell on Shopee
@@ -39,7 +39,7 @@ export default function Navbar() {
           <div className="--navbar-seperator"></div>
           <div>
             <a
-              href="/Users/dzung/project/shopeeclone/Frontend/src/pages"
+              href="/"
               className="--navbar-text"
             >
               Download
@@ -48,19 +48,19 @@ export default function Navbar() {
           <div className="--navbar-seperator"></div>
           <div className="--navbar-text">
             <a
-              href="/Users/dzung/project/shopeeclone/Frontend/src/pages"
+              href="/"
               className="--navbar-text"
             >
               Follow us on
             </a>
           </div>
           <div className="--navbar-text">
-            <a href="/Users/dzung/project/shopeeclone/Frontend/src/pages">
+            <a href="/">
               <UilFacebook className="--navbar-icon" />
             </a>
           </div>
           <div className="--navbar-text">
-            <a href="/Users/dzung/project/shopeeclone/Frontend/src/pages">
+            <a href="/">
               <UilInstagram className="--navbar-icon" />
             </a>
           </div>
@@ -71,7 +71,7 @@ export default function Navbar() {
         <ul className="--right-navbar">
           <li>
             <a
-              href="/Users/dzung/project/shopeeclone/Frontend/src/pages"
+              href="/"
               className="--navbar-text"
             >
               Notification
@@ -79,7 +79,7 @@ export default function Navbar() {
           </li>
           <li>
             <a
-              href="/Users/dzung/project/shopeeclone/Frontend/src/pages"
+              href="/"
               className="--navbar-text"
             >
               Help
@@ -87,7 +87,7 @@ export default function Navbar() {
           </li>
           <li>
             <a
-              href="/Users/dzung/project/shopeeclone/Frontend/src/pages"
+              href="/"
               className="--navbar-text"
             >
               English

@@ -1,13 +1,12 @@
 package com.example.productservice.controller;
 
-import com.example.productservice.dto.ProductFormChangeDetail;
+import com.example.productservice.dto.AttributeRequest;
 import com.example.productservice.dto.ProductFormUpload;
-import com.example.productservice.model.Product;
-import com.example.productservice.repository.ProductRepository;
+import com.example.productservice.model.AttributeValue;
 import com.example.productservice.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,16 +15,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 
 @BasePathAwareController
 @RequiredArgsConstructor
+@Log4j2
 public class ProductController {
     private final ProductService productService;
 
     @PostMapping(path = "product")
-    @PreAuthorize("@authorizationService.isProductOwner(#request, #id) && @authorizationService.hasAnyRole(#request, 'USER', 'ROLE_USER') ")
+    @PreAuthorize("@authorizationService.hasAnyRole(#request, 'USER', 'ROLE_USER') ")
     public ResponseEntity<String> addProduct(HttpServletRequest request,
                                              @RequestParam(name = "name") String name,
                                              @RequestParam(name = "price") float price,
@@ -33,7 +33,8 @@ public class ProductController {
                                              @RequestParam(name = "description") String description,
                                              @RequestParam(name = "attribute_set_id", required = false) Long attribute_set_id,
                                              @RequestParam(name = "seller", required = false) Long seller_id,
-                                             @RequestParam(name = "image") List<MultipartFile> files
+                                             @RequestParam(name = "image") List<MultipartFile> files,
+                                             @RequestPart (name = "attribute", required = false) List<AttributeValue> attributes
                                              )
 
     {
@@ -45,6 +46,7 @@ public class ProductController {
                 .seller_id(seller_id)
                 .attribute_set_id(attribute_set_id)
                 .imageFile(files)
+                .attributes(attributes)
                 .build();
 
         String response  = productService.addProductFromFormUpload(productFormUpload);
@@ -59,7 +61,7 @@ public class ProductController {
                                              @RequestParam(name = "price" , required = false) float price,
                                              @RequestParam(name = "category_id" , required = false) Long category_id,
                                              @RequestParam(name = "description" , required = false) String description,
-                                             @RequestParam(name = "attribute_set_id", required = false) Long attribute_set_id,
+                                             @RequestParam(name = "attribute_set_id", required = true) Long attribute_set_id,
                                              @RequestParam(name = "seller", required = false) Long seller_id,
                                              @RequestParam(name = "image", required = false) List<MultipartFile> files
     )
@@ -96,4 +98,8 @@ public class ProductController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping(path  = "product")
+    public ResponseEntity<?> getProduct(){
+        return ResponseEntity.ok().build();
+    }
 }

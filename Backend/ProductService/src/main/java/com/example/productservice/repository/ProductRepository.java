@@ -16,37 +16,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public interface ProductRepository extends CrudRepository<Product, Long>, PagingAndSortingRepository<Product, Long> {
 
     @Override
-//    @PreAuthorize("@authorizationService.isProductOwner(@httpServletRequest,#entity.getId()) " +
-//            "&& @authorizationService.hasRole(@httpServletRequest, 'ROLE_USER')")
     <S extends Product> S save(S entity);
 
     @Override
-//    @PreAuthorize("@authorizationService.isProductOwner(@httpServletRequest,#entity.getId()) " +
-//            "&& @authorizationService.hasRole(@httpServletRequest, 'ROLE_USER')")
     <S extends Product> Iterable<S> saveAll(Iterable<S> entities);
 
     @Override
-    @PreAuthorize("@authorizationService.isProductOwner(@httpServletRequest,#entity.getId()) " +
-            "&& @authorizationService.hasRole(@httpServletRequest, 'ROLE_USER')")
+    @PreAuthorize("@authorizationService.isProductOwner(#httpServletRequest,#entity.getId()) " +
+            "&& @authorizationService.hasRole(#httpServletRequest, 'ROLE_USER')")
     void deleteById(Long aLong);
 
     @Override
-    @PreAuthorize("@authorizationService.isProductOwner(@httpServletRequest,#entity.getId()) " +
-            "&& @authorizationService.hasRole(@httpServletRequest, 'ROLE_USER')")
+    @PreAuthorize("@authorizationService.isProductOwner(#httpServletRequest,#entity.getId()) " +
+            "&& @authorizationService.hasRole(#httpServletRequest, 'ROLE_USER')")
     void delete(Product entity);
 
     @Override
-    @PreAuthorize("@authorizationService.isProductOwner(@httpServletRequest,#entity.getId()) " +
-            "&& @authorizationService.hasRole(@httpServletRequest, 'ROLE_USER')")
+    @PreAuthorize("@authorizationService.isProductOwner(#httpServletRequest,#entity.getId()) " +
+            "&& @authorizationService.hasRole(#httpServletRequest, 'ROLE_USER')")
     void deleteAllById(Iterable<? extends Long> longs);
 
     @Override
-    @PreAuthorize("@authorizationService.isProductOwner(@httpServletRequest,#entity.getId()) " +
-            "&& @authorizationService.hasRole(@httpServletRequest, 'ROLE_USER')")
+    @PreAuthorize("@authorizationService.isProductOwner(#httpServletRequest,#entity.getId()) " +
+            "&& @authorizationService.hasRole(#httpServletRequest, 'ROLE_USER')")
     void deleteAll(Iterable<? extends Product> entities);
 
     @Override
-    @PreAuthorize("@authorizationService.isProductOwner(@httpServletRequest,#entity.getId()) " +
-            "&& @authorizationService.hasRole(@httpServletRequest, 'ROLE_USER')")
+    @PreAuthorize("@authorizationService.isProductOwner(#httpServletRequest,#entity.getId()) " +
+            "&& @authorizationService.hasRole(#httpServletRequest, 'ROLE_USER')")
     void deleteAll();
 }

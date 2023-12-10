@@ -30,8 +30,10 @@ function RecommendProduct() {
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
       try {
-        const result = await axios.get('/api/products');
-        dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
+        const result = await axios.get(process.env.REACT_APP_PRODUCT_API_PATH);
+        console.log(result);
+        
+        dispatch({ type: 'FETCH_SUCCESS', payload: await result.data});
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
       }
@@ -57,8 +59,8 @@ function RecommendProduct() {
           ) : error ? (
             <div>{error}</div>
           ) : (
-            products.map((product) => (
-              <Product product={product} key={product.slug}></Product>
+            products.map((product, index) => (
+              <Product product={product} key={index}></Product>
             ))
           )}
         </div>

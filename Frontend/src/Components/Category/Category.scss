@@ -1,0 +1,10 @@
+.category{
+    .tab{
+        color: var(--global-text-color);
+        font-size: 15px;
+        border: 1px solid var(--global-spacing-color);
+        .category-icon {
+            padding: 10px;
+        }
+    }
+}

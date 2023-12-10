@@ -4,5 +4,5 @@ public enum DataType {
     VARCHAR,
     INTEGER,
     FLOAT,
-    TIMESTAMP
+    TIMESTAMP,
 }

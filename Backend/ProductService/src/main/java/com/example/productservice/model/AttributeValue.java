@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -16,6 +13,7 @@ import javax.persistence.Table;
 @Table(name = "attribute_value")
 public class AttributeValue {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "attribute_id_seq")
     @Column(name = "attribute_value_id")
     private long id;
 

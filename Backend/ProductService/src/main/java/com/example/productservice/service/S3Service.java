@@ -25,7 +25,7 @@ public class S3Service {
 
     private S3Client s3Client = S3Client.builder().defaultsMode(DefaultsMode.AUTO).build();
 
-    private  String bucketName = "shopeeclone";
+    private  String bucketName = "shopeeclonedata";
     private  String prefix = "product_image/";
 
     public String uploadFile(MultipartFile multipartFile, String productName){
@@ -55,7 +55,7 @@ public class S3Service {
         catch (Exception ex){
             log.error(ex.getMessage());
             log.warn(ex.getStackTrace().toString());
-            return "failed";
+            return "failed upload images";
         }
     }
 }

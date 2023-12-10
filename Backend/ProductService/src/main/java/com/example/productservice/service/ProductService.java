@@ -5,8 +5,11 @@ import com.example.productservice.dto.ProductFormUpload;
 import com.example.productservice.exception.PersistEntityFailedException;
 import com.example.productservice.exception.ProductImageNotFoundException;
 import com.example.productservice.exception.ProductNotFoundException;
+import com.example.productservice.model.AttributeValue;
+import com.example.productservice.model.DataType;
 import com.example.productservice.model.Product;
 import com.example.productservice.model.ProductImage;
+import com.example.productservice.repository.AttributeValueRepository;
 import com.example.productservice.repository.ProductImageRepository;
 import com.example.productservice.repository.ProductRepository;
 import com.example.productservice.utils.DataUtils;
@@ -28,6 +31,8 @@ import java.util.List;
 public class ProductService {
     private final ProductRepository productRepository;
     private final ProductImageRepository productImageRepository;
+
+    private final AttributeValueRepository attributeValueRepository;
     private final DataUtils dataUtils;
     private final S3Service s3Service;
 
@@ -40,9 +45,7 @@ public class ProductService {
         List<ProductImage> productImages = new ArrayList<>();
         int count =0;
         for (MultipartFile file : form.getImageFile()){
-
             if(file.getContentType() != null){
-
                 String url = s3Service.uploadFile(file, product.getName());
                 ProductImage image = new ProductImage();
                 image.setImageUrl(url);
@@ -53,9 +56,19 @@ public class ProductService {
             }
         }
 
-
+//        product.setAttributeValue(form.getAttributes());
         product.setImageUrls(productImages);
         productRepository.save(product);
+
+        //        create new attribute value and assign data
+        List<AttributeValue> attributeList = new ArrayList<>();
+        for (AttributeValue attr : form.getAttributes()){
+            AttributeValue attributeValue = attr;
+            attributeValue.setProduct_id(product.getId());
+            attributeValue.setType(DataType.VARCHAR);
+            attributeValueRepository.save(attributeValue);
+//            attributeList.add(attributeValue);
+        }
         log.info("product saved into database, " +product.toString());
 
         return "add product successfully";

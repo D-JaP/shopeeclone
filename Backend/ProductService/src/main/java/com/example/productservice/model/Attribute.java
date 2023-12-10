@@ -21,6 +21,7 @@ public class Attribute {
     private String name;
 
     @Column(name = "datatype")
+    @Enumerated(EnumType.STRING)
     private DataType dataType;
 
     @Column(name = "is_require")

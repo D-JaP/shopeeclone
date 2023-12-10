@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { 
+    --global-text-color: rgba(0, 0, 0, 0.54);
+    --global-bg-color: rgb(240, 240, 240);
+    --global-spacing-color: rgb(240, 240, 240);
+}

@@ -25,3 +25,4 @@ ALTER TABLE product_image ADD COLUMN "img_order" int;
 
 CREATE SEQUENCE product_id_seq;
 CREATE SEQUENCE product_image_id_seq;
+

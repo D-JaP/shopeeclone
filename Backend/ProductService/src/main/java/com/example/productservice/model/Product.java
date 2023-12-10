@@ -35,7 +35,7 @@ public class Product {
     @Column(name = "seller")
     private Long seller;
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AttributeValue> attributeValue;
 
     @ManyToOne()
