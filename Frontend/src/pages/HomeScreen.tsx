@@ -5,6 +5,7 @@ import Navbar from '../Components/Header/Navbar';
 import NavbarWithSearch from '../Components/Header/NavbarWithSearch';
 import "./HomeScreen.scss"
 import {Category} from '../Components/Category/Category';
+import Footer from '../Components/Footer/Footer';
 
 function HomeScreen() {
   return (
@@ -19,6 +20,9 @@ function HomeScreen() {
         <BannerMain />
         <Category/>
         <RecommendProduct />
+      </div>
+      <div className='mt-5'>
+        <Footer/>
       </div>
     </div>
   );

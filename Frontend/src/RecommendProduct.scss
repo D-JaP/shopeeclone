@@ -1,0 +1,44 @@
+.--main-container {
+  /* background-color: #e8e8e8; */
+  width: 100%;
+  height: auto;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  .--stardust-tab-header {
+    background-color: #fff;
+    color: #ee4c2b;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 4rem;
+    font-weight: 500;
+    font-size: 1rem;
+    border-bottom: 3px solid #ee4c2b;
+
+    .--stardust-tab-header-underline {
+      color: #ee4c2b;
+      height: 3px;
+      width: 100%;
+    }
+  }
+
+  .loadmore-btn{
+    
+    width: fit-content;
+    padding: 0.2rem 0.6rem;
+    background-color: #fff;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #ee4c2b;
+    cursor: pointer;
+    &:hover {
+      background-color: #ee4c2b;
+      color: #fff;
+    }
+  }
+}
+
+
