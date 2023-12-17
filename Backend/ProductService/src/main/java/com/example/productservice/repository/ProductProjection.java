@@ -10,6 +10,7 @@ import java.util.List;
 
 @Projection(name = "ProductProjection", types = {Product.class})
 public interface ProductProjection {
+    Long getId();
     AttributeSet getAttributeSet();
     String getName();
     String getDescription();
