@@ -3,6 +3,8 @@ package com.example.productservice.model;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.List;
@@ -35,14 +37,14 @@ public class Product {
     @Column(name = "seller")
     private Long seller;
 
-    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AttributeValue> attributeValue;
+    @OneToMany(mappedBy = "product_id", cascade = CascadeType.ALL)
+    private List<AttributeValue> attribute_value;
 
     @ManyToOne()
     @JoinColumn(name = "attribute_set_id")
     private AttributeSet attributeSet;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductImage> imageUrls;
 }

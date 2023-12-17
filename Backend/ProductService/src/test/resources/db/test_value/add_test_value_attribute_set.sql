@@ -1,0 +1,1 @@
+INSERT INTO attribute_set(name) VALUES ('default');

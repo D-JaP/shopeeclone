@@ -1,13 +1,16 @@
 package com.example.productservice.repository;
 
 import com.example.productservice.model.AttributeSet;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.security.access.prepost.PreAuthorize;
 
-@RepositoryRestResource(collectionResourceRel = "attribute_set", path = "attribute_set")
-public interface AttributeSetRepository extends PagingAndSortingRepository<AttributeSet, Long>, CrudRepository<AttributeSet, Long> {
+import java.util.Optional;
+
+@RepositoryRestResource(collectionResourceRel = "attribute_set", path = "attribute_set", excerptProjection = AttributeSetProjection.class)
+public interface AttributeSetRepository extends JpaRepository<AttributeSet, Long> {
     @Override
     void deleteById(Long aLong);
 
@@ -22,4 +25,8 @@ public interface AttributeSetRepository extends PagingAndSortingRepository<Attri
 
     @Override
     void deleteAll();
+
+    @Override
+    Optional<AttributeSet> findById(Long aLong);
+
 }

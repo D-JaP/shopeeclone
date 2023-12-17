@@ -98,8 +98,4 @@ public class ProductController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(path  = "product")
-    public ResponseEntity<?> getProduct(){
-        return ResponseEntity.ok().build();
-    }
 }

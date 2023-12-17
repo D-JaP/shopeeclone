@@ -3,6 +3,7 @@ package com.example.productservice.model;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.rest.core.config.Projection;
 import org.w3c.dom.Attr;
 
 import javax.persistence.*;
@@ -24,7 +25,7 @@ public class AttributeSet {
     @ManyToMany(mappedBy = "attributeSet")
     private List<Attribute> attributes;
 
-    @OneToMany( mappedBy = "attributeSet", fetch = FetchType.LAZY)
+    @OneToMany( mappedBy = "attributeSet")
     private List<Product> products;
 
 }
