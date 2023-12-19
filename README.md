@@ -1,7 +1,7 @@
 # Ecommerce shopee clone project
 An Ecommerce shopee clone project using Spring boot and React.js
 
-Used Technologies:
+Tech-stack:
 - Backend: Spring (Boot, Data, Security, Cloud Gateway), PostgreSQL
 - Frontend: ReactJs, Tailwind
 
