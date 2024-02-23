@@ -4,6 +4,7 @@ import com.example.productservice.model.Category;
 import com.example.productservice.model.Product;
 import com.example.productservice.repository.CategoryRepository;
 import com.example.productservice.repository.ProductRepository;
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
@@ -22,6 +23,7 @@ import java.util.Optional;
 @BasePathAwareController
 @RequiredArgsConstructor
 @Log4j2
+@Api(tags = "Category Entity")
 public class CategoryController {
     private final CategoryRepository categoryRepository;
 
@@ -34,6 +36,23 @@ public class CategoryController {
 //
 //        return ResponseEntity.ok(resources);
 //    }
+
+    @PutMapping(path = "category")
+    public ResponseEntity<?> putCategory(@RequestBody Category category){
+        try{
+            log.info("Trying to put category with id = " + category.getId());
+            categoryRepository.save(category);
+            log.info("Succeeded to put category with id = " + category.getId());
+            return ResponseEntity.ok().build();
+        }
+        catch (Exception ex){
+            log.error("Failed to put category.");
+            log.error(ex.getMessage());
+            log.error(ex.getStackTrace());
+            return ResponseEntity.internalServerError().body("Error put category");
+        }
+    }
+
 
     @DeleteMapping(path = "category/{id}")
     @PreAuthorize("@authorizationService.hasAnyRole(http, 'ADMIN', 'ROLE_ADMIN')")

@@ -1,6 +1,7 @@
 package com.example.productservice.repository;
 
 import com.example.productservice.model.Category;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -16,7 +17,7 @@ import java.util.Optional;
 public interface CategoryRepository extends PagingAndSortingRepository<Category,Long>, CrudRepository<Category, Long> {
     Optional<Category> findByName(@Param("name") String name);
 
-    List<Category> findAllByLevel(@PathVariable("level") int level);
+    List<Category> findAllByLevel(@PathVariable("level") int level, Pageable pageable);
     @Override
     @PreAuthorize("@authorizationService.hasAnyRole(#request,'ADMIN','ROLE_ADMIN')")
     <S extends Category> S save(S entity);

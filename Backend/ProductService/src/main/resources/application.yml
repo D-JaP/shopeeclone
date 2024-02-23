@@ -10,8 +10,16 @@ spring:
 
     jpa:
         show-sql: true
+    mvc:
+        pathmatch:
+            matching-strategy: ant_path_matcher
 rsa:
     public-key: classpath:certs/public.pem
 
 server:
     port: 8081
+
+springfox:
+    documentation:
+        swagger-ui:
+            enabled: true

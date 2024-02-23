@@ -4,6 +4,8 @@ import com.example.productservice.dto.AttributeRequest;
 import com.example.productservice.dto.ProductFormUpload;
 import com.example.productservice.model.AttributeValue;
 import com.example.productservice.service.ProductService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
@@ -21,11 +23,13 @@ import java.util.Map;
 @BasePathAwareController
 @RequiredArgsConstructor
 @Log4j2
+@Api(tags = "Product Entity")
 public class ProductController {
     private final ProductService productService;
 
     @PostMapping(path = "product")
     @PreAuthorize("@authorizationService.hasAnyRole(#request, 'USER', 'ROLE_USER') ")
+    @ApiOperation("Add a product to the database, requires a form upload with the following fields: name, price, category_id, description, attribute_set_id, seller_id, image, and attribute. Also require the ownership of the product")
     public ResponseEntity<String> addProduct(HttpServletRequest request,
                                              @RequestParam(name = "name") String name,
                                              @RequestParam(name = "price") float price,

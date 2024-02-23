@@ -62,13 +62,16 @@ public class ProductService {
 
         //        create new attribute value and assign data
         List<AttributeValue> attributeList = new ArrayList<>();
-        for (AttributeValue attr : form.getAttributes()){
-            AttributeValue attributeValue = attr;
-            attributeValue.setProduct_id(product.getId());
-            attributeValue.setType(DataType.VARCHAR);
-            attributeValueRepository.save(attributeValue);
+        if (form.getAttributes()!= null){
+            for (AttributeValue attr : form.getAttributes()){
+                AttributeValue attributeValue = attr;
+                attributeValue.setProduct_id(product.getId());
+                attributeValue.setType(DataType.VARCHAR);
+                attributeValueRepository.save(attributeValue);
 //            attributeList.add(attributeValue);
+            }
         }
+
         log.info("product saved into database, " +product.toString());
 
         return "add product successfully";
