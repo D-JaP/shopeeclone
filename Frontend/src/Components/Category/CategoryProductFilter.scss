@@ -1,46 +1,74 @@
 $categoryWidth: 150px;
 $headerHeight: 22px;
+$textColor: rgba(0, 0, 0, 0.7);
 // price range parameter
-    // minmax box
-    $minmaxWidth: 50px;
-    $minmaxHeight: 30px;
-    $minmaxBorderRadius: 2px;
-    // apply now btn
+// minmax box
+$minmaxWidth: 50px;
+$minmaxHeight: 30px;
+$minmaxBorderRadius: 2px;
+// apply now btn
 
-    // clear all btn
+// clear all btn
 
 .text-bold {
     font-weight: bold;
 
 }
 
-.--category-product-filter{
+.--category-product-filter {
     margin-top: 10px;
-    .--filter-selection {
-        width: $categoryWidth;
+    color: $textColor;
 
-        .--filter-group{
-            border-top: 1px solid var(--global-border-dark-color);
+    .--product-filtered {
+        .filter-header {
+            .selected {}
+            .not-selected {
+                color: var(--global-text-color)!important;
+                background-color: white!important;
+            }
         }
     }
 
-    .--button-filter{
+    .--filter-selection {
+        width: $categoryWidth;
+        .--filter-group {
+            border-top: 1px solid var(--global-border-dark-color);
+
+            .sub-category {
+
+                >a {
+                    text-decoration: none;
+                    color: $textColor;
+                }
+
+                >a:hover {
+                    color: var(--global-main-color);
+                    transition: 0.2s;
+
+                }
+            }
+        }
+    }
+
+    .--button-filter {
         color: white;
         background-color: var(--global-main-color);
         border-radius: 3px;
     }
-    .input-price-range{
+
+    .input-price-range {
         width: $minmaxWidth;
         height: $minmaxHeight;
         border-radius: 3px;
         font-size: 14px;
         text-align: center;
     }
-    .place  {
+
+    .place {
         height: 1px;
         margin: 0 10px;
         background-color: var(--global-border-dark-color);
-        width: 30px;
+        width: 20px;
     }
-    
+
 }

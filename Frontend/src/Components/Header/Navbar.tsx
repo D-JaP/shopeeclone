@@ -15,7 +15,7 @@ export default function Navbar() {
   
 
   return (
-    <div className="--navbar-wrapper ">
+    <div className="--navbar-wrapper">
       <div className="--navbar-content  --container-wrapper">
         {/* left nav */}
         <div className="--left-navbar">

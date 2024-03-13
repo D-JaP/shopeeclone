@@ -3,13 +3,19 @@
   width: 160px;
   filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(288deg)
     brightness(102%) contrast(102%);
+
 }
 
 .--navbar-with-search-container {
-  display: flex;
-  height: 85px;
   background-image: linear-gradient(#ee4d2d, #ff7337);
+  display: flex;
   justify-content: center;
+}
+.--inner-container{
+  display: flex;
+  width: 1200px;
+  height: 85px;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -48,5 +54,10 @@
 .--shopping-cart-icon {
   color: #fff;
   /* margin-left: 1rem; */
-  padding: 2rem;
+}
+
+.--shopping-cart-icon{
+  width: 30px;
+  height: 30px;
+  margin-right: 50px;
 }

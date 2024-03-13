@@ -5,6 +5,12 @@ interface ProductApiGetResponse {
   description: string;
   seller: any;
   quantity:number;
+  categoryId: number;
+  imageUrls?: Array<{
+    id:number;
+    order:number|null;
+    imageUrl:string;
+  }>;
   _links: {
     self: {
       href: string;
@@ -28,6 +34,7 @@ interface ProductApiGetResponse {
     };
   };
 }
+
 
 interface ProductImageApiGet {
   _embedded: {
@@ -79,5 +86,34 @@ interface ProductImageApiGet {
   };
   _links: {
     [key: string]: object;
+  };
+}
+
+interface ProductListGetApiResponse {
+  _embedded: {
+    product: ProductApiGetResponse
+  }
+}
+
+
+// Category inteface
+
+interface Link {
+  href: string;
+  hreflang: string;
+  title: string;
+  type: string;
+  deprecation: string;
+  profile: string;
+  name: string;
+  templated: boolean;
+}
+
+interface CategoryGetApiResponse {
+  id: number;
+  name: string;
+  level: number;
+  _links: {
+    [key: string]: Link;
   };
 }

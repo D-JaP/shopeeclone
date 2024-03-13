@@ -73,12 +73,13 @@ function RecommendProduct() {
               name={product["name"]}
               price={product["price"]}
               img={product["imageUrls"]}
+              id = {product["id"]}
               key={index}
             ></ProductTab>
           ))}
         </div>
         <div
-          className="btn bg-gray-500 hover:bg-gray-400 rounded loadmore-btn mt-5 mx-auto"
+          className="btn bg-gray-500 hover:bg-gray-400 rounded loadmore-btn mt-5 mx-auto d-flex"
           onClick={loadmoreHandle}
         >
           Loadmore

@@ -1,59 +1,75 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import MainProductCard from '../Components/MainProduct/MainProductCard';
-import { useReducer, useEffect } from 'react';
-import axios from 'axios';
-import './ProductPage.scss';
-const reducer = (state, action) => {
-  switch (action.type) {
-    case 'FETCH_REQUEST':
-      return { ...state, loading: true };
-    case 'FETCH_SUCCESS':
-      return { ...state, product: action.payload, loading: false };
-    case 'FETCH_FAIL':
-      return { ...state, loading: false, error: action.payload };
-    default:
-      return state;
-  }
-};
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+import MainProductCard from "../Components/MainProduct/MainProductCard";
+import { useReducer, useEffect } from "react";
+import axios from "axios";
+import "./ProductPage.scss";
+import { productApiGet } from "../mock/productApiMock";
+import Navbar from "../Components/Header/Navbar";
+import NavbarWithSearch from "../Components/Header/NavbarWithSearch";
+import ProductDescription from "../Components/ProductPageComponent/ProductDescription";
+import FeatureProduct from "../Components/ProductPageComponent/FeatureProduct";
+
+function extractIdFromSlug(slug) {
+  // split slug with the "-" at the end of the string, take the number after it
+  const id = slug.split("-").pop();
+  return id;
+}
+
 function ProductPage() {
   const params = useParams();
   const { slug } = params;
-
-  const [{ loading, error, product }, dispatch] = useReducer(reducer, {
-    product: [],
-    loading: true,
-    error: '',
-  });
+  const [productGetApi, setProduct] = useState<
+    ProductApiGetResponse | undefined
+  >();
 
   useEffect(() => {
     const fetchData = async () => {
-      dispatch({ type: 'FETCH_REQUEST' });
       try {
-        const result = await axios.get(`/api/v1/product/${slug}`);
-        dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
+        const result = await axios.get(
+          `/api/v1/product/${
+            extractIdFromSlug(slug) + "?projection=productProjection"
+          }`
+        );
+        if (result.status === 200) {
+          setProduct(result.data);
+        }
       } catch (err) {
-        dispatch({ type: 'FETCH_FAIL', payload: err.message });
+        console.error(err);
       }
     };
     fetchData();
   }, [slug]);
-  return loading ? (
-    <div>Loading...</div>
-  ) : error ? (
-    <div>{error}</div>
-  ) : (
-    <div role="main" className="--container-background">
-      {/* Main product page */}
-      <MainProductCard product={product}></MainProductCard>
 
-      {/* shop info */}
+  return (
+    <div role="main" className="--container-background ">
+      <header className="App-header ">
+        <Navbar />
+        <NavbarWithSearch />
+      </header>
+      {productGetApi && (
+        <div className="md:container mx-auto">
+          {/* Main product page */}
+          <MainProductCard product={productGetApi}></MainProductCard>
 
-      {/* Product spec */}
+          {/* shop info */}
 
-      {/* User reviews */}
+          {/* Product spec */}
+          <div className="flex --container-wrapper mt-10">
+            <ProductDescription
+              id={productGetApi.id}
+              description={productGetApi.description}
+            ></ProductDescription>
+            <FeatureProduct
+              category_id={productGetApi.categoryId}
+            ></FeatureProduct>
+          </div>
 
-      {/* Product from the same shop */}
+          {/* User reviews */}
+
+          {/* Product from the same shop */}
+        </div>
+      )}
     </div>
   );
 }

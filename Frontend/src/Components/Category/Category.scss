@@ -1,4 +1,6 @@
 .category{
+    overflow: hidden;
+    
     .tab{
         color: var(--global-text-color);
         font-size: 15px;
@@ -6,5 +8,13 @@
         .category-icon {
             padding: 10px;
         }
+    }
+    .category-name {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-bottom: 0px;
     }
 }

@@ -1,4 +1,4 @@
-import { changeLinkHostname } from "../../utils/utils";
+import { changeLinkHostname, convertToSlug } from "../../utils/utils";
 import "./ProductDescription.scss";
 import React, { useEffect, useState } from "react";
 
@@ -38,23 +38,28 @@ function ProductDescription({
 
   useEffect(() => {
     const getCategory = async () => {
-      const result = await fetch(`/api/v1/product/${id}/category_id`);
+      const result = await fetch(`/api/v1/product/${id}/category`);
       const data = await result.json();
-      setCategoryLevel1(data.name);
       
-      const result2 = await fetch(changeLinkHostname(data._links.parent_id.href));
+      const result2 = await fetch(changeLinkHostname(data._links.parentId.href));
       const data2 = await result2.json();
-      setCategoryLevel2(data2.name);
-
-      const result3 = await fetch(changeLinkHostname(data2._links.parent_id.href));
+      
+      const result3 = await fetch(changeLinkHostname(data2._links.parentId.href));
       const data3 = await result3.json();
-      setCategoryLevel3(data3.name);
+
+
+      setCategoryLevel3(data.name);
+      setCategoryLevel3Link(`/category/` + convertToSlug(data2.name + ' ' + data2.id) + '.'+ convertToSlug(data.name + " " + data.id))
+      setCategoryLevel2(data2.name);
+      setCategoryLevel2Link(`/category/` + convertToSlug(data2.name + " " + data2.id))
+      setCategoryLevel1(data3.name);
+      setCategoryLevel1Link(`/category/` + convertToSlug(data3.name + " " + data3.id))
     }
-    
+
     getCategory()
-    
+
   }, [])
-  
+
 
   // side effect to fetch attribute value
   useEffect(() => {
@@ -77,16 +82,16 @@ function ProductDescription({
   }, []);
 
   return (
-    <div className="product-description --container-wrapper">
+    <div className="product-description">
       <h2>Product details</h2>
       <div className="md:p-3">
         <div className="flex">
           <label className="attribute-label">Category</label>
           <p className="attribute-category">
             <a href="/" className="category-url">Shopee</a> <span className="--category-arrow">&gt;</span>{" "}
-            <a href={category_level3_link} className="category-url">{category_level3}</a> <span className="--category-arrow">&gt;</span>{" "}
+            {/* <a href={category_level1_link} className="category-url">{category_level1}</a> <span className="--category-arrow">&gt;</span>{" "} */}
             <a href={category_level2_link} className="category-url">{category_level2}</a> <span className="--category-arrow">&gt;</span>{" "}
-            <a href={category_level1_link} className="category-url">{category_level1}</a>
+            <a href={category_level3_link} className="category-url">{category_level3}</a>
           </p>
         </div>
 

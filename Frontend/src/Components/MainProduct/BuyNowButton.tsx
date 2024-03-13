@@ -1,17 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
+import WhtTextOrgBGBtn from '../../Button/WhtTextOrgBGBtn';
 function BuyNowButton() {
-  const BuyNow = styled.button`
-    color: white;
-    font-size: 1rem;
-    cursor: pointer;
-    border-radius: 4px;
-    height: 48px;
-    padding: 0 20px;
-    border: 1px solid var(--primary-color);
-    background-color: var(--primary-color);
-  `;
-  return <BuyNow>BuyNow</BuyNow>;
+  return <WhtTextOrgBGBtn>BuyNow</WhtTextOrgBGBtn>;
 }
 
 export default BuyNowButton;

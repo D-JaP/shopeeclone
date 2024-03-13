@@ -9,7 +9,7 @@ function MainPageSection({
   children?: React.ReactNode;
 }) {
   return (
-    <div className="MainPageSection container mx-auto xl:max-w-[1200px]">
+    <div className="MainPageSection --container-wrapper mx-auto xl:max-w-[1200px]">
       <p className="heading">{section}</p>
       {children}
     </div>

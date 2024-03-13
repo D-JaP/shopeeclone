@@ -5,7 +5,7 @@
 
 .--navbar-wrapper {
   background-color: #ee4d2d;
-  height: 2.125rem;
+  /* height: 2.125rem; */
   /* padding-left: 0%; */
   font-size: 0.8125rem;
   color: #fff;
@@ -54,6 +54,10 @@
   border-left: 1px solid rgb(166, 165, 165);
 }
 
-#greeting-tab:hover + .popup-nav-greeting{ 
+.popup-nav-greeting {
+  display: block;
+}
+
+#greeting-tab:hover + .popup-nav-greeting { 
   display: block;
 }

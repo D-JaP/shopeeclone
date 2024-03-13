@@ -4,7 +4,7 @@ $font-weight: 500;
 
 .popup-nav-greeting {
     position: absolute;
-    top : 30px;
+    top : 1rem;
     display: none;
     
     color: $text-color;
@@ -12,6 +12,7 @@ $font-weight: 500;
     .popup-box{
         background-color: whitesmoke;
         border-radius: 3px;
+        overflow: hidden;
     }
     ul{
         list-style-type: none;

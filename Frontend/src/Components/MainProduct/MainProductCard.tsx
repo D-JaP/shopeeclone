@@ -1,25 +1,13 @@
-import React from 'react';
-import styled, { css } from 'styled-components';
-import AddToCartButton from './AddToCartButton';
-import BuyNowButton from './BuyNowButton';
-import './MainProductCard.css';
-import 'font-awesome/css/font-awesome.min.css';
-import Rating from './Rating';
-
-const SmallProductImage = styled.div`
-  background-image: url(${(props) => props.backgroundImage});
-  margin: 5px;
-  width: 82px;
-  height: 82px;
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position-x: center;
-  background-origin: content-box;
-  &:hover {
-    box-shadow: inset 0 0 0 1px #ee4d2d;
-    transition: all 0.05s 0s;
-  }
-`;
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import AddToCartButton from "./AddToCartButton";
+import BuyNowButton from "./BuyNowButton";
+import "./MainProductCard.scss";
+import "font-awesome/css/font-awesome.min.css";
+import Rating from "./Rating";
+import { productImageApiGet } from "../../mock/productApiMock";
+import ImageSlide from "./ImageSlide";
+import QuantitySelect from "./QuantitySelect";
 
 // label
 const ProductInfoLabel = styled.div`
@@ -30,35 +18,79 @@ const ProductInfoLabel = styled.div`
   align-items: center;
 `;
 
-export default function MainProductCard(props) {
-  const { product } = props;
-  // const [first, setfirst] = useState();
+export default function MainProductCard({product} : {product: ProductApiGetResponse}) {
+  const [productImages, setproductImages] = useState<string[]>([]);
+  const [mainImage, setMainImage] = useState<string>("");
+  const [loading, setLoading] = useState(true);
+  const [quantity, setQuantity] = useState(1);
+  const [maxQuantity, setMaxQuantity] = useState<number|undefined>();
+  const [price, setprice] = useState("10.00");
+
+  useEffect(() => {
+    setMaxQuantity(product.quantity)
+    const getProductImages = async () => {
+      await fetch(`/api/v1/product/${product.id}/imageUrls`, {
+        method: "GET",
+      })
+        .then((res) => {
+          if (res.status === 200) {
+            return res.json();
+          }
+        })
+        .then((data) => {
+          const productImageUrls = data._embedded.productImages.map((imageApi) => imageApi.imageUrl);
+          setproductImages(productImageUrls);
+          setMainImage(productImageUrls[0]);
+          
+        })
+        .catch((err) => {
+          throw new Error("Cannot get product images");
+        });
+    };
+
+    getProductImages();
+
+    setLoading(false);
+    return () => {
+      setproductImages([]);
+      setMainImage("");
+    };
+  }, []);
+
+  // set main image on click on side images
+  const setMainImageOnClick = (imageUrl: string) => {
+    setMainImage(imageUrl);
+  };
+
   return (
     <div className="--product-card --container-wrapper">
       <div className="--product-image-card">
         <div
           className="--product-main-image"
-          style={{ backgroundImage: `url(${product.image[0]})` }}
+          style={{ backgroundImage: `url(${mainImage})` }}
         ></div>
         <div className="--product-nav-images">
-          <SmallProductImage
-            backgroundImage={product.image[0]}
-          ></SmallProductImage>
-          <SmallProductImage
-            backgroundImage={product.image[1]}
-          ></SmallProductImage>
+          {
+            <ImageSlide
+              img_arr={productImages}
+              setMainImageOnClick={setMainImageOnClick}
+            ></ImageSlide>
+          }
         </div>
       </div>
       <div className="--product-purchase-info">
         <div className="--product-info-name">{product.name}</div>
-        <Rating sold={product.sold} rating={product.rating}></Rating>
-        <div className="--product-price"></div>
+        {/* <Rating sold={product.sold} rating={product.rating}></Rating> */}
+        <div className="--product-price">AUD {price}</div>
         <div className="--product-shipping"></div>
         <div className="--product-quantity">
-          <ProductInfoLabel>Shipping</ProductInfoLabel>
-          <ProductInfoLabel>Variation</ProductInfoLabel>
-          <div className="">
+          <div className="flex mt-5 mb-5 ms-0 items-center quantity-container">
             <ProductInfoLabel>Quantity</ProductInfoLabel>
+            <QuantitySelect
+              maxQuantity={maxQuantity}
+              setQuantity={setQuantity}
+            ></QuantitySelect>
+            <p className="ms-5 mb-0">{maxQuantity} products available</p>
           </div>
         </div>
         <AddToCartButton></AddToCartButton>

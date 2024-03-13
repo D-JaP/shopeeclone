@@ -4,7 +4,7 @@
     // -moz-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.2);
     // -webkit-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.2);
     img {
-        width: 190px;
+        width: 100%;
         height: 190px;
         background-size: cover;
     }
@@ -12,7 +12,7 @@
     .product-info {
         padding: 5px;
         background-color: white;
-
+        
         .product-name {
             // 2 line, if more than 2 line, show 2 line and add ... at the end
             display: -webkit-box;
