@@ -1,0 +1,26 @@
+$category-link-color : rgba(0, 123, 255, 0.876);
+
+.product-description{
+    margin-top: 1.5rem;
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+    font-family: var(--global-font-family);
+    font-size: .875rem;
+    h2 {
+        font-size: 18px;
+        color: var(--global-text-colors);
+        padding:20px;
+        background-color: var(--global-bg-color);
+        border-radius: 3px;
+    }
+    .attribute-label{
+        font-weight: 100;
+        color: var(--global-text-grey-color);
+        width: 100px;
+    }
+
+    .category-url {
+        color: $category-link-color;
+    }
+}

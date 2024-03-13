@@ -1,0 +1,18 @@
+.quantity-select-container{
+       
+    width: max-content;
+    border: 1px solid #e0e0e0;
+    font-size: 15px;
+    .modifyQuantityBtn {
+        width: 30px;
+        height: 30px;
+    }
+
+    .order-quantity {
+        width: 5rem;
+        border-right: 1px solid #e0e0e0;
+        border-left: 1px solid #e0e0e0;
+        height: 30px;
+    }
+    
+}

@@ -1,0 +1,46 @@
+$categoryWidth: 150px;
+$headerHeight: 22px;
+// price range parameter
+    // minmax box
+    $minmaxWidth: 50px;
+    $minmaxHeight: 30px;
+    $minmaxBorderRadius: 2px;
+    // apply now btn
+
+    // clear all btn
+
+.text-bold {
+    font-weight: bold;
+
+}
+
+.--category-product-filter{
+    margin-top: 10px;
+    .--filter-selection {
+        width: $categoryWidth;
+
+        .--filter-group{
+            border-top: 1px solid var(--global-border-dark-color);
+        }
+    }
+
+    .--button-filter{
+        color: white;
+        background-color: var(--global-main-color);
+        border-radius: 3px;
+    }
+    .input-price-range{
+        width: $minmaxWidth;
+        height: $minmaxHeight;
+        border-radius: 3px;
+        font-size: 14px;
+        text-align: center;
+    }
+    .place  {
+        height: 1px;
+        margin: 0 10px;
+        background-color: var(--global-border-dark-color);
+        width: 30px;
+    }
+    
+}

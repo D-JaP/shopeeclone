@@ -1,0 +1,35 @@
+.product-image-slide{
+    display: flex;
+    max-width: 100%;
+    overflow: hidden;
+    position: relative;
+    align-items: center;
+    .nav-button-slider {
+        position:absolute;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        
+        // set background color to grey;
+        height: 40%;
+        width: 20px;
+        padding: 10px 4px;
+        background-color: rgba(0, 0, 0, 0.5);
+        background-repeat: no-repeat;
+        background-position: center;
+        border-radius: 10%;
+        // onclick, change color to light blue for 0.5 sec
+        transition: background-color 0.5s;
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+    }
+    .nav-button-slider.right
+    {
+        right: 0;
+    }
+    .nav-button-slider.left {
+        left: 0;
+        rotate: 180deg;
+    }
+}
