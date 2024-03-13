@@ -4,7 +4,7 @@ CREATE TABLE attribute_value(
     attribute_value_id serial not null ,
     product_id int not null ,
     attribute_id int not null ,
-    type varchar not null ,
+    type varchar,
     value varchar,
     seller_id int,
 
@@ -13,4 +13,5 @@ CREATE TABLE attribute_value(
     foreign key (product_id) references product
 );
 
-CREATE SEQUENCE attribute_id_seq;
+DROP SEQUENCE IF EXISTS attribute_id_seq;
+CREATE SEQUENCE attribute_id_seq START 501;

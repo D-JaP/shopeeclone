@@ -23,6 +23,8 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+    @Value("${client}")
+    private String frontendURL;
     private final UserService userService;
     private final OAuth2AuthorizedClientService oAuth2AuthorizedClientService;
 
@@ -31,9 +33,9 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         AuthenticationSuccessHandler.super.onAuthenticationSuccess(request, response, chain, authentication);
         AppUser oauth2Users = (AppUser) authentication.getPrincipal();
         userService.handlePostOauthLogin(oauth2Users);
-        String baseURL = request.getRequestURL().toString().replace(request.getRequestURI(), "");
-        System.out.println(baseURL);
-        response.sendRedirect(baseURL);
+//        String baseURL = request.getRequestURL().toString().replace(request.getRequestURI(), "");
+        System.out.println(frontendURL);
+        response.sendRedirect(frontendURL);
     }
 
     @Override
@@ -53,9 +55,10 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
             Cookie refreshCookie = computeCookieFromToken("refreshToken", client.getRefreshToken(), true);
             response.addCookie(refreshCookie);
         }
-        String baseURL = request.getRequestURL().toString().replace(request.getRequestURI(), "");
-        System.out.println(baseURL);
-        response.sendRedirect(baseURL);
+//        redirect to frontend endpoint
+//        String baseURL = request.getRequestURL().toString().replace(request.getRequestURI(), "");
+
+        response.sendRedirect("http://localhost:3000");
     }
 
     private Cookie computeCookieFromToken(String cookie_name, AbstractOAuth2Token token, Boolean httponly){

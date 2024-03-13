@@ -20,13 +20,18 @@ public class AttributeValue {
     @Column(name = "product_id")
     private long product_id;
 
-    @Column(name = "attribute_id")
-    private long attribute_id;
+    @JoinColumn(name = "attribute_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Attribute attribute;
 
     @Column(name = "type")
+    @Enumerated(EnumType.STRING)
     private DataType type;
 
     @Column(name = "value")
     private String value;
+
+
+
 
 }

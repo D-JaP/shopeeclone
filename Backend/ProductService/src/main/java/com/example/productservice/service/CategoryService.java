@@ -1,2 +1,9 @@
-package com.example.productservice.service;public class CategoryService {
+package com.example.productservice.service;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+@Service
+public class CategoryService {
+
 }

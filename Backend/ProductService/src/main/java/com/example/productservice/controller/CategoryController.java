@@ -4,7 +4,7 @@ import com.example.productservice.model.Category;
 import com.example.productservice.model.Product;
 import com.example.productservice.repository.CategoryRepository;
 import com.example.productservice.repository.ProductRepository;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
@@ -23,7 +23,7 @@ import java.util.Optional;
 @BasePathAwareController
 @RequiredArgsConstructor
 @Log4j2
-@Api(tags = "Category Entity")
+@Tag(name = "category-entity-controller", description = "Category API")
 public class CategoryController {
     private final CategoryRepository categoryRepository;
 

@@ -1,2 +1,4 @@
-package com.example.productservice.repository;public class CategoryProjection {
+package com.example.productservice.repository;
+
+public class CategoryProjection {
 }

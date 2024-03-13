@@ -98,3 +98,8 @@ INSERT INTO public.product (product_id, name, price, category_id, description, s
 INSERT INTO public.product (product_id, name, price, category_id, description, seller) VALUES (82, 'Elegant Wooden Table', 3, 23, 'The automobile layout consists of a front-engine design, with transaxle-type transmissions mounted at the rear of the engine and four wheel drive', null);
 INSERT INTO public.product (product_id, name, price, category_id, description, seller) VALUES (37, 'Intelligent Bronze Cheese', 539, 46, 'The Nagasaki Lander is the trademarked name of several series of Nagasaki sport bikes, that started with the 1984 ABC800J', null);
 INSERT INTO public.product (product_id, name, price, category_id, description, seller) VALUES (25, 'Rustic Cotton Cheese', 360, 31, 'The Apollotech B340 is an affordable wireless mouse with reliable connectivity, 12 months battery life and modern design', null);
+
+
+-- add quantity
+
+UPDATE  public.product SET quantity = floor(random() * 1000)::int;

@@ -1,9 +1,6 @@
 package com.example.productservice.repository;
 
-import com.example.productservice.model.AttributeSet;
-import com.example.productservice.model.Category;
-import com.example.productservice.model.Product;
-import com.example.productservice.model.ProductImage;
+import com.example.productservice.model.*;
 import org.springframework.data.rest.core.config.Projection;
 
 import java.util.List;
@@ -17,5 +14,8 @@ public interface ProductProjection {
     String getPrice();
     List<ProductImage> getImageUrls();
     Long getSeller();
-    Category getCategory_id();
+    Category getCategory();
+    List<AttributeValue> getAttribute_value();
+    Integer getQuantity();
+    Long getCategoryId();
 }

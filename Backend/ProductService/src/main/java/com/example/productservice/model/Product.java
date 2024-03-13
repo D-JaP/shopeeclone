@@ -26,7 +26,7 @@ public class Product {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
-    private Category category_id;
+    private Category category;
 
     @Column(name = "price")
     private float price;
@@ -47,4 +47,11 @@ public class Product {
     @ToString.Exclude
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductImage> imageUrls;
+
+    @Column(name = "quantity")
+    private Integer quantity;
+
+    public Long getCategoryId() {
+        return category.getId();
+    }
 }

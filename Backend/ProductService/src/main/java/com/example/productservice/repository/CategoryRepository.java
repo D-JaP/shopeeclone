@@ -17,6 +17,9 @@ import java.util.Optional;
 public interface CategoryRepository extends PagingAndSortingRepository<Category,Long>, CrudRepository<Category, Long> {
     Optional<Category> findByName(@Param("name") String name);
 
+    @Query(value = "SELECT * FROM category WHERE parent_id = :parent_id", nativeQuery = true)
+    List<Category> getCategoriesByParentId(@Param("parent_id") int id, Pageable pageable);
+
     List<Category> findAllByLevel(@PathVariable("level") int level, Pageable pageable);
     @Override
     @PreAuthorize("@authorizationService.hasAnyRole(#request,'ADMIN','ROLE_ADMIN')")

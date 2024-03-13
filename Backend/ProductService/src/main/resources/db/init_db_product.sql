@@ -10,7 +10,9 @@ CREATE TABLE product (
     primary key (product_id)
 );
 ALTER TABLE product ADD COLUMN "attribute_set_id" int;
+ALTER TABLE product ADD COLUMN "quantity" int;
 
+-- table prduct_image
 DROP TABLE IF EXISTS product_image;
 CREATE TABLE product_image (
     image_id serial not null,
@@ -21,6 +23,7 @@ CREATE TABLE product_image (
 );
 
 ALTER TABLE product_image ADD COLUMN "img_order" int;
+
 
 DROP SEQUENCE IF EXISTS product_id_seq;
 DROP SEQUENCE IF EXISTS product_image_id_seq;
