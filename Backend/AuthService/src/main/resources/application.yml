@@ -7,6 +7,7 @@ server:
 hostname: localhost:8080
 redirect : http://localhost:3000
 client: http://localhost:3000
+
 jwt:
   jwt_token:
     expire_time_in_minutes: 100

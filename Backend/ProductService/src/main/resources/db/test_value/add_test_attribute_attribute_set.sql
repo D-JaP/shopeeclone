@@ -1,25 +1,3 @@
-DROP TABLE IF EXISTS attribute_set CASCADE ;
-
-CREATE TABLE attribute_set(
-    attribute_set_id serial not null ,
-    name varchar not null,
-
-    primary key (attribute_set_id)
-);
-
-INSERT INTO attribute_set (attribute_set_id,name) VALUES
-                                     (1,'Electronics'),
-                                     (2,'Books'),
-                                     (3,'Clothing'),
-                                     (4,'Appliances'),
-                                     (5,'Toys'),
-                                     (6,'Furniture'),
-                                     (7,'Sports'),
-                                     (8,'Beauty'),
-                                     (9,'Jewelry'),
-                                     (10,'Automotive');
-
-
 INSERT INTO attribute_attribute_set (attribute_set_id, attribute_id) VALUES
 -- Electronics Attribute Set Attributes
 (1, 4),  -- Weight
