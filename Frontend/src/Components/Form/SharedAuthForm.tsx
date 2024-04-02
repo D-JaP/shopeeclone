@@ -122,7 +122,7 @@ function SharedAuthForm(props) {
 
                 {
                     props.metadata.type === 'login'?(<div className="sign-up">
-                    <p>New to Shopee Clone?</p><a href="/signup">Sign Up</a>
+                    <p className='mb-0'>New to Shopee Clone?</p><a href="/signup">Sign Up</a>
                     </div>): null
                 }
                 

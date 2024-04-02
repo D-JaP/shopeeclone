@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="MavenProjectsManager">
-    <option name="originalFiles">
-      <list>
-        <option value="$PROJECT_DIR$/AuthenticationService/pom.xml" />
-        <option value="$PROJECT_DIR$/UserService/pom.xml" />
-        <option value="$PROJECT_DIR$/Backend/AuthService/pom.xml" />
-        <option value="$PROJECT_DIR$/Backend/UserService/pom.xml" />
-        <option value="$PROJECT_DIR$/ProductService/pom.xml" />
-        <option value="$PROJECT_DIR$/Backend/ProductService/pom.xml" />
-        <option value="$PROJECT_DIR$/apigateway/pom.xml" />
-        <option value="$PROJECT_DIR$/Backend/ApiGateway/pom.xml" />
-      </list>
-    </option>
+  <component name="ProjectRootManager">
+    <output url="file://$PROJECT_DIR$/out" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="corretto-11" project-jdk-type="JavaSDK" />
 </project>

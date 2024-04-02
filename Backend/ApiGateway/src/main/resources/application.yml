@@ -9,7 +9,7 @@ spring:
         - id: auth-route
           uri: http://localhost:8080/
           predicates:
-            - Path=/api/v1/auth/**,/api/v1/login/**,/login/oauth2/**
+            - Path=/api/v1/auth/**,/api/v1/login/**,/login/oauth2/**,/api/v1/logout
 
         - id: product-route
           uri: http://localhost:8081/

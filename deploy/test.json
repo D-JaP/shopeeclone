@@ -1,0 +1,59 @@
+{
+    "family": "my-ecs-task-definition",
+    "containerDefinitions": [
+      {
+        "name": "productservice-postgres-db",
+        "image": "harry2108/shopeeclone-productservice-postgres-db:latest",
+        "cpu": 256,
+        "memory": 512,
+        "essential": true,
+        "portMappings": [
+          {
+            "containerPort": 5432,
+            "hostPort": 5432
+          }
+        ],
+        "environment": [
+          {
+            "name": "POSTGRES_DB",
+            "value": "product_db"
+          },
+          {
+            "name": "POSTGRES_USER",
+            "value": "postgres"
+          },
+          {
+            "name": "POSTGRES_PASSWORD",
+            "value": "root"
+          }
+        ]
+      },
+      {
+        "name": "productservice",
+        "image": "harry2108/shopeeclone-productservice:latest",
+        "cpu": 256,
+        "memory": 512,
+        "essential": true,
+        "portMappings": [
+          {
+            "containerPort": 8081,
+            "hostPort": 8081
+          }
+        ],
+        "environment": [
+          {
+            "name": "spring.datasource.url",
+            "value": "jdbc:postgresql://productservice-postgres-db:5432/product_db"
+          }
+        ]
+      }
+    ],
+    "volumes": [
+      {
+        "name": "AuthServiceDatabase",
+        "host": {}
+      }
+    ],
+    "networkMode": "awsvpc"
+    
+  }

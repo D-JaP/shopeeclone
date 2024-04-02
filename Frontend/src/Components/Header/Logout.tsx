@@ -8,14 +8,14 @@ async function Logout() {
   Cookies.remove('JSESSIONID');
 
   await fetch("/api/v1/logout", {
-    method: "POST",
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
     },
   }).then((response) => {
     if(response.ok){
-      return redirect('/')
+      // return redirect('/')
     }
   }).catch((err)=> {
     console.log(err);

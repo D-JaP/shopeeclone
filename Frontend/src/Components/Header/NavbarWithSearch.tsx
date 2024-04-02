@@ -39,7 +39,7 @@ function NavbarWithSearch() {
         </div>
 
         {/* Cart */}
-        <img src={process.env.PUBLIC_URL + '/img/shopping-cart.svg'} alt="cart" className="--shopping-cart-icon"/>
+        <img src={process.env.PUBLIC_URL + '/img/shopping-cart.svg'} alt="cart" className="--shopping-cart-icon mx-5"/>
       </div>
     </div>
   );

@@ -4,9 +4,9 @@ server:
     include-binding-error: always
   port: 8080
 
-hostname: localhost:8080
-redirect : http://localhost:3000
-client: http://localhost:3000
+
+domain: localhost
+frontendurl: http://localhost:3000
 
 jwt:
   jwt_token:
@@ -49,7 +49,7 @@ spring:
           google:
             client-id: 118970159582-m6ep1v2f60e8t6e2gjvh08jh023qv235.apps.googleusercontent.com
             client-secret: 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
-            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+#            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             scope:
               - email
               - profile

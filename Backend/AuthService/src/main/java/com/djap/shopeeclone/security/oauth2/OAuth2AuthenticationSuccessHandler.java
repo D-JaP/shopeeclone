@@ -23,8 +23,11 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-    @Value("${client}")
+    @Value("${frontendurl}")
     private String frontendURL;
+    @Value("${domain}")
+    private String domain;
+
     private final UserService userService;
     private final OAuth2AuthorizedClientService oAuth2AuthorizedClientService;
 
@@ -58,12 +61,12 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
 //        redirect to frontend endpoint
 //        String baseURL = request.getRequestURL().toString().replace(request.getRequestURI(), "");
 
-        response.sendRedirect("http://localhost:3000");
+        response.sendRedirect(frontendURL);
     }
 
     private Cookie computeCookieFromToken(String cookie_name, AbstractOAuth2Token token, Boolean httponly){
         Cookie cookie = new Cookie(cookie_name, token.getTokenValue());
-        cookie.setDomain("localhost");
+//        cookie.setDomain(domain);
         cookie.setPath("/");
         cookie.setHttpOnly(httponly);
         if (token.getExpiresAt()!= null && token.getIssuedAt()!=null){

@@ -3,7 +3,7 @@ server:
     include-message: always
     include-binding-error: always
 
-hostname: localhost:8080
+hostname: localhost:3000
 
 jwt:
   jwt_token:

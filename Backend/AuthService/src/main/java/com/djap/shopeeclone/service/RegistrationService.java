@@ -30,7 +30,7 @@ public class RegistrationService {
     private final MailSenderService mailSenderService;
     private final PasswordEncoder passwordEncoder;
     private final ActivationTokenRepository activationTokenRepository;
-    @Value("${hostname}")
+    @Value("${domain}")
     private String hostname;
 
     public String registerUser(AppUser user) throws MessagingException {

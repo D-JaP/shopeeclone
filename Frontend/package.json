@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:8085",
+  "proxy": "http://127.0.0.1:8085",
   "main": "index.js",
   "dependencies": {
     "@iconscout/react-unicons": "^1.1.6",
@@ -43,8 +43,8 @@
     "delay": "2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "test-n-start" : "npm test && npm start",
+    "start": "react-scripts start --port $PORT",
+    "test-n-start": "npm test && npm start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

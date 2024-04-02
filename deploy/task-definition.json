@@ -1,0 +1,175 @@
+{
+    "family": "my-ecs-task-definition",
+    "containerDefinitions": [
+      {
+        "name": "authservice-database",
+        "image": "harry2108/shopeeclone-authservice-database:latest",
+        "cpu": 256,
+        "memory": 512,
+        "essential": true,
+        "portMappings": [
+          {
+            "containerPort": 5433,
+            "hostPort": 5433
+          }
+        ],
+        "environment": [
+          {
+            "name": "POSTGRES_DB",
+            "value": "shopee_db"
+          },
+          {
+            "name": "POSTGRES_USER",
+            "value": "postgres"
+          },
+          {
+            "name": "POSTGRES_PASSWORD",
+            "value": "root"
+          }
+        ],
+        "mountPoints": [
+          {
+            "sourceVolume": "AuthServiceDatabase",
+            "containerPath": "/var/lib/postgresql/data"
+          }
+        ]
+      },
+      {
+        "name": "authservice",
+        "image": "harry2108/shopeeclone-authservice:latest",
+        "cpu": 256,
+        "memory": 512,
+        "essential": true,
+        "portMappings": [
+          {
+            "containerPort": 8080,
+            "hostPort": 8080
+          }
+        ],
+        "environment": [
+          {
+            "name": "APP_NAME",
+            "value": "Auth Service"
+          },
+          {
+            "name": "spring.datasource.url",
+            "value": "jdbc:postgresql://authservice-database:5433/shopee_db"
+          }
+        ]
+      },
+      {
+        "name": "productservice-postgres-db",
+        "image": "harry2108/shopeeclone-productservice-postgres-db:latest",
+        "cpu": 256,
+        "memory": 512,
+        "essential": true,
+        "portMappings": [
+          {
+            "containerPort": 5432,
+            "hostPort": 5432
+          }
+        ],
+        "environment": [
+          {
+            "name": "POSTGRES_DB",
+            "value": "product_db"
+          },
+          {
+            "name": "POSTGRES_USER",
+            "value": "postgres"
+          },
+          {
+            "name": "POSTGRES_PASSWORD",
+            "value": "root"
+          }
+        ]
+      },
+      {
+        "name": "productservice",
+        "image": "harry2108/shopeeclone-productservice:latest",
+        "cpu": 256,
+        "memory": 512,
+        "essential": true,
+        "portMappings": [
+          {
+            "containerPort": 8081,
+            "hostPort": 8081
+          }
+        ],
+        "environment": [
+          {
+            "name": "spring.datasource.url",
+            "value": "jdbc:postgresql://productservice-postgres-db:5432/product_db"
+          }
+        ]
+      },
+      {
+        "name": "apigateway",
+        "image": "harry2108/shopeeclone-apigateway:latest",
+        "cpu": 256,
+        "memory": 512,
+        "essential": true,
+        "portMappings": [
+          {
+            "containerPort": 8085,
+            "hostPort": 8085
+          }
+        ],
+        "dependsOn": [
+          {
+            "containerName": "productservice",
+            "condition": "START"
+          },
+          {
+            "containerName": "authservice",
+            "condition": "START"
+          }
+        ],
+        "environment": [
+          {
+            "name": "SPRING_CLOUD_GATEWAY_ROUTES[0]_URI",
+            "value": "http://authservice:8080/"
+          },
+          {
+            "name": "SPRING_CLOUD_GATEWAY_ROUTES[0]_ID",
+            "value": "auth-route"
+          },
+          {
+            "name": "SPRING_CLOUD_GATEWAY_ROUTES[0]_PREDICATES[0]",
+            "value": "Path= /api/v1/auth/**,/api/v1/login/**,/login/oauth2/**"
+          },
+          {
+            "name": "SPRING_CLOUD_GATEWAY_ROUTES[1]_URI",
+            "value": "http://productservice:8081/"
+          },
+          {
+            "name": "SPRING_CLOUD_GATEWAY_ROUTES[1]_ID",
+            "value": "product-route"
+          },
+          {
+            "name": "SPRING_CLOUD_GATEWAY_ROUTES[1]_PREDICATES[0]",
+            "value": "Path=/api/v1/product/**,/api/v1/category/**,/api/v1/attribute_set/**,/api/v1/attribute_value/**,/api/v1/attribute/**"
+          }
+        ]
+      },
+      {
+        "name": "frontend",
+        "image": "harry2108/shopeeclone-frontend:latest",
+        "cpu": 512,
+        "memory": 1200,
+        "essential": true,
+        "portMappings": [
+          {
+            "containerPort": 80,
+            "hostPort": 80
+          }
+        ]
+      }
+    ],
+    "volumes": [
+      {
+        "name": "AuthServiceDatabase",
+        "host": {}
+      }
+    ]
+  }

@@ -20,7 +20,12 @@ function QuantitySelect(
             return
         }
         if (inputValue === '' || regex.test(inputValue)) {
-            setorderQuantity(parseInt(inputValue));
+            if (parseInt(inputValue) > maxQuantity) {
+                setorderQuantity(maxQuantity);
+            }
+            else {
+                setorderQuantity(parseInt(inputValue));
+            }
         }
     }
     const minusQuantityBy1 = () => {

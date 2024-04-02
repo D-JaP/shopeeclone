@@ -24,8 +24,8 @@ import java.util.HashMap;
 @RequestMapping("/api/v1/auth")
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
-    //    @Value("${hostname}")
-    private String hostname = "localhost";
+    @Value("${domain}")
+    private String hostname;
 
     @Value("${jwt.jwt_token.expire_time_in_minutes}")
     private int expire_time_in_minutes;
@@ -54,7 +54,7 @@ public class AuthenticationController {
     private Cookie computeJwtCookie(String token) {
         Cookie jwt_cookie = new Cookie("jwtToken", token);
 
-        jwt_cookie.setDomain(hostname);
+//        jwt_cookie.setDomain(hostname);
         jwt_cookie.setPath("/");
         jwt_cookie.setHttpOnly(false);
         jwt_cookie.setMaxAge(expire_time_in_minutes * 60);
@@ -63,7 +63,7 @@ public class AuthenticationController {
 
     private Cookie computeRefreshCookie(String token) {
         Cookie refresh_cookie = new Cookie("refreshToken", token);
-        refresh_cookie.setDomain(hostname);
+//        refresh_cookie.setDomain(hostname);
         refresh_cookie.setPath("/");
         refresh_cookie.setHttpOnly(true);
         refresh_cookie.setMaxAge(expire_time_in_days * 24 * 60 * 60);
@@ -72,7 +72,7 @@ public class AuthenticationController {
 
     private Cookie computeCookie(String name, String value) {
         Cookie cookie = new Cookie(name, value);
-        cookie.setDomain(hostname);
+//        cookie.setDomain(hostname);
         cookie.setPath("/");
         cookie.setHttpOnly(false);
         cookie.setMaxAge(expire_time_in_days * 24 * 60 * 60);

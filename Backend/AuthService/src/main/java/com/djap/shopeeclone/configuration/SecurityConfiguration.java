@@ -49,6 +49,11 @@ public class SecurityConfiguration {
     private final JwtAuthFilter jwtAuthFilter;
     private final UserService userService;
 
+    @Value("${frontendurl}")
+    private String frontendUrl;
+
+    @Value("${domain}")
+    private String domain;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -87,7 +92,7 @@ public class SecurityConfiguration {
                 .deleteCookies("jwtToken")
                 .deleteCookies("refreshToken")
                 .deleteCookies("accessToken")
-                .logoutSuccessUrl("/");
+                ;
 
         return http.build();
     }
@@ -152,8 +157,7 @@ public class SecurityConfiguration {
 
     private AuthenticationEntryPoint authenticationEntryPoint() {
         return (request, response, authException) -> {
-            String baseUrl = determineBaseUrl(request);
-            response.sendRedirect(baseUrl + "/login");
+            response.sendRedirect( frontendUrl + "/login");
         };
     }
 

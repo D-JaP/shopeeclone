@@ -29,7 +29,7 @@ public class PasswordResetService {
     private final PasswordEncoder passwordEncoder;
     private final MailSenderService mailSenderService;
 
-    @Value("${hostname}")
+    @Value("${domain}")
     private String hostname;
 
     public String sendPasswordResetEmail(String email) throws MessagingException {
